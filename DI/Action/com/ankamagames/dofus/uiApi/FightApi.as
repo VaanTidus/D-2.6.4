@@ -29,7 +29,7 @@
 
         public function FightApi()
         {
-            this._log = Log.getLogger(getQualifiedClassName(FightApi));
+            this._log = Log.getLogger(getQualifiedClassName());
             return;
         }// end function
 

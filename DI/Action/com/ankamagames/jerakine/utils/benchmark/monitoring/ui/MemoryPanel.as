@@ -40,11 +40,10 @@
 
         private function init() : void
         {
-            var _loc_1:TextFormat = null;
             this._memoryGraph = new Vector.<Number>;
             this._memoryLimits = new Vector.<Number>;
             this._otherData = new Dictionary();
-            _loc_1 = new TextFormat("Verdana", 13);
+            var _loc_1:* = new TextFormat("Verdana", 13);
             _loc_1.color = 16777215;
             this._infosTf = new TextField();
             this._infosTf.y = FpsManagerConst.BOX_HEIGHT - 20;
@@ -195,7 +194,6 @@
                 MAX_THEO_VALUE = Math.ceil(param1);
             }
             this._infosTf.text = "GC " + FpsManagerUtils.getTimeFromNow(this.lastGc);
-            this._infosTf.height = this._infosTf.textHeight;
             return;
         }// end function
 

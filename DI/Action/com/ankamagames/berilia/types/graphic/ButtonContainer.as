@@ -13,13 +13,13 @@
     public class ButtonContainer extends StateContainer implements IRadioItem, FinalizableUIComponent, IDragAndDropHandler
     {
         private var _selected:Boolean = false;
-        private var _mousePressed:Boolean = false;
-        private var _disabled:Boolean = false;
+        protected var _mousePressed:Boolean = false;
+        protected var _disabled:Boolean = false;
         private var _radioGroup:String;
         private var _value:Object;
         private var _checkbox:Boolean = false;
         private var _radioMode:Boolean = false;
-        private var _sLinkedTo:String;
+        protected var _sLinkedTo:String;
         protected var _soundId:String = "0";
         protected var _playRollOverSound:Boolean = true;
         protected var _isMute:Boolean = false;
@@ -263,7 +263,7 @@
             return;
         }// end function
 
-        private function selectSound() : String
+        protected function selectSound() : String
         {
             if (this._soundId != "0")
             {
@@ -356,7 +356,7 @@
                                 }
                             }
                             _loc_2 = this._selected ? (StatesEnum.STATE_SELECTED_OVER) : (StatesEnum.STATE_OVER);
-                            if (!changingStateData[_loc_2])
+                            if (changingStateData && !changingStateData[_loc_2])
                             {
                                 _loc_2 = this._selected ? (StatesEnum.STATE_SELECTED) : (StatesEnum.STATE_NORMAL);
                             }

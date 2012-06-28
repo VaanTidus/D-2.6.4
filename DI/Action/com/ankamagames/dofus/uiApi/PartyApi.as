@@ -15,7 +15,7 @@
 
         public function PartyApi()
         {
-            this._log = Log.getLogger(getQualifiedClassName(PartyApi));
+            this._log = Log.getLogger(getQualifiedClassName());
             return;
         }// end function
 

@@ -12,7 +12,7 @@
 
         function pointLos(param1:int, param2:int, param3:Boolean = true) : Boolean;
 
-        function pointMov(param1:int, param2:int, param3:Boolean = true) : Boolean;
+        function pointMov(param1:int, param2:int, param3:Boolean = true, param4:int = -1) : Boolean;
 
         function farmCell(param1:int, param2:int) : Boolean;
 
@@ -23,6 +23,8 @@
         function hasEntity(param1:int, param2:int) : Boolean;
 
         function updateCellMovLov(param1:uint, param2:Boolean) : void;
+
+        function isChangeZone(param1:uint, param2:uint) : Boolean;
 
     }
 }

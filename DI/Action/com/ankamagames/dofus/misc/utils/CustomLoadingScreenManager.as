@@ -1,5 +1,6 @@
 ﻿package com.ankamagames.dofus.misc.utils
 {
+    import com.ankamagames.dofus.*;
     import com.ankamagames.jerakine.data.*;
     import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.managers.*;
@@ -31,6 +32,10 @@
             var _loc_1:* = StoreDataManager.getInstance().getData(this._dataStore, "currentLoadingScreen") as String;
             var _loc_2:* = CustomLoadingScreen.recover(this._dataStore, _loc_1);
             var _loc_3:* = XmlConfig.getInstance().getEntry("config.lang.current");
+            if (!_loc_3)
+            {
+                _loc_3 = StoreDataManager.getInstance().getData(Constants.DATASTORE_LANG_VERSION, "lastLang");
+            }
             if (_loc_2 && !_loc_2.canBeRead())
             {
                 StoreDataManager.getInstance().setData(this._dataStore, "currentLoadingScreen", null);

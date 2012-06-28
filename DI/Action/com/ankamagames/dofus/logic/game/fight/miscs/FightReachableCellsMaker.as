@@ -19,39 +19,46 @@
         private var _waitingCells:Vector.<_ReachableCellStore>;
         private var _watchedCells:Vector.<_ReachableCellStore>;
 
-        public function FightReachableCellsMaker(param1:GameFightFighterInformations)
+        public function FightReachableCellsMaker(param1:GameFightFighterInformations, param2:int = -1, param3:int = -1)
         {
-            var _loc_3:String = null;
-            var _loc_4:int = 0;
-            var _loc_5:int = 0;
-            var _loc_6:IEntity = null;
-            var _loc_7:_ReachableCellStore = null;
-            var _loc_2:* = Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame;
+            var _loc_5:String = null;
+            var _loc_6:int = 0;
+            var _loc_7:int = 0;
+            var _loc_8:IEntity = null;
+            var _loc_9:_ReachableCellStore = null;
+            var _loc_4:* = Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame;
             this._infos = param1;
-            this._mp = this._infos.stats.movementPoints > 0 ? (this._infos.stats.movementPoints) : (0);
-            this._mapPoint = MapPoint.fromCellId(this._infos.disposition.cellId);
-            this._cellGrid = new Vector.<Vector.<_ReachableCellStore>>(this._mp * 2 + 1);
-            for (_loc_3 in this._cellGrid)
+            if (param3 != -1)
             {
-                
-                this._cellGrid[_loc_3] = new Vector.<_ReachableCellStore>(this._mp * 2 + 1);
+                this._mp = param3;
             }
-            for each (_loc_6 in EntitiesManager.getInstance().entities)
+            else
+            {
+                this._mp = this._infos.stats.movementPoints > 0 ? (this._infos.stats.movementPoints) : (0);
+            }
+            this._mapPoint = MapPoint.fromCellId(param2 != -1 ? (param2) : (this._infos.disposition.cellId));
+            this._cellGrid = new Vector.<Vector.<_ReachableCellStore>>(this._mp * 2 + 1);
+            for (_loc_5 in this._cellGrid)
             {
                 
-                if (_loc_6.id != this._infos.contextualId)
+                this._cellGrid[_loc_5] = new Vector.<_ReachableCellStore>(this._mp * 2 + 1);
+            }
+            for each (_loc_8 in EntitiesManager.getInstance().entities)
+            {
+                
+                if (_loc_8.id != this._infos.contextualId)
                 {
-                    _loc_4 = _loc_6.position.x - this._mapPoint.x + this._mp;
-                    _loc_5 = _loc_6.position.y - this._mapPoint.y + this._mp;
-                    if (_loc_4 >= 0 && _loc_4 < this._mp * 2 + 1 && _loc_5 >= 0 && _loc_5 < this._mp * 2 + 1)
+                    _loc_6 = _loc_8.position.x - this._mapPoint.x + this._mp;
+                    _loc_7 = _loc_8.position.y - this._mapPoint.y + this._mp;
+                    if (_loc_6 >= 0 && _loc_6 < this._mp * 2 + 1 && _loc_7 >= 0 && _loc_7 < this._mp * 2 + 1)
                     {
-                        param1 = _loc_2.getEntityInfos(_loc_6.id) as GameFightFighterInformations;
+                        param1 = _loc_4.getEntityInfos(_loc_8.id) as GameFightFighterInformations;
                         if (param1)
                         {
-                            _loc_7 = new _ReachableCellStore(_loc_6.position, _loc_4, _loc_5, this._cellGrid);
-                            _loc_7.state = _ReachableCellStore.STATE_UNREACHABLE;
-                            _loc_7.evade = TackleUtil.getTackleForFighter(param1, this._infos);
-                            this._cellGrid[_loc_4][_loc_5] = _loc_7;
+                            _loc_9 = new _ReachableCellStore(_loc_8.position, _loc_6, _loc_7, this._cellGrid);
+                            _loc_9.state = _ReachableCellStore.STATE_UNREACHABLE;
+                            _loc_9.evade = TackleUtil.getTackleForFighter(param1, this._infos);
+                            this._cellGrid[_loc_6][_loc_7] = _loc_9;
                         }
                     }
                 }

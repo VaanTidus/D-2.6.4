@@ -66,24 +66,22 @@
         private var _aDisallowedChannels:Array;
         private var _aMessagesByChannel:Array;
         private var _msgUId:uint = 0;
-        private var _maxMessagesStored:uint = 60;
+        private var _maxMessagesStored:uint = 100;
         private var _aCensoredWords:Dictionary;
         private var _smileyMood:int = -1;
         private var _options:ChatOptions;
         private var _cssUri:String;
         private var _aChatColors:Array;
         private var _ankaboxEnabled:Boolean = false;
+        private var _aSmilies:Array;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(ChatFrame));
         public static const GUILD_SOUND:uint = 0;
         public static const PARTY_SOUND:uint = 1;
         public static const PRIVATE_SOUND:uint = 2;
         public static const ALERT_SOUND:uint = 3;
         public static const RED_CHANNEL_ID:uint = 666;
-        private static const URL_MATCHER:String = "((http|https|ftp)://)?(([^:@ ]*)(:([^@ ]*))?@)?((www\\.)?(([a-z\\-\\.]+)(\\.[a-z\\-]{2,})))(:([0-9]+))?(/[^?#]*)?(\\?([^#]*))?(#(.*))?";
-        private static const LINK_FILTERS:Array = new Array("WWW", "HTTP", "@", ".COM", ".FR", ".INFO", "HOTMAIL", "MSN", "GMAIL", "FTP");
-        private static const LINK_TLDS:Array = new Array(".com", ".edu", ".org", ".xxx", ".fr", ".info", ".net", ".de", ".ja", ".uk", ".us", ".it", ".nl", ".ru", ".es", ".pt", ".br");
-        private static const ALWAYS_LINK_TLDS:Array = new Array(".com", ".org", ".fr", ".info", ".net");
-        private static const WHITE_LIST:Array = new Array(".DOFUS.COM", ".ANKAMA-GAMES.COM", ".GOOGLE.COM", ".DOFUS.FR", ".DOFUS.DE", ".DOFUS.ES", ".DOFUS.CO.UK", ".WAKFU.COM", ".ANKAMA-SHOP.COM", ".ANKAMA.COM", ".ANKAMA-EDITIONS.COM", ".ANKAMA-WEB.COM", ".ANKAMA-EVENTS.COM", ".DOFUS-ARENA.COM", ".MUTAFUKAZ.COM", ".MANGA-DOFUS.COM", ".LABANDEPASSANTE.FR", "@_@", ".ANKAMA-PLAY.COM");
+        public static const URL_MATCHER:RegExp = /\b((http|https|ftp):\/\/)?(([^:@ ]*)(:([^@ ]*))?@)?((www\.)?(([a-z0-9\-\.]{2,})(\.[a-z0-9\-]{2,})))(:([0-9]+))?(\/[^\s`!()\[\]{};:''"",<>?«»“”‘’#]*)?(\?([^\s`!()\[\]{};:''"".,<>?«»“”‘’]*))?(#(.*))?""\b((http|https|ftp):\/\/)?(([^:@ ]*)(:([^@ ]*))?@)?((www\.)?(([a-z0-9\-\.]{2,})(\.[a-z0-9\-]{2,})))(:([0-9]+))?(\/[^\s`!()\[\]{};:'",<>?«»“”‘’#]*)?(\?([^\s`!()\[\]{};:'".,<>?«»“”‘’]*))?(#(.*))?/gi;
+        public static const LINK_TLDS:Array = new Array(".com", ".edu", ".org", ".fr", ".info", ".net", ".de", ".ja", ".uk", ".us", ".it", ".nl", ".ru", ".es", ".pt", ".br");
 
         public function ChatFrame()
         {
@@ -96,7 +94,10 @@
         public function pushed() : Boolean
         {
             var _loc_1:Object = null;
-            var _loc_2:uint = 0;
+            var _loc_2:Smiley = null;
+            var _loc_3:String = null;
+            var _loc_4:Array = null;
+            var _loc_5:uint = 0;
             var _loc_6:* = undefined;
             var _loc_7:SmileyWrapper = null;
             this._options = new ChatOptions();
@@ -104,6 +105,7 @@
             this._aChannels = ChatChannel.getChannels();
             this._aDisallowedChannels = new Array();
             this._aMessagesByChannel = new Array();
+            this._aSmilies = new Array();
             this._aCensoredWords = new Dictionary();
             for (_loc_1 in this._aChannels)
             {
@@ -112,16 +114,19 @@
             }
             this._aMessagesByChannel[RED_CHANNEL_ID] = new Array();
             ConsolesManager.registerConsole("chat", new ConsoleHandler(Kernel.getWorker(), false), new ChatConsoleInstructionRegistrar());
-            _loc_2 = 1;
-            while (_loc_2 < 31)
+            for each (_loc_2 in Smiley.getSmileys())
             {
                 
-                _loc_7 = SmileyWrapper.create(_loc_2, _loc_2);
-                _loc_2 = _loc_2 + 1;
+                if (_loc_2.forPlayers)
+                {
+                    _loc_7 = SmileyWrapper.create(_loc_2.id, _loc_2.gfxId, _loc_2.order);
+                    this._aSmilies.push(_loc_7);
+                }
             }
-            var _loc_3:* = XmlConfig.getInstance().getEntry("config.lang.current");
-            var _loc_4:* = CensoredWord.getCensoredWords();
-            var _loc_5:uint = 0;
+            this._aSmilies.sortOn("order", Array.NUMERIC);
+            _loc_3 = XmlConfig.getInstance().getEntry("config.lang.current");
+            _loc_4 = CensoredWord.getCensoredWords();
+            _loc_5 = 0;
             for each (_loc_6 in _loc_4)
             {
                 
@@ -170,6 +175,11 @@
         public function get censoredWords() : Dictionary
         {
             return this._aCensoredWords;
+        }// end function
+
+        public function get smilies() : Array
+        {
+            return this._aSmilies;
         }// end function
 
         public function get maxMessagesStored() : int
@@ -1163,7 +1173,14 @@
                         }
                         textObjects = textObjects + (object.quantity + "x" + Item.getItemById(object.objectUID).name);
                     }
-                    objectsAndExp = I18n.getUiText("ui.social.thingsTaxCollectorGet", [textObjects, egtcgmsg.experience]);
+                    if (textObjects != "")
+                    {
+                        objectsAndExp = I18n.getUiText("ui.social.thingsTaxCollectorGet", [textObjects, egtcgmsg.experience]);
+                    }
+                    else
+                    {
+                        objectsAndExp = I18n.getUiText("ui.social.xpTaxCollectorGet", [egtcgmsg.experience]);
+                    }
                     text = I18n.getUiText("ui.social.taxcollectorRecolted", [taxCollectorName, "(" + egtcgmsg.worldX + ", " + egtcgmsg.worldY + ")", egtcgmsg.userName, objectsAndExp]);
                     KernelEventsManager.getInstance().processCallback(ChatHookList.TextInformation, text, ChatActivableChannelsEnum.CHANNEL_GUILD, this.getTimestamp());
                     return true;
@@ -1352,6 +1369,7 @@
         {
             var _loc_12:String = null;
             var _loc_13:uint = 0;
+            var _loc_14:Array = null;
             var _loc_15:String = null;
             var _loc_16:String = null;
             var _loc_17:Array = null;
@@ -1368,14 +1386,8 @@
             var _loc_28:String = null;
             var _loc_29:int = 0;
             var _loc_30:String = null;
-            var _loc_31:RegExp = null;
-            var _loc_32:Object = null;
-            var _loc_33:uint = 0;
-            var _loc_34:Number = NaN;
-            var _loc_35:String = null;
-            var _loc_36:Boolean = false;
-            var _loc_37:int = 0;
-            var _loc_38:String = null;
+            var _loc_31:Object = null;
+            var _loc_32:String = null;
             var _loc_5:* = param1;
             if (OptionManager.getOptionManager("chat").filterInsult && param2 != 8 && param2 != 10 && param2 != 11 && param2 != 666)
             {
@@ -1463,25 +1475,11 @@
             {
                 
                 _loc_30 = "";
-                _loc_31 = new RegExp(URL_MATCHER, "ig");
-                _loc_32 = _loc_31.exec(_loc_12);
-                _loc_33 = 0;
-                while (_loc_32 != null)
+                _loc_31 = this.needToFormateUrl(_loc_12);
+                if (_loc_31.formate)
                 {
-                    
-                    _log.debug(_loc_32.index + " : " + _loc_32);
-                    _loc_30 = _loc_30 + _loc_12.substr(_loc_33, _loc_32.index);
-                    if ((_loc_32[2] != undefined || _loc_32[8] != undefined) && LINK_TLDS.indexOf(_loc_32[11]) != -1 || ALWAYS_LINK_TLDS.indexOf(_loc_32[11]) != -1)
-                    {
-                        _loc_30 = _loc_30 + ("[<a href=\'event:hook,ChatLinkRelease," + _loc_32[0] + "," + param3 + "," + param4 + "\'><u><b>" + _loc_32[0] + "</b></u></a>]");
-                        _loc_8 = true;
-                    }
-                    else
-                    {
-                        _loc_30 = _loc_30 + _loc_32[0];
-                    }
-                    _loc_33 = _loc_32.index + _loc_32[0].length;
-                    _loc_32 = _loc_31.exec(_loc_12);
+                    _loc_30 = _loc_30 + ("[<a href=\'event:hook,ChatLinkRelease," + _loc_31.url + "," + param3 + "," + param4 + "\'><u><b>" + _loc_31.url + "</b></u></a>]");
+                    _loc_8 = true;
                 }
                 if (_loc_30 == "")
                 {
@@ -1491,50 +1489,12 @@
             }
             _loc_5 = _loc_7.slice(0, (_loc_7.length - 1));
             _loc_13 = 0;
-            if (!_loc_8)
-            {
-                _loc_34 = 0;
-                while (_loc_34 < _loc_6.length)
-                {
-                    
-                    _loc_35 = _loc_6[_loc_34].toString().toUpperCase();
-                    _loc_36 = false;
-                    _loc_37 = 0;
-                    while (_loc_37 < LINK_FILTERS.length)
-                    {
-                        
-                        if (_loc_35.indexOf(LINK_FILTERS[_loc_37]) > -1)
-                        {
-                            _loc_36 = true;
-                            _loc_13 = _loc_13 + 1;
-                            break;
-                        }
-                        _loc_37++;
-                    }
-                    if (_loc_36)
-                    {
-                        _loc_37 = 0;
-                        while (_loc_37 < WHITE_LIST.length)
-                        {
-                            
-                            if (_loc_35.indexOf(WHITE_LIST[_loc_37]) > -1)
-                            {
-                                _loc_36 = false;
-                                _loc_13 = _loc_13 - 1;
-                                break;
-                            }
-                            _loc_37++;
-                        }
-                    }
-                    _loc_34 = _loc_34 + 1;
-                }
-            }
-            var _loc_14:* = new Array();
+            _loc_14 = new Array();
             if (_loc_13 > 0)
             {
-                _loc_38 = I18n.getUiText("ui.popup.warning");
+                _loc_32 = I18n.getUiText("ui.popup.warning");
                 _loc_14[0] = _loc_5 + " [<font color=\"" + XmlConfig.getInstance().getEntry("colors.hyperlink.warning").replace("0x", "#") + "\"><u><b><a href=\'event:hook,ChatWarning\'>" + I18n.getUiText("ui.popup.warning") + "</a></b></u></font>]";
-                _loc_14[1] = _loc_5 + " [" + _loc_38 + "]";
+                _loc_14[1] = _loc_5 + " [" + _loc_32 + "]";
             }
             else
             {
@@ -1542,6 +1502,37 @@
                 _loc_14[1] = _loc_5;
             }
             return _loc_14;
+        }// end function
+
+        public function needToFormateUrl(param1:String) : Object
+        {
+            var _loc_2:* = param1.replace("&amp;amp;", "&");
+            var _loc_3:* = _loc_2 != param1;
+            var _loc_4:* = new RegExp(URL_MATCHER);
+            var _loc_5:* = new RegExp(URL_MATCHER).exec(_loc_2);
+            var _loc_6:* = new Object();
+            new Object().formate = false;
+            if (_loc_5)
+            {
+                if (_loc_3)
+                {
+                    _loc_6.url = _loc_5[0].replace("&", "&amp;amp;");
+                }
+                else
+                {
+                    _loc_6.url = _loc_5[0];
+                }
+                _loc_6.index = _loc_5.index;
+                if (_loc_5[2] == undefined && _loc_5[8] == undefined && _loc_5[7].split(".").length >= 2 && LINK_TLDS.indexOf(_loc_5[11]) == -1)
+                {
+                    _loc_6.formate = false;
+                }
+                else
+                {
+                    _loc_6.formate = true;
+                }
+            }
+            return _loc_6;
         }// end function
 
     }
@@ -1630,6 +1621,21 @@ class Notification extends Object
         this.startTime = 0;
         this.pauseOnOver = param2;
         this.notifyUser = true;
+        return;
+    }// end function
+
+}
+
+
+class Smiley extends Object
+{
+    public var pictoId:int;
+    public var position:int;
+
+    function Smiley(param1:int, param2:int) : void
+    {
+        this.pictoId = param1;
+        this.position = param2;
         return;
     }// end function
 

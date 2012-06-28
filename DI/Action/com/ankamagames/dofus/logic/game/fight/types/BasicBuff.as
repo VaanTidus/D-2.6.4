@@ -15,7 +15,6 @@
     public class BasicBuff extends Object
     {
         protected var _effect:EffectInstance;
-        private var _effectParameters:Array;
         protected var _disabled:Boolean = false;
         protected var _removed:Boolean = false;
         public var uid:uint;
@@ -32,7 +31,6 @@
         public var parentBoostUid:uint;
         public var finishing:Boolean;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(BasicBuff));
-        static var _unicID:uint = 0;
 
         public function BasicBuff(param1:AbstractFightDispellableEffect = null, param2:CastingSpell = null, param3:uint = 0, param4 = null, param5 = null, param6 = null)
         {
@@ -208,21 +206,29 @@
             return;
         }// end function
 
-        public function canBeDispell(param1:Boolean = false, param2:Boolean = false, param3:Boolean = false) : Boolean
+        public function canBeDispell(param1:Boolean = false, param2:int = -2.14748e+009, param3:Boolean = false) : Boolean
         {
+            if (param2 == this.id)
+            {
+                return true;
+            }
             switch(this.dispelable)
             {
                 case FightDispellableEnum.DISPELLABLE:
                 {
-                    return !this.critical || param2;
+                    return true;
+                }
+                case FightDispellableEnum.DISPELLABLE_BY_STRONG_DISPEL:
+                {
+                    return param1;
                 }
                 case FightDispellableEnum.DISPELLABLE_BY_DEATH:
                 {
-                    return (!this.critical || param2) && (param3 || param1);
+                    return param3 || param1;
                 }
-                case FightDispellableEnum.NOT_DISPELLABLE:
+                case FightDispellableEnum.REALLY_NOT_DISPELLABLE:
                 {
-                    return (!this.critical || param2) && param1;
+                    return param2 == this.id;
                 }
                 default:
                 {
@@ -240,6 +246,12 @@
         public function onDisabled() : void
         {
             this._disabled = true;
+            return;
+        }// end function
+
+        public function undisable() : void
+        {
+            this._disabled = false;
             return;
         }// end function
 
@@ -316,6 +328,13 @@
             this.stack.push(param1);
             switch(this.actionId)
             {
+                case 293:
+                {
+                    this.param1 = param1.param1;
+                    this.param2 = this.param2 + param1.param2;
+                    this.param3 = this.param3 + param1.param3;
+                    break;
+                }
                 case 788:
                 {
                     this.param1 = this.param1 + param1.param2;
@@ -422,6 +441,10 @@
         {
             if (!param2 || this.canBeDispell())
             {
+                if (this.duration >= 63)
+                {
+                    return false;
+                }
                 if (this.duration + param1 > 0)
                 {
                     this.duration = this.duration + param1;

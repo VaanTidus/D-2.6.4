@@ -52,6 +52,8 @@
                     _listenerUp = true;
                 }
             }
+            var _loc_6:* = _listenersCount + 1;
+            _listenersCount = _loc_6;
             return;
         }// end function
 

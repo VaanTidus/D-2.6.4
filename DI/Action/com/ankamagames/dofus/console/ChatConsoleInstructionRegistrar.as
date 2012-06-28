@@ -29,7 +29,7 @@
             param1.addHandler(["w", "whisper", "msg", "t", "g", "p", "a", "r", "b", "m"], new MessagingInstructionHandler());
             param1.addHandler(["spectator", "list", "players", "kick"], new FightInstructionHandler());
             param1.addHandler(_loc_2, new EmoteInstructionHandler());
-            param1.addHandler(["tab"], new OptionsInstructionHandler());
+            param1.addHandler(["tab", "clear"], new OptionsInstructionHandler());
             param1.addHandler(["savereplaylog"], new MiscInstructionHandler());
             param1.addHandler(["away", "invisible", "release"], new StatusInstructionHandler());
             return;

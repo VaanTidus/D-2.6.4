@@ -561,45 +561,66 @@
                             }
                         }
                         _loc_11 = this.getClassDesc(_loc_9);
-                        if (_loc_4.firstChild)
+                        if (_loc_11[_loc_4.nodeName])
                         {
-                            switch(_loc_11[_loc_4.nodeName])
+                            if (_loc_4.firstChild)
                             {
-                                case "Boolean":
+                                _loc_12 = _loc_4.toString();
+                                _loc_13 = _loc_12.substr(_loc_4.nodeName.length + 2, _loc_12.length - _loc_4.nodeName.length * 2 - 5);
+                                _loc_10 = LangManager.getInstance().replaceKey(_loc_13);
+                                switch(_loc_11[_loc_4.nodeName])
                                 {
+                                    case "Boolean":
+                                    {
+                                        _loc_10 = _loc_10 != "false";
+                                        break;
+                                    }
+                                    default:
+                                    {
+                                        if (_loc_10.charAt(0) == "[" && _loc_10.charAt((_loc_10.length - 1)) == "]")
+                                        {
+                                            break;
+                                        }
+                                        _loc_14 = getDefinitionByName(_loc_11[_loc_4.nodeName]) as Class;
+                                        _loc_10 = new _loc_14(_loc_10);
+                                        break;
+                                    }
+                                }
+                                ContainerElement(param3).properties[_loc_4.nodeName] = _loc_10;
+                            }
+                        }
+                        else
+                        {
+                            switch(param2.nodeName)
+                            {
+                                case XmlTagsEnum.TAG_CONTAINER:
+                                case XmlTagsEnum.TAG_BUTTON:
+                                case XmlTagsEnum.TAG_STATECONTAINER:
+                                case XmlTagsEnum.TAG_SCROLLCONTAINER:
+                                case XmlTagsEnum.TAG_GRID:
+                                case XmlTagsEnum.TAG_COMBOBOX:
+                                case XmlTagsEnum.TAG_TREE:
+                                {
+                                    if (ApplicationDomain.currentDomain.hasDefinition("com.ankamagames.berilia.components." + _loc_4.nodeName))
+                                    {
+                                        ContainerElement(param3).childs.push(this.parseGraphicElement(_loc_4));
+                                    }
+                                    else
+                                    {
+                                        this._log.warn("[" + this._sUrl + "] " + _loc_4.nodeName + " is unknown component / property on " + param2.nodeName);
+                                    }
                                     break;
                                 }
                                 default:
                                 {
+                                    if (_loc_4.firstChild != null)
+                                    {
+                                        _loc_15 = _loc_4.toString();
+                                        param3.properties[_loc_4.nodeName] = _loc_15.substr(_loc_4.nodeName.length + 2, _loc_15.length - _loc_4.nodeName.length * 2 - 5);
+                                    }
+                                    break;
                                     break;
                                 }
-                            }
-                        }
-                        switch(param2.nodeName)
-                        {
-                            case XmlTagsEnum.TAG_CONTAINER:
-                            case XmlTagsEnum.TAG_BUTTON:
-                            case XmlTagsEnum.TAG_STATECONTAINER:
-                            case XmlTagsEnum.TAG_SCROLLCONTAINER:
-                            case XmlTagsEnum.TAG_GRID:
-                            case XmlTagsEnum.TAG_COMBOBOX:
-                            case XmlTagsEnum.TAG_TREE:
-                            {
-                                if (ApplicationDomain.currentDomain.hasDefinition("com.ankamagames.berilia.components." + _loc_4.nodeName))
-                                {
-                                }
-                                else
-                                {
-                                }
-                                break;
-                            }
-                            default:
-                            {
-                                if (_loc_4.firstChild != null)
-                                {
-                                }
-                                break;
-                                break;
                             }
                         }
                         break;
@@ -804,28 +825,47 @@
             for (_loc_8 in param2)
             {
                 
-                switch(_loc_4[_loc_8])
+                if (_loc_4[_loc_8])
                 {
-                    case "Boolean":
+                    _loc_6 = LangManager.getInstance().replaceKey(param2[_loc_8]);
+                    switch(_loc_4[_loc_8])
                     {
-                        break;
+                        case "Boolean":
+                        {
+                            _loc_6 = _loc_6 != "false";
+                            break;
+                        }
+                        case getQualifiedClassName(Uri):
+                        {
+                            _loc_7 = getDefinitionByName(_loc_4[_loc_8]) as Class;
+                            _loc_6 = new _loc_7(_loc_6);
+                            break;
+                        }
+                        case "*":
+                        {
+                            break;
+                        }
+                        default:
+                        {
+                            if (_loc_6.charAt(0) == "[" && _loc_6.charAt((_loc_6.length - 1)) == "]")
+                            {
+                                break;
+                            }
+                            _loc_7 = getDefinitionByName(_loc_4[_loc_8]) as Class;
+                            _loc_6 = new _loc_7(_loc_6);
+                            break;
+                        }
                     }
-                    case getQualifiedClassName(Uri):
-                    {
-                        break;
-                    }
-                    case "*":
-                    {
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
+                    _loc_5[_loc_8] = _loc_6;
+                    continue;
                 }
+                _loc_10 = new Array();
                 for (_loc_11 in _loc_4)
                 {
+                    
+                    _loc_10.push(_loc_11);
                 }
+                this._log.warn("[" + this._sUrl + "]" + _loc_8 + " is unknow for " + param1.className + " component" + this.suggest(_loc_8, _loc_10));
             }
             for (_loc_9 in _loc_5)
             {

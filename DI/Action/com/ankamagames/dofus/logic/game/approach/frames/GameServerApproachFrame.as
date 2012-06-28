@@ -696,7 +696,6 @@
                 }
                 case msg is AllModulesLoadedMessage:
                 {
-                    Kernel.getWorker().removeFrame(this._gmaf);
                     this._gmaf = null;
                     try
                     {
@@ -732,10 +731,6 @@
                     Kernel.getWorker().removeFrame(Kernel.getWorker().getFrame(GameStartingFrame));
                     Kernel.getWorker().resume();
                     ConnectionsHandler.resume();
-                    if (Kernel.beingInReconection)
-                    {
-                        ConnectionsHandler.getConnection().send(new CharacterSelectedForceReadyMessage());
-                    }
                     flashKeyMsg = new ClientKeyMessage();
                     flashKeyMsg.initClientKeyMessage(InterClientManager.getInstance().flashKey);
                     ConnectionsHandler.getConnection().send(flashKeyMsg);

@@ -182,7 +182,7 @@
                     }
                     case 406:
                     {
-                        _loc_3[2] = this.getSpellName(_loc_3[2]);
+                        _loc_3[0] = this.getSpellName(_loc_3[0]);
                         break;
                     }
                     case 603:
@@ -193,7 +193,11 @@
                     }
                     case 604:
                     {
-                        _loc_3[2] = this.getSpellLevelName(_loc_3[0]);
+                        if (_loc_3[2] == null)
+                        {
+                            _loc_3[2] = _loc_3[0];
+                        }
+                        _loc_3[2] = this.getSpellLevelName(_loc_3[2]);
                         break;
                     }
                     case 614:
@@ -366,6 +370,11 @@
                         _loc_3[3] = "{player," + _loc_3[3] + "}";
                         break;
                     }
+                    case 1111:
+                    {
+                        _loc_3[2] = _loc_3[0];
+                        break;
+                    }
                     case 805:
                     case 808:
                     case 983:
@@ -534,6 +543,7 @@
         private function getSpellLevelName(param1:int) : String
         {
             var _loc_2:* = SpellLevel.getLevelById(param1);
+            var _loc_3:* = _loc_2 ? (this.getSpellName(_loc_2.spellId)) : (UNKNOWN_NAME);
             return _loc_2 ? (this.getSpellName(_loc_2.spellId)) : (UNKNOWN_NAME);
         }// end function
 

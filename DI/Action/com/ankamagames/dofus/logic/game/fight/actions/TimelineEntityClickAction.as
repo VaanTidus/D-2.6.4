@@ -4,7 +4,7 @@
 
     public class TimelineEntityClickAction extends Object implements Action
     {
-        public var cellId:int;
+        public var fighterId:int;
 
         public function TimelineEntityClickAction()
         {
@@ -14,7 +14,7 @@
         public static function create(param1:int) : TimelineEntityClickAction
         {
             var _loc_2:* = new TimelineEntityClickAction;
-            _loc_2.cellId = param1;
+            _loc_2.fighterId = param1;
             return _loc_2;
         }// end function
 

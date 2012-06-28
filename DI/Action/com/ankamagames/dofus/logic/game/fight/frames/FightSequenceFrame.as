@@ -62,9 +62,9 @@
         private var _fightEntitiesFrame:FightEntitiesFrame;
         private var _instanceId:uint;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(FightSequenceFrame));
+        private static var _lastCastingSpell:CastingSpell;
         private static var _currentInstanceId:uint;
         public static const FIGHT_SEQUENCERS_CATEGORY:String = "FightSequencer";
-        private static var _lastCastingSpell:CastingSpell;
 
         public function FightSequenceFrame(param1:FightBattleFrame, param2:FightSequenceFrame = null)
         {
@@ -166,66 +166,70 @@
             var _loc_21:GameActionFightUnmarkCellsMessage = null;
             var _loc_22:GameActionFightChangeLookMessage = null;
             var _loc_23:GameActionFightInvisibilityMessage = null;
-            var _loc_24:GameActionFightLeaveMessage = null;
-            var _loc_25:Dictionary = null;
-            var _loc_26:GameContextActorInformations = null;
-            var _loc_27:GameActionFightDeathMessage = null;
-            var _loc_28:Dictionary = null;
-            var _loc_29:int = 0;
-            var _loc_30:GameFightFighterInformations = null;
+            var _loc_24:GameContextActorInformations = null;
+            var _loc_25:GameActionFightLeaveMessage = null;
+            var _loc_26:Dictionary = null;
+            var _loc_27:GameContextActorInformations = null;
+            var _loc_28:GameActionFightDeathMessage = null;
+            var _loc_29:Dictionary = null;
+            var _loc_30:int = 0;
             var _loc_31:GameFightFighterInformations = null;
             var _loc_32:GameFightFighterInformations = null;
-            var _loc_33:GameContextActorInformations = null;
-            var _loc_34:FightContextFrame = null;
-            var _loc_35:GameActionFightVanishMessage = null;
-            var _loc_36:GameContextActorInformations = null;
-            var _loc_37:FightContextFrame = null;
-            var _loc_38:GameActionFightDispellEffectMessage = null;
-            var _loc_39:GameActionFightDispellSpellMessage = null;
-            var _loc_40:GameActionFightDispellMessage = null;
-            var _loc_41:GameActionFightDodgePointLossMessage = null;
-            var _loc_42:GameActionFightSpellCooldownVariationMessage = null;
-            var _loc_43:GameActionFightSpellImmunityMessage = null;
-            var _loc_44:GameActionFightInvisibleObstacleMessage = null;
-            var _loc_45:GameActionFightKillMessage = null;
-            var _loc_46:GameActionFightReduceDamagesMessage = null;
-            var _loc_47:GameActionFightReflectDamagesMessage = null;
-            var _loc_48:GameActionFightReflectSpellMessage = null;
-            var _loc_49:GameActionFightStealKamaMessage = null;
-            var _loc_50:GameActionFightTackledMessage = null;
-            var _loc_51:GameActionFightTriggerGlyphTrapMessage = null;
-            var _loc_52:int = 0;
-            var _loc_53:GameActionFightDispellableEffectMessage = null;
-            var _loc_54:CastingSpell = null;
-            var _loc_55:AbstractFightDispellableEffect = null;
-            var _loc_56:BasicBuff = null;
-            var _loc_57:GameActionFightModifyEffectsDurationMessage = null;
-            var _loc_58:GameActionFightCarryCharacterMessage = null;
-            var _loc_59:GameActionFightThrowCharacterMessage = null;
-            var _loc_60:GameActionFightDropCharacterMessage = null;
-            var _loc_61:GameActionFightInvisibleDetectedMessage = null;
-            var _loc_62:GameActionFightCloseCombatMessage = null;
-            var _loc_63:Array = null;
+            var _loc_33:GameFightFighterInformations = null;
+            var _loc_34:GameContextActorInformations = null;
+            var _loc_35:FightContextFrame = null;
+            var _loc_36:GameActionFightVanishMessage = null;
+            var _loc_37:GameContextActorInformations = null;
+            var _loc_38:FightContextFrame = null;
+            var _loc_39:GameActionFightDispellEffectMessage = null;
+            var _loc_40:GameActionFightDispellSpellMessage = null;
+            var _loc_41:GameActionFightDispellMessage = null;
+            var _loc_42:GameActionFightDodgePointLossMessage = null;
+            var _loc_43:GameActionFightSpellCooldownVariationMessage = null;
+            var _loc_44:GameActionFightSpellImmunityMessage = null;
+            var _loc_45:GameActionFightInvisibleObstacleMessage = null;
+            var _loc_46:GameActionFightKillMessage = null;
+            var _loc_47:GameActionFightReduceDamagesMessage = null;
+            var _loc_48:GameActionFightReflectDamagesMessage = null;
+            var _loc_49:GameActionFightReflectSpellMessage = null;
+            var _loc_50:GameActionFightStealKamaMessage = null;
+            var _loc_51:GameActionFightTackledMessage = null;
+            var _loc_52:GameActionFightTriggerGlyphTrapMessage = null;
+            var _loc_53:int = 0;
+            var _loc_54:GameActionFightDispellableEffectMessage = null;
+            var _loc_55:CastingSpell = null;
+            var _loc_56:AbstractFightDispellableEffect = null;
+            var _loc_57:BasicBuff = null;
+            var _loc_58:GameActionFightModifyEffectsDurationMessage = null;
+            var _loc_59:GameActionFightCarryCharacterMessage = null;
+            var _loc_60:GameActionFightThrowCharacterMessage = null;
+            var _loc_61:GameActionFightDropCharacterMessage = null;
+            var _loc_62:GameActionFightInvisibleDetectedMessage = null;
+            var _loc_63:GameActionFightCloseCombatMessage = null;
             var _loc_64:Array = null;
-            var _loc_65:IEntity = null;
-            var _loc_66:Boolean = false;
-            var _loc_67:SpellWrapper = null;
-            var _loc_68:Spell = null;
-            var _loc_69:SpellLevel = null;
-            var _loc_70:int = 0;
-            var _loc_71:GameFightShowFighterRandomStaticPoseMessage = null;
-            var _loc_72:Sprite = null;
-            var _loc_73:GameFightShowFighterMessage = null;
-            var _loc_74:Sprite = null;
-            var _loc_75:GameContextActorInformations = null;
-            var _loc_76:int = 0;
+            var _loc_65:Boolean = false;
+            var _loc_66:SpellWrapper = null;
+            var _loc_67:Spell = null;
+            var _loc_68:SpellLevel = null;
+            var _loc_69:int = 0;
+            var _loc_70:GameFightShowFighterRandomStaticPoseMessage = null;
+            var _loc_71:Sprite = null;
+            var _loc_72:GameFightShowFighterMessage = null;
+            var _loc_73:Sprite = null;
+            var _loc_74:Boolean = false;
+            var _loc_75:Boolean = false;
+            var _loc_76:GameContextActorInformations = null;
             var _loc_77:GameFightMonsterInformations = null;
             var _loc_78:Monster = null;
             var _loc_79:GameContextActorInformations = null;
             var _loc_80:int = 0;
             var _loc_81:GameFightMonsterInformations = null;
-            var _loc_82:GameFightFighterInformations = null;
-            var _loc_83:int = 0;
+            var _loc_82:Monster = null;
+            var _loc_83:GameContextActorInformations = null;
+            var _loc_84:int = 0;
+            var _loc_85:GameFightMonsterInformations = null;
+            var _loc_86:GameFightFighterInformations = null;
+            var _loc_87:int = 0;
             switch(true)
             {
                 case param1 is GameActionFightCloseCombatMessage:
@@ -237,11 +241,11 @@
                     }
                     else
                     {
-                        _loc_62 = param1 as GameActionFightCloseCombatMessage;
+                        _loc_63 = param1 as GameActionFightCloseCombatMessage;
                         _loc_3 = true;
-                        _loc_4 = _loc_62.weaponGenericId;
+                        _loc_4 = _loc_63.weaponGenericId;
                         _loc_2 = new GameActionFightSpellCastMessage();
-                        _loc_2.initGameActionFightSpellCastMessage(_loc_62.actionId, _loc_62.sourceId, _loc_62.destinationCellId, _loc_62.critical, _loc_62.silentCast, 0, 1);
+                        _loc_2.initGameActionFightSpellCastMessage(_loc_63.actionId, _loc_63.sourceId, _loc_63.targetId, _loc_63.destinationCellId, _loc_63.critical, _loc_63.silentCast, 0, 1);
                     }
                     _loc_5 = this.fightEntitiesFrame.getEntityInfos(_loc_2.sourceId).disposition.cellId;
                     if (this._castingSpell)
@@ -283,14 +287,9 @@
                     }
                     if (_loc_2.sourceId == CurrentPlayedFighterManager.getInstance().currentFighterId && _loc_2.critical != FightSpellCastCriticalEnum.CRITICAL_FAIL)
                     {
-                        _loc_63 = new Array();
-                        _loc_64 = EntitiesManager.getInstance().getEntitiesOnCell(_loc_2.destinationCellId);
-                        for each (_loc_65 in _loc_64)
-                        {
-                            
-                            _loc_63.push(_loc_65.id);
-                        }
-                        CurrentPlayedFighterManager.getInstance().getSpellCastManager().castSpell(_loc_2.spellId, _loc_2.spellLevel, _loc_63);
+                        _loc_64 = new Array();
+                        _loc_64.push(_loc_2.targetId);
+                        CurrentPlayedFighterManager.getInstance().getSpellCastManager().castSpell(_loc_2.spellId, _loc_2.spellLevel, _loc_64);
                     }
                     _loc_6 = _loc_2.critical == FightSpellCastCriticalEnum.CRITICAL_HIT;
                     _loc_7 = FightEntitiesFrame.getCurrentInstance().getEntitiesDictionnary();
@@ -313,45 +312,46 @@
                     {
                         _loc_10 = true;
                     }
-                    if (_loc_2.sourceId != _loc_9.id && _loc_10)
+                    if (_loc_2.sourceId != _loc_9.id && _loc_10 && !this._castingSpell.isCriticalFail)
                     {
-                        _loc_66 = false;
-                        for each (_loc_67 in _loc_9.spellsInventory)
+                        _loc_65 = false;
+                        for each (_loc_66 in _loc_9.spellsInventory)
                         {
                             
-                            if (_loc_67.id == _loc_2.spellId)
+                            if (_loc_66.id == _loc_2.spellId)
                             {
-                                _loc_66 = true;
+                                _loc_65 = true;
+                                break;
                             }
                         }
-                        if (_loc_66)
+                        if (_loc_65)
                         {
-                            _loc_68 = Spell.getSpellById(_loc_2.spellId);
-                            _loc_69 = SpellLevel.getLevelById(_loc_68.spellLevels[(_loc_67.spellLevel - 1)]);
-                            if (_loc_69.globalCooldown)
+                            _loc_67 = Spell.getSpellById(_loc_2.spellId);
+                            _loc_68 = SpellLevel.getLevelById(_loc_67.spellLevels[(_loc_66.spellLevel - 1)]);
+                            if (_loc_68.globalCooldown)
                             {
-                                if (_loc_69.globalCooldown == -1)
+                                if (_loc_68.globalCooldown == -1)
                                 {
-                                    _loc_70 = _loc_69.minCastInterval;
+                                    _loc_69 = _loc_68.minCastInterval;
                                 }
                                 else
                                 {
-                                    _loc_70 = _loc_69.globalCooldown;
+                                    _loc_69 = _loc_68.globalCooldown;
                                 }
-                                this.pushSpellCooldownVariationStep(_loc_9.id, 0, _loc_2.spellId, _loc_70);
+                                this.pushSpellCooldownVariationStep(_loc_9.id, 0, _loc_2.spellId, _loc_69);
                             }
                         }
                     }
-                    _loc_29 = PlayedCharacterManager.getInstance().infos.id;
-                    _loc_30 = this.fightEntitiesFrame.getEntityInfos(_loc_2.sourceId) as GameFightFighterInformations;
-                    _loc_32 = this.fightEntitiesFrame.getEntityInfos(_loc_29) as GameFightFighterInformations;
+                    _loc_30 = PlayedCharacterManager.getInstance().infos.id;
+                    _loc_31 = this.fightEntitiesFrame.getEntityInfos(_loc_2.sourceId) as GameFightFighterInformations;
+                    _loc_33 = this.fightEntitiesFrame.getEntityInfos(_loc_30) as GameFightFighterInformations;
                     if (_loc_6)
                     {
-                        if (_loc_2.sourceId == _loc_29)
+                        if (_loc_2.sourceId == _loc_30)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_CC_OWNER);
                         }
-                        else if (_loc_32 && _loc_30.teamId == _loc_32.teamId)
+                        else if (_loc_33 && _loc_31.teamId == _loc_33.teamId)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_CC_ALLIED);
                         }
@@ -362,11 +362,11 @@
                     }
                     else if (_loc_2.critical == FightSpellCastCriticalEnum.CRITICAL_FAIL)
                     {
-                        if (_loc_2.sourceId == _loc_29)
+                        if (_loc_2.sourceId == _loc_30)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_EC_OWNER);
                         }
-                        else if (_loc_32 && _loc_30.teamId == _loc_32.teamId)
+                        else if (_loc_33 && _loc_31.teamId == _loc_33.teamId)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_EC_ALLIED);
                         }
@@ -391,7 +391,7 @@
                 {
                     _loc_12 = param1 as GameActionFightPointsVariationMessage;
                     this.pushPointsVariationStep(_loc_12.targetId, _loc_12.actionId, _loc_12.delta);
-                    return true;
+                    return false;
                 }
                 case param1 is GameActionFightLifeAndShieldPointsLostMessage:
                 {
@@ -435,30 +435,54 @@
                     _loc_19 = param1 as GameActionFightSummonMessage;
                     if (_loc_19.actionId == 1024 || _loc_19.actionId == 1097)
                     {
-                        _loc_71 = new GameFightShowFighterRandomStaticPoseMessage();
-                        _loc_71.initGameFightShowFighterRandomStaticPoseMessage(_loc_19.summon);
-                        Kernel.getWorker().getFrame(FightEntitiesFrame).process(_loc_71);
-                        _loc_72 = DofusEntities.getEntity(_loc_19.summon.contextualId) as Sprite;
-                        _loc_72.visible = false;
+                        _loc_70 = new GameFightShowFighterRandomStaticPoseMessage();
+                        _loc_70.initGameFightShowFighterRandomStaticPoseMessage(_loc_19.summon);
+                        Kernel.getWorker().getFrame(FightEntitiesFrame).process(_loc_70);
+                        _loc_71 = DofusEntities.getEntity(_loc_19.summon.contextualId) as Sprite;
+                        _loc_71.visible = false;
                         this.pushVisibilityStep(_loc_19.summon.contextualId, true);
                     }
                     else
                     {
-                        _loc_73 = new GameFightShowFighterMessage();
-                        _loc_73.initGameFightShowFighterMessage(_loc_19.summon);
-                        Kernel.getWorker().getFrame(FightEntitiesFrame).process(_loc_73);
-                        _loc_74 = DofusEntities.getEntity(_loc_19.summon.contextualId) as Sprite;
-                        _loc_74.visible = false;
+                        _loc_72 = new GameFightShowFighterMessage();
+                        _loc_72.initGameFightShowFighterMessage(_loc_19.summon);
+                        Kernel.getWorker().getFrame(FightEntitiesFrame).process(_loc_72);
+                        _loc_73 = DofusEntities.getEntity(_loc_19.summon.contextualId) as Sprite;
+                        _loc_73.visible = false;
                         this.pushSummonStep(_loc_19.sourceId, _loc_19.summon);
                         if (_loc_19.sourceId == PlayedCharacterManager.getInstance().id && _loc_19.actionId != 185)
                         {
+                            _loc_74 = false;
+                            _loc_75 = false;
                             if (_loc_19.actionId == 1008)
                             {
-                                PlayedCharacterManager.getInstance().addSummonedBomb();
+                                _loc_74 = true;
                             }
                             else
                             {
+                                _loc_76 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_19.summon.contextualId);
+                                _loc_74 = false;
+                                _loc_77 = _loc_76 as GameFightMonsterInformations;
+                                if (_loc_77)
+                                {
+                                    _loc_78 = Monster.getMonsterById(_loc_77.creatureGenericId);
+                                    if (_loc_78 && _loc_78.useBombSlot)
+                                    {
+                                        _loc_74 = true;
+                                    }
+                                    if (_loc_78 && _loc_78.useSummonSlot)
+                                    {
+                                        _loc_75 = true;
+                                    }
+                                }
+                            }
+                            if (_loc_75)
+                            {
                                 PlayedCharacterManager.getInstance().addSummonedCreature();
+                            }
+                            else if (_loc_74)
+                            {
+                                PlayedCharacterManager.getInstance().addSummonedBomb();
                             }
                         }
                     }
@@ -490,38 +514,41 @@
                 case param1 is GameActionFightInvisibilityMessage:
                 {
                     _loc_23 = param1 as GameActionFightInvisibilityMessage;
+                    _loc_24 = this.fightEntitiesFrame.getEntityInfos(_loc_23.targetId);
+                    FightEntitiesFrame.getCurrentInstance().setLastKnownEntityPosition(_loc_23.targetId, _loc_24.disposition.cellId);
+                    FightEntitiesFrame.getCurrentInstance().setLastKnownEntityMovementPoint(_loc_23.targetId, 0, true);
                     this.pushChangeVisibilityStep(_loc_23.targetId, _loc_23.state);
                     return true;
                 }
                 case param1 is GameActionFightLeaveMessage:
                 {
-                    _loc_24 = param1 as GameActionFightLeaveMessage;
-                    _loc_25 = FightEntitiesFrame.getCurrentInstance().getEntitiesDictionnary();
-                    for each (_loc_75 in _loc_25)
+                    _loc_25 = param1 as GameActionFightLeaveMessage;
+                    _loc_26 = FightEntitiesFrame.getCurrentInstance().getEntitiesDictionnary();
+                    for each (_loc_79 in _loc_26)
                     {
                         
-                        if (_loc_75 is GameFightFighterInformations)
+                        if (_loc_79 is GameFightFighterInformations)
                         {
-                            _loc_76 = (_loc_75 as GameFightFighterInformations).stats.summoner;
-                            if (_loc_76 == _loc_24.targetId)
+                            _loc_80 = (_loc_79 as GameFightFighterInformations).stats.summoner;
+                            if (_loc_80 == _loc_25.targetId)
                             {
-                                this.pushDeathStep(_loc_75.contextualId);
+                                this.pushDeathStep(_loc_79.contextualId);
                             }
                         }
                     }
-                    this.pushDeathStep(_loc_24.targetId, false);
-                    _loc_26 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_24.targetId);
-                    if (_loc_26 is GameFightMonsterInformations)
+                    this.pushDeathStep(_loc_25.targetId, false);
+                    _loc_27 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_25.targetId);
+                    if (_loc_27 is GameFightMonsterInformations)
                     {
-                        _loc_77 = _loc_26 as GameFightMonsterInformations;
-                        if (_loc_77.stats.summoner == PlayedCharacterManager.getInstance().id)
+                        _loc_81 = _loc_27 as GameFightMonsterInformations;
+                        if (_loc_81.stats.summoner == PlayedCharacterManager.getInstance().id)
                         {
-                            _loc_78 = Monster.getMonsterById(_loc_77.creatureGenericId);
-                            if (_loc_78.useSummonSlot)
+                            _loc_82 = Monster.getMonsterById(_loc_81.creatureGenericId);
+                            if (_loc_82.useSummonSlot)
                             {
                                 PlayedCharacterManager.getInstance().removeSummonedCreature();
                             }
-                            if (_loc_78.useBombSlot)
+                            if (_loc_82.useBombSlot)
                             {
                                 PlayedCharacterManager.getInstance().removeSummonedBomb();
                             }
@@ -531,32 +558,32 @@
                 }
                 case param1 is GameActionFightDeathMessage:
                 {
-                    _loc_27 = param1 as GameActionFightDeathMessage;
+                    _loc_28 = param1 as GameActionFightDeathMessage;
                     _log.fatal("GameActionFightDeathMessage");
-                    _loc_28 = FightEntitiesFrame.getCurrentInstance().getEntitiesDictionnary();
-                    for each (_loc_79 in _loc_28)
+                    _loc_29 = FightEntitiesFrame.getCurrentInstance().getEntitiesDictionnary();
+                    for each (_loc_83 in _loc_29)
                     {
                         
-                        if (_loc_79 is GameFightFighterInformations)
+                        if (_loc_83 is GameFightFighterInformations)
                         {
-                            _loc_80 = (_loc_79 as GameFightFighterInformations).stats.summoner;
-                            if (_loc_80 == _loc_27.targetId)
+                            _loc_84 = (_loc_83 as GameFightFighterInformations).stats.summoner;
+                            if (_loc_84 == _loc_28.targetId)
                             {
-                                this.pushDeathStep(_loc_79.contextualId);
+                                this.pushDeathStep(_loc_83.contextualId);
                             }
                         }
                     }
-                    _loc_29 = PlayedCharacterManager.getInstance().infos.id;
-                    _loc_30 = this.fightEntitiesFrame.getEntityInfos(_loc_27.sourceId) as GameFightFighterInformations;
-                    _loc_31 = this.fightEntitiesFrame.getEntityInfos(_loc_27.targetId) as GameFightFighterInformations;
-                    _loc_32 = this.fightEntitiesFrame.getEntityInfos(_loc_29) as GameFightFighterInformations;
-                    if (_loc_27.targetId == _loc_29)
+                    _loc_30 = PlayedCharacterManager.getInstance().infos.id;
+                    _loc_31 = this.fightEntitiesFrame.getEntityInfos(_loc_28.sourceId) as GameFightFighterInformations;
+                    _loc_32 = this.fightEntitiesFrame.getEntityInfos(_loc_28.targetId) as GameFightFighterInformations;
+                    _loc_33 = this.fightEntitiesFrame.getEntityInfos(_loc_30) as GameFightFighterInformations;
+                    if (_loc_28.targetId == _loc_30)
                     {
-                        if (_loc_27.sourceId == _loc_27.targetId)
+                        if (_loc_28.sourceId == _loc_28.targetId)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_KILLED_HIMSELF);
                         }
-                        else if (_loc_30.teamId != _loc_32.teamId)
+                        else if (_loc_31.teamId != _loc_33.teamId)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_KILLED_BY_ENEMY);
                         }
@@ -565,9 +592,9 @@
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_KILLED_BY_ENEMY);
                         }
                     }
-                    else if (_loc_27.sourceId == _loc_29)
+                    else if (_loc_28.sourceId == _loc_30)
                     {
-                        if (_loc_31.teamId != _loc_32.teamId)
+                        if (_loc_32.teamId != _loc_33.teamId)
                         {
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_KILL_ENEMY);
                         }
@@ -576,62 +603,62 @@
                             SpeakingItemManager.getInstance().triggerEvent(SpeakingItemManager.SPEAK_TRIGGER_KILL_ALLY);
                         }
                     }
-                    this.pushDeathStep(_loc_27.targetId);
-                    _loc_33 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_27.targetId);
-                    if (_loc_33 is GameFightMonsterInformations)
+                    this.pushDeathStep(_loc_28.targetId);
+                    _loc_34 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_28.targetId);
+                    if (_loc_34 is GameFightMonsterInformations)
                     {
-                        _loc_81 = _loc_33 as GameFightMonsterInformations;
-                        _loc_81.alive = false;
-                        if (_loc_81.stats.summoner == PlayedCharacterManager.getInstance().id)
+                        _loc_85 = _loc_34 as GameFightMonsterInformations;
+                        _loc_85.alive = false;
+                        if (_loc_85.stats.summoner == PlayedCharacterManager.getInstance().id)
                         {
-                            _loc_78 = Monster.getMonsterById(_loc_81.creatureGenericId);
-                            if (_loc_78.useSummonSlot)
+                            _loc_82 = Monster.getMonsterById(_loc_85.creatureGenericId);
+                            if (_loc_82.useSummonSlot)
                             {
                                 PlayedCharacterManager.getInstance().removeSummonedCreature();
                             }
-                            if (_loc_78.useBombSlot)
+                            if (_loc_82.useBombSlot)
                             {
                                 PlayedCharacterManager.getInstance().removeSummonedBomb();
                             }
                             SpellWrapper.refreshAllPlayerSpellHolder(PlayedCharacterManager.getInstance().id);
                         }
                     }
-                    else if (_loc_33 is GameFightFighterInformations)
+                    else if (_loc_34 is GameFightFighterInformations)
                     {
-                        (_loc_33 as GameFightFighterInformations).alive = false;
-                        if ((_loc_33 as GameFightFighterInformations).stats.summoner != 0)
+                        (_loc_34 as GameFightFighterInformations).alive = false;
+                        if ((_loc_34 as GameFightFighterInformations).stats.summoner != 0)
                         {
-                            _loc_82 = _loc_33 as GameFightFighterInformations;
-                            if (_loc_82.stats.summoner == PlayedCharacterManager.getInstance().id)
+                            _loc_86 = _loc_34 as GameFightFighterInformations;
+                            if (_loc_86.stats.summoner == PlayedCharacterManager.getInstance().id)
                             {
                                 PlayedCharacterManager.getInstance().removeSummonedCreature();
                                 SpellWrapper.refreshAllPlayerSpellHolder(PlayedCharacterManager.getInstance().id);
                             }
                         }
                     }
-                    _loc_34 = Kernel.getWorker().getFrame(FightContextFrame) as FightContextFrame;
-                    if (_loc_34)
+                    _loc_35 = Kernel.getWorker().getFrame(FightContextFrame) as FightContextFrame;
+                    if (_loc_35)
                     {
-                        _loc_34.outEntity(_loc_27.targetId);
+                        _loc_35.outEntity(_loc_28.targetId);
                     }
-                    FightEntitiesFrame.getCurrentInstance().updateRemovedEntity(_loc_27.targetId);
+                    FightEntitiesFrame.getCurrentInstance().updateRemovedEntity(_loc_28.targetId);
                     return true;
                 }
                 case param1 is GameActionFightVanishMessage:
                 {
-                    _loc_35 = param1 as GameActionFightVanishMessage;
-                    this.pushVanishStep(_loc_35.targetId, _loc_35.sourceId);
-                    _loc_36 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_35.targetId);
-                    if (_loc_36 is GameFightFighterInformations)
+                    _loc_36 = param1 as GameActionFightVanishMessage;
+                    this.pushVanishStep(_loc_36.targetId, _loc_36.sourceId);
+                    _loc_37 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_36.targetId);
+                    if (_loc_37 is GameFightFighterInformations)
                     {
-                        (_loc_36 as GameFightFighterInformations).alive = false;
+                        (_loc_37 as GameFightFighterInformations).alive = false;
                     }
-                    _loc_37 = Kernel.getWorker().getFrame(FightContextFrame) as FightContextFrame;
-                    if (_loc_37)
+                    _loc_38 = Kernel.getWorker().getFrame(FightContextFrame) as FightContextFrame;
+                    if (_loc_38)
                     {
-                        _loc_37.outEntity(_loc_35.targetId);
+                        _loc_38.outEntity(_loc_36.targetId);
                     }
-                    FightEntitiesFrame.getCurrentInstance().updateRemovedEntity(_loc_35.targetId);
+                    FightEntitiesFrame.getCurrentInstance().updateRemovedEntity(_loc_36.targetId);
                     return true;
                 }
                 case param1 is GameActionFightTriggerEffectMessage:
@@ -640,94 +667,93 @@
                 }
                 case param1 is GameActionFightDispellEffectMessage:
                 {
-                    _loc_38 = param1 as GameActionFightDispellEffectMessage;
-                    this.pushDispellEffectStep(_loc_38.targetId, _loc_38.boostUID);
+                    _loc_39 = param1 as GameActionFightDispellEffectMessage;
+                    this.pushDispellEffectStep(_loc_39.targetId, _loc_39.boostUID);
                     return true;
                 }
                 case param1 is GameActionFightDispellSpellMessage:
                 {
-                    _loc_39 = param1 as GameActionFightDispellSpellMessage;
-                    this.pushDispellSpellStep(_loc_39.targetId, _loc_39.spellId);
+                    _loc_40 = param1 as GameActionFightDispellSpellMessage;
+                    this.pushDispellSpellStep(_loc_40.targetId, _loc_40.spellId);
                     return true;
                 }
                 case param1 is GameActionFightDispellMessage:
                 {
-                    _loc_40 = param1 as GameActionFightDispellMessage;
-                    this.pushDispellStep(_loc_40.targetId);
+                    _loc_41 = param1 as GameActionFightDispellMessage;
+                    this.pushDispellStep(_loc_41.targetId);
                     return true;
                 }
                 case param1 is GameActionFightDodgePointLossMessage:
                 {
-                    _loc_41 = param1 as GameActionFightDodgePointLossMessage;
-                    this.pushPointsLossDodgeStep(_loc_41.targetId, _loc_41.actionId, _loc_41.amount);
+                    _loc_42 = param1 as GameActionFightDodgePointLossMessage;
+                    this.pushPointsLossDodgeStep(_loc_42.targetId, _loc_42.actionId, _loc_42.amount);
                     return true;
                 }
                 case param1 is GameActionFightSpellCooldownVariationMessage:
                 {
-                    _loc_42 = param1 as GameActionFightSpellCooldownVariationMessage;
-                    this.pushSpellCooldownVariationStep(_loc_42.targetId, _loc_42.actionId, _loc_42.spellId, _loc_42.value);
+                    _loc_43 = param1 as GameActionFightSpellCooldownVariationMessage;
+                    this.pushSpellCooldownVariationStep(_loc_43.targetId, _loc_43.actionId, _loc_43.spellId, _loc_43.value);
                     return true;
                 }
                 case param1 is GameActionFightSpellImmunityMessage:
                 {
-                    _loc_43 = param1 as GameActionFightSpellImmunityMessage;
-                    this.pushSpellImmunityStep(_loc_43.targetId);
+                    _loc_44 = param1 as GameActionFightSpellImmunityMessage;
+                    this.pushSpellImmunityStep(_loc_44.targetId);
                     return true;
                 }
                 case param1 is GameActionFightInvisibleObstacleMessage:
                 {
-                    _loc_44 = param1 as GameActionFightInvisibleObstacleMessage;
-                    this.pushInvisibleObstacleStep(_loc_44.sourceId, _loc_44.sourceSpellId);
+                    _loc_45 = param1 as GameActionFightInvisibleObstacleMessage;
+                    this.pushInvisibleObstacleStep(_loc_45.sourceId, _loc_45.sourceSpellId);
                     return true;
                 }
                 case param1 is GameActionFightKillMessage:
                 {
-                    _loc_45 = param1 as GameActionFightKillMessage;
-                    this.pushKillStep(_loc_45.targetId, _loc_45.sourceId);
+                    _loc_46 = param1 as GameActionFightKillMessage;
+                    this.pushKillStep(_loc_46.targetId, _loc_46.sourceId);
                     return true;
                 }
                 case param1 is GameActionFightReduceDamagesMessage:
                 {
-                    _loc_46 = param1 as GameActionFightReduceDamagesMessage;
-                    this.pushReducedDamagesStep(_loc_46.targetId, _loc_46.amount);
+                    _loc_47 = param1 as GameActionFightReduceDamagesMessage;
+                    this.pushReducedDamagesStep(_loc_47.targetId, _loc_47.amount);
                     return true;
                 }
                 case param1 is GameActionFightReflectDamagesMessage:
                 {
-                    _loc_47 = param1 as GameActionFightReflectDamagesMessage;
-                    this.pushReflectedDamagesStep(_loc_47.sourceId, _loc_47.amount);
+                    _loc_48 = param1 as GameActionFightReflectDamagesMessage;
+                    this.pushReflectedDamagesStep(_loc_48.sourceId, _loc_48.amount);
                     return true;
                 }
                 case param1 is GameActionFightReflectSpellMessage:
                 {
-                    _loc_48 = param1 as GameActionFightReflectSpellMessage;
-                    this.pushReflectedSpellStep(_loc_48.targetId);
+                    _loc_49 = param1 as GameActionFightReflectSpellMessage;
+                    this.pushReflectedSpellStep(_loc_49.targetId);
                     return true;
                 }
                 case param1 is GameActionFightStealKamaMessage:
                 {
-                    _loc_49 = param1 as GameActionFightStealKamaMessage;
-                    this.pushStealKamasStep(_loc_49.sourceId, _loc_49.targetId, _loc_49.amount);
+                    _loc_50 = param1 as GameActionFightStealKamaMessage;
+                    this.pushStealKamasStep(_loc_50.sourceId, _loc_50.targetId, _loc_50.amount);
                     return true;
                 }
                 case param1 is GameActionFightTackledMessage:
                 {
-                    _loc_50 = param1 as GameActionFightTackledMessage;
-                    this.pushTackledStep(_loc_50.sourceId);
+                    _loc_51 = param1 as GameActionFightTackledMessage;
+                    this.pushTackledStep(_loc_51.sourceId);
                     return true;
                 }
                 case param1 is GameActionFightTriggerGlyphTrapMessage:
                 {
-                    _loc_51 = param1 as GameActionFightTriggerGlyphTrapMessage;
-                    this.pushMarkTriggeredStep(_loc_51.triggeringCharacterId, _loc_51.sourceId, _loc_51.markId);
+                    _loc_52 = param1 as GameActionFightTriggerGlyphTrapMessage;
+                    this.pushMarkTriggeredStep(_loc_52.triggeringCharacterId, _loc_52.sourceId, _loc_52.markId);
                     this._fxScriptId = 1;
                     this._castingSpell = new CastingSpell();
-                    this._castingSpell.casterId = _loc_51.sourceId;
-                    this._castingSpell.castingSpellId = 0;
-                    _loc_52 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_51.triggeringCharacterId).disposition.cellId;
-                    if (_loc_52 != -1)
+                    this._castingSpell.casterId = _loc_52.sourceId;
+                    _loc_53 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(_loc_52.triggeringCharacterId).disposition.cellId;
+                    if (_loc_53 != -1)
                     {
-                        this._castingSpell.targetedCell = MapPoint.fromCellId(_loc_52);
+                        this._castingSpell.targetedCell = MapPoint.fromCellId(_loc_53);
                         this._castingSpell.spell = Spell.getSpellById(1750);
                         this._castingSpell.spellRank = this._castingSpell.spell.getSpellLevel(1);
                     }
@@ -735,31 +761,31 @@
                 }
                 case param1 is GameActionFightDispellableEffectMessage:
                 {
-                    _loc_53 = param1 as GameActionFightDispellableEffectMessage;
-                    if (_loc_53.actionId == ActionIdConverter.ACTION_CHARACTER_UPDATE_BOOST)
+                    _loc_54 = param1 as GameActionFightDispellableEffectMessage;
+                    if (_loc_54.actionId == ActionIdConverter.ACTION_CHARACTER_UPDATE_BOOST)
                     {
-                        _loc_54 = new CastingSpell(false);
+                        _loc_55 = new CastingSpell(false);
                     }
                     else
                     {
-                        _loc_54 = new CastingSpell(this._castingSpell == null);
+                        _loc_55 = new CastingSpell(this._castingSpell == null);
                     }
                     if (this._castingSpell)
                     {
-                        _loc_54.castingSpellId = this._castingSpell.castingSpellId;
+                        _loc_55.castingSpellId = this._castingSpell.castingSpellId;
                     }
-                    _loc_54.spell = Spell.getSpellById(_loc_53.effect.spellId);
-                    _loc_54.casterId = _loc_53.sourceId;
-                    _loc_55 = _loc_53.effect;
-                    _loc_56 = BuffManager.makeBuffFromEffect(_loc_55, _loc_54, _loc_53.actionId);
+                    _loc_55.spell = Spell.getSpellById(_loc_54.effect.spellId);
+                    _loc_55.casterId = _loc_54.sourceId;
+                    _loc_56 = _loc_54.effect;
+                    _loc_57 = BuffManager.makeBuffFromEffect(_loc_56, _loc_55, _loc_54.actionId);
                     switch(true)
                     {
-                        case _loc_55 is FightTemporaryBoostEffect:
+                        case _loc_56 is FightTemporaryBoostEffect:
                         {
-                            _loc_83 = _loc_53.actionId;
-                            if (_loc_83 != ActionIdConverter.ACTION_CHARACTER_MAKE_INVISIBLE && _loc_83 != ActionIdConverter.ACTION_CHARACTER_UPDATE_BOOST && _loc_83 != ActionIdConverter.ACTION_CHARACTER_CHANGE_LOOK && _loc_83 != ActionIdConverter.ACTION_CHARACTER_CHANGE_COLOR && _loc_83 != ActionIdConverter.ACTION_CHARACTER_ADD_APPEARANCE && _loc_83 != ActionIdConverter.ACTION_FIGHT_SET_STATE)
+                            _loc_87 = _loc_54.actionId;
+                            if (_loc_87 != ActionIdConverter.ACTION_CHARACTER_MAKE_INVISIBLE && _loc_87 != ActionIdConverter.ACTION_CHARACTER_UPDATE_BOOST && _loc_87 != ActionIdConverter.ACTION_CHARACTER_CHANGE_LOOK && _loc_87 != ActionIdConverter.ACTION_CHARACTER_CHANGE_COLOR && _loc_87 != ActionIdConverter.ACTION_CHARACTER_ADD_APPEARANCE && _loc_87 != ActionIdConverter.ACTION_FIGHT_SET_STATE)
                             {
-                                this.pushTemporaryBoostStep(_loc_53.effect.targetId, _loc_56.effects.description, _loc_56.effects.duration, _loc_56.effects.durationString);
+                                this.pushTemporaryBoostStep(_loc_54.effect.targetId, _loc_57.effects.description, _loc_57.effects.duration, _loc_57.effects.durationString);
                             }
                             break;
                         }
@@ -768,42 +794,43 @@
                             break;
                         }
                     }
-                    this.pushDisplayBuffStep(_loc_56);
+                    this.pushDisplayBuffStep(_loc_57);
                     return true;
                 }
                 case param1 is GameActionFightModifyEffectsDurationMessage:
                 {
-                    _loc_57 = param1 as GameActionFightModifyEffectsDurationMessage;
-                    this.pushModifyEffectsDurationStep(_loc_57.sourceId, _loc_57.targetId, _loc_57.delta);
+                    _loc_58 = param1 as GameActionFightModifyEffectsDurationMessage;
+                    this.pushModifyEffectsDurationStep(_loc_58.sourceId, _loc_58.targetId, _loc_58.delta);
                     return false;
                 }
                 case param1 is GameActionFightCarryCharacterMessage:
                 {
-                    _loc_58 = param1 as GameActionFightCarryCharacterMessage;
-                    if (_loc_58.cellId != -1)
+                    _loc_59 = param1 as GameActionFightCarryCharacterMessage;
+                    if (_loc_59.cellId != -1)
                     {
-                        this.pushCarryCharacterStep(_loc_58.sourceId, _loc_58.targetId, _loc_58.cellId);
+                        this.pushCarryCharacterStep(_loc_59.sourceId, _loc_59.targetId, _loc_59.cellId);
                     }
                     return false;
                 }
                 case param1 is GameActionFightThrowCharacterMessage:
                 {
-                    _loc_59 = param1 as GameActionFightThrowCharacterMessage;
-                    this.pushThrowCharacterStep(_loc_59.sourceId, _loc_59.targetId, _loc_59.cellId);
+                    _loc_60 = param1 as GameActionFightThrowCharacterMessage;
+                    this.pushThrowCharacterStep(_loc_60.sourceId, _loc_60.targetId, _loc_60.cellId);
                     return false;
                 }
                 case param1 is GameActionFightDropCharacterMessage:
                 {
-                    _loc_60 = param1 as GameActionFightDropCharacterMessage;
-                    this.pushThrowCharacterStep(_loc_60.sourceId, _loc_60.targetId, _loc_60.cellId);
+                    _loc_61 = param1 as GameActionFightDropCharacterMessage;
+                    this.pushThrowCharacterStep(_loc_61.sourceId, _loc_61.targetId, _loc_61.cellId);
                     return false;
                 }
                 case param1 is GameActionFightInvisibleDetectedMessage:
                 {
-                    _loc_61 = param1 as GameActionFightInvisibleDetectedMessage;
-                    this.fightEntitiesFrame.getEntityInfos(_loc_61.sourceId).disposition.cellId = _loc_61.cellId;
-                    this.pushFightInvisibleTemporarilyDetectedStep(_loc_61.sourceId, _loc_61.cellId);
-                    return false;
+                    _loc_62 = param1 as GameActionFightInvisibleDetectedMessage;
+                    this.pushFightInvisibleTemporarilyDetectedStep(_loc_62.sourceId, _loc_62.cellId);
+                    FightEntitiesFrame.getCurrentInstance().setLastKnownEntityPosition(_loc_62.targetId, _loc_62.cellId);
+                    FightEntitiesFrame.getCurrentInstance().setLastKnownEntityMovementPoint(_loc_62.targetId, 0);
+                    return true;
                 }
                 case param1 is AbstractGameActionMessage:
                 {
@@ -869,8 +896,9 @@
             var _loc_27:FightActionPointsVariationStep = null;
             var _loc_28:FightShieldPointsVariationStep = null;
             var _loc_29:FightLifeVariationStep = null;
-            var _loc_30:* = undefined;
-            var _loc_31:uint = 0;
+            var _loc_30:int = 0;
+            var _loc_31:* = undefined;
+            var _loc_32:uint = 0;
             if (param2)
             {
                 _loc_24 = getTimer() - this._scriptStarted;
@@ -984,14 +1012,7 @@
                             _loc_18[_loc_28.target] = 0;
                         }
                         _loc_18[_loc_28.target] = _loc_18[_loc_28.target] + _loc_28.value;
-                        if (_loc_19[_loc_28.target] == null)
-                        {
-                            _loc_19[_loc_28.target] = _loc_20;
-                        }
-                        else if (_loc_20 > _loc_19[_loc_28.target])
-                        {
-                            _loc_19[_loc_28.target] = _loc_20;
-                        }
+                        _loc_19[_loc_28.target] = _loc_28;
                         break;
                     }
                     case _loc_8 is FightLifeVariationStep:
@@ -1006,14 +1027,7 @@
                             _loc_16[_loc_29.target] = 0;
                         }
                         _loc_16[_loc_29.target] = _loc_16[_loc_29.target] + _loc_29.delta;
-                        if (_loc_17[_loc_29.target] == null)
-                        {
-                            _loc_17[_loc_29.target] = _loc_20;
-                        }
-                        else if (_loc_20 > _loc_17[_loc_29.target])
-                        {
-                            _loc_17[_loc_29.target] = _loc_20;
-                        }
+                        _loc_17[_loc_29.target] = _loc_29;
                         break;
                     }
                     case _loc_8 is AddGfxEntityStep:
@@ -1049,7 +1063,8 @@
                 
                 if (_loc_16[_loc_22] != 0)
                 {
-                    _loc_4.splice((_loc_17[_loc_22] - 1), 0, new FightLossAnimStep(_loc_22, _loc_16[_loc_22], FightLifeVariationStep.COLOR));
+                    _loc_30 = _loc_4.indexOf(_loc_17[_loc_22]);
+                    _loc_4.splice(_loc_30, 0, new FightLossAnimStep(_loc_22, _loc_16[_loc_22], FightLifeVariationStep.COLOR));
                 }
                 _loc_17[_loc_22] = -1;
                 _loc_16[_loc_22] = 0;
@@ -1059,7 +1074,8 @@
                 
                 if (_loc_18[_loc_22] != 0)
                 {
-                    _loc_4.splice((_loc_19[_loc_22] - 1), 0, new FightLossAnimStep(_loc_22, _loc_18[_loc_22], FightShieldPointsVariationStep.COLOR));
+                    _loc_30 = _loc_4.indexOf(_loc_19[_loc_22]);
+                    _loc_4.splice(_loc_30, 0, new FightLossAnimStep(_loc_22, _loc_18[_loc_22], FightShieldPointsVariationStep.COLOR));
                 }
                 _loc_19[_loc_22] = -1;
                 _loc_18[_loc_22] = 0;
@@ -1071,21 +1087,21 @@
             }
             if (_loc_10)
             {
-                for (_loc_30 in _loc_7)
+                for (_loc_31 in _loc_7)
                 {
                     
-                    if (!_loc_6[_loc_30])
+                    if (!_loc_6[_loc_31])
                     {
-                        _loc_31 = 0;
-                        while (_loc_31 < _loc_4.length)
+                        _loc_32 = 0;
+                        while (_loc_32 < _loc_4.length)
                         {
                             
-                            if (_loc_4[_loc_31] == _loc_7[_loc_30])
+                            if (_loc_4[_loc_32] == _loc_7[_loc_31])
                             {
-                                _loc_4.splice(_loc_31, 0, new PlayAnimationStep(_loc_30 as TiphonSprite, AnimationEnum.ANIM_HIT, true, false));
+                                _loc_4.splice(_loc_32, 0, new PlayAnimationStep(_loc_31 as TiphonSprite, AnimationEnum.ANIM_HIT, true, false));
                                 break;
                             }
-                            _loc_31 = _loc_31 + 1;
+                            _loc_32 = _loc_32 + 1;
                         }
                     }
                 }

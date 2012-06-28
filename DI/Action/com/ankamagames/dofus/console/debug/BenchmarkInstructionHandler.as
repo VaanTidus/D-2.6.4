@@ -35,21 +35,29 @@
             var _loc_5:IAnimated = null;
             var _loc_6:FpsManager = null;
             var _loc_7:String = null;
-            var _loc_8:BenchmarkCharacter = null;
-            var _loc_9:Boolean = false;
+            var _loc_8:Boolean = false;
+            var _loc_9:int = 0;
             var _loc_10:Boolean = false;
-            var _loc_11:int = 0;
-            var _loc_12:String = null;
+            var _loc_11:Boolean = false;
+            var _loc_12:Boolean = false;
+            var _loc_13:Boolean = false;
+            var _loc_14:Boolean = false;
+            var _loc_15:BenchmarkCharacter = null;
+            var _loc_16:DebugBotFrame = null;
+            var _loc_17:Boolean = false;
+            var _loc_18:String = null;
+            var _loc_19:Array = null;
+            var _loc_20:String = null;
             switch(param2)
             {
                 case "addmovingcharacter":
                 {
                     if (param3.length > 0)
                     {
-                        _loc_8 = new BenchmarkCharacter(id++, TiphonEntityLook.fromString(param3[0]));
-                        _loc_8.position = MapPoint.fromCellId(int(Math.random() * 300));
-                        _loc_8.display();
-                        _loc_8.move(BenchmarkMovementBehavior.getRandomPath(_loc_8));
+                        _loc_15 = new BenchmarkCharacter(id++, TiphonEntityLook.fromString(param3[0]));
+                        _loc_15.position = MapPoint.fromCellId(int(Math.random() * 300));
+                        _loc_15.display();
+                        _loc_15.move(BenchmarkMovementBehavior.getRandomPath(_loc_15));
                     }
                     break;
                 }
@@ -79,7 +87,12 @@
                     }
                     else
                     {
-                        Kernel.getWorker().addFrame(DebugBotFrame.getInstance());
+                        _loc_16 = DebugBotFrame.getInstance();
+                        if (param3.indexOf("debugchat") != -1)
+                        {
+                            _loc_16.enableChatMessagesBot = true;
+                        }
+                        Kernel.getWorker().addFrame(_loc_16);
                         param1.output("Démarrage du bot-spectator ");
                     }
                     break;
@@ -100,14 +113,19 @@
                 }
                 case "fpsmanager":
                 {
-                    _loc_6 = FpsManager.getInstance(false);
+                    _loc_6 = FpsManager.getInstance();
                     if (StageShareManager.stage.contains(_loc_6))
                     {
                         _loc_6.hide();
                     }
                     else
                     {
-                        _loc_6.display();
+                        _loc_17 = param3.indexOf("external") != -1;
+                        if (_loc_17)
+                        {
+                            param1.output("Fps Manager External");
+                        }
+                        _loc_6.display(_loc_17);
                     }
                     break;
                 }
@@ -119,32 +137,67 @@
                 }
                 case "tacticmode":
                 {
-                    if (TacticModeManager.getInstance().tacticModeActivated)
+                    TacticModeManager.getInstance().hide();
+                    _loc_8 = false;
+                    _loc_9 = 0;
+                    _loc_10 = false;
+                    _loc_11 = false;
+                    _loc_12 = false;
+                    _loc_13 = false;
+                    _loc_14 = true;
+                    for each (_loc_18 in param3)
                     {
-                        TacticModeManager.getInstance().hide();
-                        _loc_7 = "Désactivation";
+                        
+                        _loc_19 = _loc_18.split("=");
+                        if (_loc_19 == null)
+                        {
+                            continue;
+                        }
+                        _loc_20 = _loc_19[1];
+                        if (_loc_18.search("fightzone") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_10 = _loc_20.toLowerCase() == "true" ? (true) : (false);
+                            continue;
+                        }
+                        if (_loc_18.search("clearcache") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_8 = _loc_20.toLowerCase() == "true" ? (false) : (true);
+                            continue;
+                        }
+                        if (_loc_18.search("mode") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_9 = _loc_20.toLowerCase() == "rp" ? (1) : (0);
+                            continue;
+                        }
+                        if (_loc_18.search("interactivecells") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_11 = _loc_20.toLowerCase() == "true" ? (true) : (false);
+                            continue;
+                        }
+                        if (_loc_18.search("scalezone") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_13 = _loc_20.toLowerCase() == "true" ? (true) : (false);
+                            continue;
+                        }
+                        if (_loc_18.search("show") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_12 = _loc_20.toLowerCase() == "true" ? (true) : (false);
+                            continue;
+                        }
+                        if (_loc_18.search("flattencells") != -1 && _loc_19.length > 1)
+                        {
+                            _loc_14 = _loc_20.toLowerCase() == "true" ? (true) : (false);
+                        }
+                    }
+                    if (_loc_12)
+                    {
+                        TacticModeManager.getInstance().setDebugMode(_loc_10, _loc_8, _loc_9, _loc_11, _loc_13, _loc_14);
+                        TacticModeManager.getInstance().show(PlayedCharacterManager.getInstance().currentMap, true);
+                        _loc_7 = "Activation";
                     }
                     else
                     {
-                        _loc_9 = false;
-                        _loc_10 = true;
-                        _loc_11 = 1;
-                        for each (_loc_12 in param3)
-                        {
-                            
-                            if (_loc_12.search("debug") != -1)
-                            {
-                                _loc_9 = true;
-                                continue;
-                            }
-                            if (_loc_12.search("clearcache") != -1)
-                            {
-                                _loc_10 = false;
-                            }
-                        }
-                        TacticModeManager.getInstance().setDebugMode(_loc_9, _loc_10);
-                        TacticModeManager.getInstance().show(PlayedCharacterManager.getInstance().currentMap, true);
-                        _loc_7 = "Activation";
+                        _loc_7 = "Désactivation";
                     }
                     _loc_7 = _loc_7 + " du mode tactique.";
                     param1.output(_loc_7);
@@ -168,7 +221,7 @@
                 }
                 case "fpsmanager":
                 {
-                    return "Displays the performance of the client.";
+                    return "Displays the performance of the client. (external)";
                 }
                 case "bot-spectator":
                 {
@@ -184,7 +237,7 @@
                 }
                 case "tacticmode":
                 {
-                    return "Active/Désactive le mode tactique <debug> (opt) <clearcache> (opt)";
+                    return "Active/Désactive le mode tactique" + "\n    show=[true|false]" + "\n    clearcache=[true|false]" + "\n    mode=[fight|RP]" + "\n    interactivecells=[true|false] " + "\n    fightzone=[true|false]" + "\n    scalezone=[true|false]" + "\n    flattencells=[true|false]";
                 }
                 default:
                 {
@@ -196,6 +249,17 @@
 
         public function getParamPossibilities(param1:String, param2:uint = 0, param3:Array = null) : Array
         {
+            switch(param1)
+            {
+                case "tacticmode":
+                {
+                    return ["show", "clearcache", "mode", "interactivecells", "fightzone", "scalezone", "flattencells"];
+                }
+                default:
+                {
+                    break;
+                }
+            }
             return [];
         }// end function
 

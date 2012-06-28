@@ -753,7 +753,7 @@
             var _loc_3:* = this.value;
             if (this._bVertical)
             {
-                _loc_2 = this.approximate(int(this._gcBox.y));
+                _loc_2 = int(this._gcBox.y);
                 if (_loc_3 != this.valueOfPos(_loc_2))
                 {
                     this._nCurrentPos = _loc_2;

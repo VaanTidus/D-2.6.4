@@ -699,7 +699,7 @@
     }
 }
 
-class BitString extends Object
+final class BitString extends Object
 {
     public var len:int = 0;
     public var val:int = 0;

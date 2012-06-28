@@ -26,6 +26,14 @@
             return;
         }// end function
 
+        public static function reset() : void
+        {
+            _fightEvents = new Vector.<FightEvent>;
+            _events = new Vector.<Vector.<FightEvent>>;
+            _joinedEvents = new Vector.<FightEvent>;
+            return;
+        }// end function
+
         public static function sendFightEvent(param1:String, param2:Array, param3:int, param4:int, param5:Boolean = false, param6:int = 0) : void
         {
             var _loc_8:FightEvent = null;

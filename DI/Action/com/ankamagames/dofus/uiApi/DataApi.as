@@ -27,7 +27,9 @@
     import com.ankamagames.dofus.internalDatacenter.items.*;
     import com.ankamagames.dofus.internalDatacenter.jobs.*;
     import com.ankamagames.dofus.internalDatacenter.spells.*;
+    import com.ankamagames.dofus.internalDatacenter.userInterface.*;
     import com.ankamagames.dofus.kernel.*;
+    import com.ankamagames.dofus.logic.game.common.frames.*;
     import com.ankamagames.dofus.logic.game.common.managers.*;
     import com.ankamagames.dofus.logic.game.roleplay.frames.*;
     import com.ankamagames.dofus.network.types.game.data.items.effects.*;
@@ -110,6 +112,11 @@
         public function getEmoteWrapper(param1:uint, param2:uint = 0) : EmoteWrapper
         {
             return EmoteWrapper.create(param1, param2);
+        }// end function
+
+        public function getButtonWrapper(param1:uint, param2:int, param3:String, param4:Function, param5:String, param6:String = "") : ButtonWrapper
+        {
+            return ButtonWrapper.create(param1, param2, param3, param4, param5, param6);
         }// end function
 
         public function getJobWrapper(param1:uint) : JobWrapper
@@ -474,17 +481,30 @@
 
         public function getSmilies() : Array
         {
-            var _loc_3:SmileyWrapper = null;
-            var _loc_1:* = new Array();
-            var _loc_2:uint = 1;
-            while (_loc_2 < 31)
+            var _loc_3:Smiley = null;
+            var _loc_4:SmileyWrapper = null;
+            var _loc_1:* = Kernel.getWorker().getFrame(ChatFrame) as ChatFrame;
+            if (_loc_1 && _loc_1.smilies && _loc_1.smilies.length > 0)
+            {
+                return _loc_1.smilies;
+            }
+            var _loc_2:* = new Array();
+            for each (_loc_3 in Smiley.getSmileys())
             {
                 
-                _loc_3 = SmileyWrapper.create(_loc_2, _loc_2);
-                _loc_1.push(_loc_3);
-                _loc_2 = _loc_2 + 1;
+                if (_loc_3.forPlayers)
+                {
+                    _loc_4 = SmileyWrapper.create(_loc_3.id, _loc_3.gfxId, _loc_3.order);
+                    _loc_2.push(_loc_4);
+                }
             }
-            return _loc_1;
+            _loc_2.sortOn("order", Array.NUMERIC);
+            return _loc_2;
+        }// end function
+
+        public function getSmiley(param1:uint) : Smiley
+        {
+            return Smiley.getSmileyById(param1);
         }// end function
 
         public function getTaxCollectorName(param1:uint) : TaxCollectorName
@@ -499,29 +519,32 @@
 
         public function getEmblems() : Array
         {
-            var _loc_1:uint = 104;
-            var _loc_2:uint = 17;
+            var _loc_5:EmblemSymbol = null;
+            var _loc_6:EmblemBackground = null;
+            var _loc_7:Array = null;
+            var _loc_1:* = EmblemSymbol.getEmblemSymbols();
+            var _loc_2:* = EmblemBackground.getEmblemBackgrounds();
             var _loc_3:* = new Array();
             var _loc_4:* = new Array();
-            var _loc_5:uint = 1;
-            while (_loc_5 <= _loc_1)
+            for each (_loc_5 in _loc_1)
             {
                 
-                _loc_3.push(EmblemWrapper.create(_loc_5, EmblemWrapper.UP));
-                _loc_5 = _loc_5 + 1;
+                _loc_3.push(EmblemWrapper.create(_loc_5.id, EmblemWrapper.UP));
             }
-            var _loc_6:uint = 1;
-            while (_loc_6 <= _loc_2)
+            _loc_3.sortOn("order", Array.NUMERIC);
+            for each (_loc_6 in _loc_2)
             {
                 
-                if (_loc_6 != 21)
-                {
-                    _loc_4.push(EmblemWrapper.create(_loc_6, EmblemWrapper.BACK));
-                }
-                _loc_6 = _loc_6 + 1;
+                _loc_4.push(EmblemWrapper.create(_loc_6.id, EmblemWrapper.BACK));
             }
-            var _loc_7:* = new Array(_loc_3, _loc_4);
-            return new Array(_loc_3, _loc_4);
+            _loc_4.sortOn("order", Array.NUMERIC);
+            _loc_7 = new Array(_loc_3, _loc_4);
+            return _loc_7;
+        }// end function
+
+        public function getAllEmblemSymbolCategories() : Array
+        {
+            return EmblemSymbolCategory.getEmblemSymbolCategories();
         }// end function
 
         public function getQuest(param1:int) : Quest
@@ -656,3 +679,18 @@
 
     }
 }
+
+class Smiley extends Object
+{
+    public var pictoId:int;
+    public var position:int;
+
+    function Smiley(param1:int, param2:int) : void
+    {
+        this.pictoId = param1;
+        this.position = param2;
+        return;
+    }// end function
+
+}
+

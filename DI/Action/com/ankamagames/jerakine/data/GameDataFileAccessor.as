@@ -28,108 +28,125 @@
 
         public function init(param1:Uri) : void
         {
+            var nativeFile:File;
+            var moduleName:String;
+            var stream:FileStream;
+            var indexes:Dictionary;
+            var contentOffset:uint;
+            var headers:String;
+            var indexesPointer:int;
+            var indexesLength:int;
             var key:int;
             var pointer:int;
             var count:uint;
+            var i:uint;
+            var classes:Dictionary;
+            var classesCount:int;
             var classIdentifier:int;
+            var j:uint;
             var formatVersion:uint;
             var len:uint;
             var fileUri:* = param1;
-            var nativeFile:* = fileUri.toFile();
-            if (!nativeFile || !nativeFile.exists)
+            try
             {
-                throw new Error("Game data file \'" + fileUri + "\' not readable.");
-            }
-            if (!this._streams)
-            {
-                this._streams = new Dictionary();
-            }
-            if (!this._indexes)
-            {
-                this._indexes = new Dictionary();
-            }
-            if (!this._classes)
-            {
-                this._classes = new Dictionary();
-            }
-            if (!this._counter)
-            {
-                this._counter = new Dictionary();
-            }
-            if (!this._streamStartIndex)
-            {
-                this._streamStartIndex = new Dictionary();
-            }
-            var moduleName:* = fileUri.fileName.substr(0, fileUri.fileName.indexOf(".d2o"));
-            var stream:* = this._streams[moduleName];
-            if (!stream)
-            {
-                stream = new FileStream();
-                stream.endian = Endian.BIG_ENDIAN;
-                stream.open(nativeFile, FileMode.READ);
-                this._streams[moduleName] = stream;
-                this._streamStartIndex[moduleName] = 7;
-            }
-            else
-            {
-                stream.position = 0;
-            }
-            var indexes:* = new Dictionary();
-            this._indexes[moduleName] = indexes;
-            var contentOffset:uint;
-            var headers:* = stream.readMultiByte(3, "ASCII");
-            if (headers != "D2O")
-            {
-                stream.position = 0;
-                try
+                nativeFile = fileUri.toFile();
+                if (!nativeFile || !nativeFile.exists)
                 {
-                    headers = stream.readUTF();
+                    throw new Error("Game data file \'" + fileUri + "\' not readable.");
                 }
-                catch (e:Error)
+                if (!this._streams)
                 {
+                    this._streams = new Dictionary();
                 }
-                if (headers != Signature.ANKAMA_SIGNED_FILE_HEADER)
+                if (!this._indexes)
                 {
-                    throw new Error("Malformated game data file.");
+                    this._indexes = new Dictionary();
                 }
-                formatVersion = stream.readShort();
-                len = stream.readInt();
-                stream.position = stream.position + len;
-                contentOffset = stream.position;
-                this._streamStartIndex[moduleName] = contentOffset + 7;
+                if (!this._classes)
+                {
+                    this._classes = new Dictionary();
+                }
+                if (!this._counter)
+                {
+                    this._counter = new Dictionary();
+                }
+                if (!this._streamStartIndex)
+                {
+                    this._streamStartIndex = new Dictionary();
+                }
+                moduleName = fileUri.fileName.substr(0, fileUri.fileName.indexOf(".d2o"));
+                stream = this._streams[moduleName];
+                if (!stream)
+                {
+                    stream = new FileStream();
+                    stream.endian = Endian.BIG_ENDIAN;
+                    stream.open(nativeFile, FileMode.READ);
+                    this._streams[moduleName] = stream;
+                    this._streamStartIndex[moduleName] = 7;
+                }
+                else
+                {
+                    stream.position = 0;
+                }
+                indexes = new Dictionary();
+                this._indexes[moduleName] = indexes;
+                contentOffset;
                 headers = stream.readMultiByte(3, "ASCII");
                 if (headers != "D2O")
                 {
+                    stream.position = 0;
+                    try
+                    {
+                        headers = stream.readUTF();
+                    }
+                    catch (e:Error)
+                    {
+                    }
+                    if (headers != Signature.ANKAMA_SIGNED_FILE_HEADER)
+                    {
+                        throw new Error("Malformated game data file.");
+                    }
+                    formatVersion = stream.readShort();
+                    len = stream.readInt();
+                    stream.position = stream.position + len;
+                    contentOffset = stream.position;
+                    this._streamStartIndex[moduleName] = contentOffset + 7;
+                    headers = stream.readMultiByte(3, "ASCII");
                     if (headers != "D2O")
                     {
                         throw new Error("Malformated game data file.");
                     }
                 }
+                indexesPointer = stream.readInt();
+                stream.position = contentOffset + indexesPointer;
+                indexesLength = stream.readInt();
+                i;
+                while (i < indexesLength)
+                {
+                    
+                    key = stream.readInt();
+                    pointer = stream.readInt();
+                    indexes[key] = contentOffset + pointer;
+                    count = (count + 1);
+                    i = i + 8;
+                }
+                this._counter[moduleName] = count;
+                classes = new Dictionary();
+                this._classes[moduleName] = classes;
+                classesCount = stream.readInt();
+                j;
+                while (j < classesCount)
+                {
+                    
+                    classIdentifier = stream.readInt();
+                    this.readClassDefinition(classIdentifier, stream, classes);
+                    j = (j + 1);
+                }
             }
-            var indexesPointer:* = stream.readInt();
-            stream.position = contentOffset + indexesPointer;
-            var indexesLength:* = stream.readInt();
-            var i:uint;
-            while (i < indexesLength)
+            catch (e:Error)
             {
-                
-                key = stream.readInt();
-                pointer = stream.readInt();
-                indexes[key] = contentOffset + pointer;
-                count = (count + 1);
-                i = i + 8;
-            }
-            this._counter[moduleName] = count;
-            var classes:* = new Dictionary();
-            this._classes[moduleName] = classes;
-            var classesCount:* = stream.readInt();
-            var j:uint;
-            while (j < classesCount)
-            {
-                
-                classIdentifier = stream.readInt();
-                this.readClassDefinition(classIdentifier, stream, classes);
-                j = (j + 1);
+                _log.fatal("Erreur lors du parsing du fichier de données : " + fileUri);
+                throw e;
             }
             return;
         }// end function

@@ -81,7 +81,7 @@
 
         public static function getSoundBonesById(param1:uint) : SoundBones
         {
-            var _loc_2:* = GameData.getObject(MODULE, param1) as SoundBones;
+            var _loc_2:* = GameData.getObject(MODULE, param1) as ;
             return _loc_2;
         }// end function
 

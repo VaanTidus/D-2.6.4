@@ -66,6 +66,11 @@
         private var _allowParticlesFx:Boolean;
         private var _gfxMemorySize:uint = 0;
         private var _renderId:uint = 0;
+        private var _progressBarCtr:Sprite;
+        private var _downloadProgressBar:Shape;
+        private var _downloadTimer:Timer;
+        private var _fileToLoad:uint;
+        private var _fileLoaded:uint;
         private var _bitmapForegroundContainer:Sprite;
         private var _foregroundIndex:int;
         private var _layersData:Array;
@@ -82,6 +87,7 @@
             this._swfGfx = [];
             this._swfApplicationDomain = new Array();
             this._hideForeground = Atouin.getInstance().options.hideForeground;
+            this._downloadTimer = new Timer(1);
             this._container = param1;
             this._elements = param2;
             this._icm = InteractiveCellManager.getInstance();
@@ -89,6 +95,23 @@
             this._gfxSubPathJpg = Atouin.getInstance().options.jpgSubPath;
             this._gfxSubPathPng = Atouin.getInstance().options.pngSubPath;
             this._particlesPath = Atouin.getInstance().options.particlesScriptsPath;
+            var _loc_3:* = new Shape();
+            _loc_3.graphics.lineStyle(1, 8947848);
+            _loc_3.graphics.beginFill(2236962);
+            _loc_3.graphics.drawRect(0, 0, 600, 10);
+            _loc_3.x = 0;
+            _loc_3.y = 0;
+            this._downloadProgressBar = new Shape();
+            this._downloadProgressBar.graphics.beginFill(10077440);
+            this._downloadProgressBar.graphics.drawRect(0, 0, 597, 7);
+            this._downloadProgressBar.graphics.endFill();
+            this._downloadProgressBar.x = 2;
+            this._downloadProgressBar.y = 2;
+            this._progressBarCtr = new Sprite();
+            this._progressBarCtr.addChild(_loc_3);
+            this._progressBarCtr.addChild(this._downloadProgressBar);
+            this._progressBarCtr.x = (StageShareManager.startWidth - this._progressBarCtr.width) / 2;
+            this._progressBarCtr.y = (StageShareManager.startHeight - this._progressBarCtr.height) / 2;
             this._gfxLoader = ResourceLoaderFactory.getLoader(ResourceLoaderType.PARALLEL_LOADER);
             this._gfxLoader.addEventListener(ResourceLoaderProgressEvent.LOADER_COMPLETE, this.onAllGfxLoaded, false, 0, true);
             this._gfxLoader.addEventListener(ResourceLoadedEvent.LOADED, this.onBitmapGfxLoaded, false, 0, true);
@@ -97,6 +120,7 @@
             this._swfLoader.addEventListener(ResourceLoaderProgressEvent.LOADER_COMPLETE, this.onAllGfxLoaded, false, 0, true);
             this._swfLoader.addEventListener(ResourceLoadedEvent.LOADED, this.onSwfGfxLoaded, false, 0, true);
             this._swfLoader.addEventListener(ResourceErrorEvent.ERROR, this.onGfxError, false, 0, true);
+            this._downloadTimer.addEventListener(TimerEvent.TIMER, this.onDownloadTimer);
             return;
         }// end function
 
@@ -126,7 +150,9 @@
             var _loc_17:NormalGraphicalElementData = null;
             var _loc_18:ApplicationDomain = null;
             var _loc_19:Fixture = null;
+            this._downloadTimer.reset();
             this._gfxMemorySize = 0;
+            this._fileLoaded = 0;
             this._renderId = param3;
             Atouin.getInstance().cancelZoom();
             AnimatedElementManager.reset();
@@ -140,7 +166,7 @@
             this._mapIsReady = false;
             this._map = param1.dataMap;
             this._forceReloadWithoutCache = param2;
-            var _loc_5:* = Atouin.getInstance().options.groundCacheMode;
+            var _loc_5:* = AirScanner.isStreamingVersion() ? (0) : (Atouin.getInstance().options.groundCacheMode);
             if (param2)
             {
                 this._skipGroundCache = true;
@@ -290,8 +316,10 @@
                 this._swfLoader.addEventListener(ResourceLoadedEvent.LOADED, this.onSwfGfxLoaded, false, 0, true);
                 this._swfLoader.addEventListener(ResourceErrorEvent.ERROR, this.onGfxError, false, 0, true);
             }
+            this._fileToLoad = _loc_8.length + _loc_9.length;
             this._gfxLoader.load(_loc_8);
             this._swfLoader.load(_loc_9, null, AdvancedSwfAdapter);
+            this._downloadTimer.start();
             if (_loc_8.length == 0 && _loc_9.length == 0)
             {
                 this.onAllGfxLoaded(null);
@@ -398,6 +426,11 @@
             var layer:Layer;
             var endCell:Cell;
             var t:ColorTransform;
+            this._downloadTimer.stop();
+            if (this._progressBarCtr.parent)
+            {
+                this._progressBarCtr.parent.removeChild(this._progressBarCtr);
+            }
             this._pictoAsBitmap = Atouin.getInstance().options.useCacheAsBitmap;
             var aInteractiveCell:* = new Array();
             dispatchEvent(new RenderMapEvent(RenderMapEvent.MAP_RENDER_START, false, false, this._map.id, this._renderId));
@@ -663,7 +696,7 @@
                                     applicationDomain = this._swfApplicationDomain[ged.gfxId];
                                     if (applicationDomain.hasDefinition("FX_0"))
                                     {
-                                        elementDo = new applicationDomain.getDefinition("FX_0");
+                                        elementDo = new applicationDomain.getDefinition("FX_0") as Sprite;
                                     }
                                     else if (this._map.getGfxCount(ged.gfxId) > 1)
                                     {
@@ -823,6 +856,7 @@
                             }
                             ie = new Object();
                             this._identifiedElements[ge.identifier] = ie;
+                            _log.debug("identifiedElements : " + ge.identifier);
                             ie.sprite = elementDo;
                             ie.position = MapPoint.fromCellId(cell.cellId);
                         }
@@ -944,6 +978,11 @@
 
         private function onBitmapGfxLoaded(event:ResourceLoadedEvent) : void
         {
+            var _loc_2:String = this;
+            var _loc_3:* = this._fileLoaded + 1;
+            _loc_2._fileLoaded = _loc_3;
+            this._downloadProgressBar.scaleX = this._fileLoaded / this._fileToLoad;
+            dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, this._fileLoaded, this._fileToLoad));
             this._bitmapsGfx[event.uri.tag] = event.resource;
             this._gfxMemorySize = this._gfxMemorySize + BitmapData(event.resource).width * BitmapData(event.resource).height * 4;
             MEMORY_LOG_1[event.resource] = 1;
@@ -952,6 +991,11 @@
 
         private function onSwfGfxLoaded(event:ResourceLoadedEvent) : void
         {
+            var _loc_2:String = this;
+            var _loc_3:* = this._fileLoaded + 1;
+            _loc_2._fileLoaded = _loc_3;
+            this._downloadProgressBar.scaleX = this._fileLoaded / this._fileToLoad;
+            dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, this._fileLoaded, this._fileToLoad));
             this._swfGfx[event.uri.tag] = event.resource;
             MEMORY_LOG_2[event.resource] = 1;
             return;
@@ -960,6 +1004,15 @@
         private function onGfxError(event:ResourceErrorEvent) : void
         {
             _log.error("Unable to load " + event.uri);
+            return;
+        }// end function
+
+        private function onDownloadTimer(event:TimerEvent) : void
+        {
+            if (Atouin.getInstance().options.showProgressBar)
+            {
+                this._container.addChild(this._progressBarCtr);
+            }
             return;
         }// end function
 

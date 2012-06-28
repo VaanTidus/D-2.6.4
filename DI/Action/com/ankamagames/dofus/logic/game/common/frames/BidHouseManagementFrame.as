@@ -124,7 +124,7 @@
             var _loc_28:GIDObjectData = null;
             var _loc_29:uint = 0;
             var _loc_30:ExchangeTypesExchangerDescriptionForUserMessage = null;
-            var _loc_31:* = undefined;
+            var _loc_31:TypeObjectData = null;
             var _loc_32:ExchangeTypesItemsExchangerDescriptionForUserMessage = null;
             var _loc_33:GIDObjectData = null;
             var _loc_34:GIDObjectData = null;
@@ -168,7 +168,7 @@
                 case param1 is ExchangeBidHouseSearchAction:
                 {
                     _loc_2 = param1 as ExchangeBidHouseSearchAction;
-                    if (this._typeAsk != _loc_2.type || this._typeAsk == _loc_2.type && this._GIDAsk != _loc_2.genId)
+                    if (this._typeAsk != _loc_2.type || this._typeAsk == _loc_2.type)
                     {
                         _loc_44 = new ExchangeBidHouseSearchMessage();
                         _loc_44.initExchangeBidHouseSearchMessage(_loc_2.type, _loc_2.genId);
@@ -396,26 +396,19 @@
                     if (_loc_34)
                     {
                         _loc_34.objects = new Array();
-                        if (_loc_32.itemTypeDescriptions.length == 0)
+                        for each (_loc_63 in _loc_32.itemTypeDescriptions)
                         {
-                            KernelEventsManager.getInstance().processCallback(ExchangeHookList.ExchangeError, 11);
-                        }
-                        else
-                        {
-                            for each (_loc_63 in _loc_32.itemTypeDescriptions)
+                            
+                            _loc_64 = ItemWrapper.create(63, _loc_63.objectUID, this._GIDAsk, 1, _loc_63.effects);
+                            _loc_65 = new Vector.<int>;
+                            for each (_loc_66 in _loc_63.prices)
                             {
                                 
-                                _loc_64 = ItemWrapper.create(63, _loc_63.objectUID, this._GIDAsk, 1, _loc_63.effects);
-                                _loc_65 = new Vector.<int>;
-                                for each (_loc_66 in _loc_63.prices)
-                                {
-                                    
-                                    _loc_65.push(_loc_66 as int);
-                                }
-                                _loc_34.objects.push(new ItemSellByBid(_loc_64, _loc_65));
+                                _loc_65.push(_loc_66 as int);
                             }
-                            this._kernelEventsManager.processCallback(ExchangeHookList.BidObjectListUpdate, _loc_34.objects, false, true);
+                            _loc_34.objects.push(new ItemSellByBid(_loc_64, _loc_65));
                         }
+                        this._kernelEventsManager.processCallback(ExchangeHookList.BidObjectListUpdate, _loc_34.objects, false, true);
                     }
                     else
                     {

@@ -1,14 +1,17 @@
 ﻿package com.ankamagames.dofus.logic.common.frames
 {
+    import __AS3__.vec.*;
     import com.ankamagames.atouin.managers.*;
     import com.ankamagames.atouin.messages.*;
     import com.ankamagames.atouin.types.*;
     import com.ankamagames.atouin.utils.*;
     import com.ankamagames.berilia.*;
+    import com.ankamagames.berilia.managers.*;
     import com.ankamagames.berilia.types.graphic.*;
     import com.ankamagames.dofus.datacenter.world.*;
     import com.ankamagames.dofus.kernel.*;
     import com.ankamagames.dofus.kernel.net.*;
+    import com.ankamagames.dofus.misc.lists.*;
     import com.ankamagames.dofus.network.enums.*;
     import com.ankamagames.dofus.network.messages.authorized.*;
     import com.ankamagames.dofus.network.messages.common.basic.*;
@@ -35,10 +38,12 @@
         private var _enabled:Boolean;
         private var _rollOverTimer:Timer;
         private var _actionTimer:Timer;
+        private var _chatTimer:Timer;
         private var _inFight:Boolean;
         private var _lastElemOver:Sprite;
         private var _lastEntityOver:IInteractive;
         private var _wait:Boolean;
+        private var _changeMap:Boolean = true;
         private static var _self:DebugBotFrame;
 
         public function DebugBotFrame()
@@ -55,12 +60,32 @@
             return;
         }// end function
 
+        public function set enableChatMessagesBot(param1:Boolean) : void
+        {
+            if (param1)
+            {
+                this._changeMap = false;
+                this._chatTimer = new Timer(500);
+                this._chatTimer.addEventListener(TimerEvent.TIMER, this.sendChatMessage);
+            }
+            else if (this._chatTimer)
+            {
+                this._changeMap = true;
+                this._chatTimer.removeEventListener(TimerEvent.TIMER, this.sendChatMessage);
+            }
+            return;
+        }// end function
+
         public function pushed() : Boolean
         {
             this._enabled = true;
             this.fakeActivity();
             this._actionTimer.start();
             this._rollOverTimer.start();
+            if (this._chatTimer)
+            {
+                this._chatTimer.start();
+            }
             this._mapPos = MapPosition.getMapPositions();
             var _loc_1:* = new MapFightCountMessage();
             _loc_1.initMapFightCountMessage(1);
@@ -72,6 +97,10 @@
         {
             this._rollOverTimer.stop();
             this._actionTimer.stop();
+            if (this._chatTimer)
+            {
+                this._chatTimer.stop();
+            }
             this._enabled = false;
             return true;
         }// end function
@@ -217,7 +246,7 @@
 
         private function randomMove() : void
         {
-            if (this._inFight || this._wait)
+            if (this._inFight || this._wait || !this._changeMap)
             {
                 return;
             }
@@ -333,6 +362,18 @@
             var _loc_9:* = new MouseOverMessage(_loc_8, new MouseEvent(MouseEvent.MOUSE_OVER));
             Kernel.getWorker().process(_loc_9);
             this._lastElemOver = _loc_8;
+            return;
+        }// end function
+
+        private function sendChatMessage(event:TimerEvent) : void
+        {
+            var _loc_2:* = Math.random() * 16777215;
+            var _loc_3:* = new Vector.<String>;
+            _loc_3[0] = "salut <span style=\"color:#" + (Math.random() * 16777215).toString(8) + "\">je suis la</span> et la";
+            _loc_3[1] = "i\'m batman :)";
+            _loc_3[2] = HtmlManager.addLink("i\'m a link now, awesome !!", "");
+            var _loc_4:* = _loc_3[Math.floor(Math.random() * _loc_3.length)];
+            KernelEventsManager.getInstance().processCallback(ChatHookList.TextInformation, _loc_4, ChatActivableChannelsEnum.CHANNEL_GLOBAL);
             return;
         }// end function
 

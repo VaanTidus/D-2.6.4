@@ -5,6 +5,7 @@
     import com.ankamagames.dofus.logic.common.managers.*;
     import com.ankamagames.dofus.logic.connection.actions.*;
     import com.ankamagames.dofus.logic.game.common.frames.*;
+    import com.ankamagames.dofus.network.enums.*;
     import com.ankamagames.dofus.network.messages.connection.*;
     import com.ankamagames.dofus.network.types.secure.*;
     import com.ankamagames.jerakine.data.*;
@@ -114,7 +115,7 @@
                     this.ankamaPortalKey = this.cipherMd5String(this._lva.password);
                     _loc_1.initIdentificationMessage(_loc_1.version, XmlConfig.getInstance().getEntry("config.lang.current"), this._lva.username, this.cipherRsa(this._lva.password, this._certificate), this._lva.serverId, this._lva.autoSelectServer, this._certificate != null, false);
                 }
-                _loc_1.version.initVersion(BuildInfos.BUILD_VERSION.major, BuildInfos.BUILD_VERSION.minor, BuildInfos.BUILD_VERSION.release, BuildInfos.BUILD_REVISION, BuildInfos.BUILD_PATCH, BuildInfos.BUILD_VERSION.buildType);
+                _loc_1.version.initVersionExtended(BuildInfos.BUILD_VERSION.major, BuildInfos.BUILD_VERSION.minor, BuildInfos.BUILD_VERSION.release, BuildInfos.BUILD_REVISION, BuildInfos.BUILD_PATCH, BuildInfos.BUILD_VERSION.buildType, ClientInstallTypeEnum.CLIENT_BUNDLE, ClientTechnologyEnum.CLIENT_AIR);
                 return _loc_1;
             }
             else
@@ -124,7 +125,7 @@
                 _loc_4 = new IdentificationAccountForceMessage();
                 new IdentificationAccountForceMessage().initIdentificationAccountForceMessage(_loc_4.version, XmlConfig.getInstance().getEntry("config.lang.current"), _loc_3[0], this.cipherRsa(this._lva.password, this._certificate), this._lva.serverId, this._lva.autoSelectServer, this._certificate != null, false, _loc_3[1]);
             }
-            _loc_4.version.initVersion(BuildInfos.BUILD_VERSION.major, BuildInfos.BUILD_VERSION.minor, BuildInfos.BUILD_VERSION.release, BuildInfos.BUILD_REVISION, BuildInfos.BUILD_PATCH, BuildInfos.BUILD_VERSION.buildType);
+            _loc_4.version.initVersionExtended(BuildInfos.BUILD_VERSION.major, BuildInfos.BUILD_VERSION.minor, BuildInfos.BUILD_VERSION.release, BuildInfos.BUILD_REVISION, BuildInfos.BUILD_PATCH, BuildInfos.BUILD_VERSION.buildType, ClientInstallTypeEnum.CLIENT_BUNDLE, ClientTechnologyEnum.CLIENT_AIR);
             return _loc_4;
         }// end function
 

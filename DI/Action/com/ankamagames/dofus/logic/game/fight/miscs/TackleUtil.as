@@ -37,7 +37,7 @@
             var _loc_3:* = Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame;
             if (Constants.DETERMINIST_TACKLE)
             {
-                if (!canBeTackled(param1))
+                if (!canBeTackled(param1, param2))
                 {
                     return 1;
                 }
@@ -144,17 +144,17 @@
             return null;
         }// end function
 
-        public static function canBeTackled(param1:GameFightFighterInformations) : Boolean
+        public static function canBeTackled(param1:GameFightFighterInformations, param2:MapPoint = null) : Boolean
         {
-            var _loc_2:FightEntityDispositionInformations = null;
+            var _loc_3:FightEntityDispositionInformations = null;
             if (FightersStateManager.getInstance().hasState(param1.contextualId, 96) || FightersStateManager.getInstance().hasState(param1.contextualId, 6) || param1.stats.invisibilityState == GameActionFightInvisibilityStateEnum.INVISIBLE || param1.stats.invisibilityState == GameActionFightInvisibilityStateEnum.DETECTED)
             {
                 return false;
             }
             if (param1.disposition is FightEntityDispositionInformations)
             {
-                _loc_2 = param1.disposition as FightEntityDispositionInformations;
-                if (_loc_2.carryingCharacterId)
+                _loc_3 = param1.disposition as FightEntityDispositionInformations;
+                if (_loc_3.carryingCharacterId && (!param2 || param1.disposition.cellId == param2.cellId))
                 {
                     return false;
                 }

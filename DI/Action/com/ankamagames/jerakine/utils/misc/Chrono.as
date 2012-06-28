@@ -28,7 +28,7 @@
             return;
         }// end function
 
-        public static function stop() : void
+        public static function stop() : int
         {
             var _loc_1:* = getTimer() - times.pop();
             if (!show_total_time && times.length)
@@ -38,7 +38,7 @@
             _log.trace("<<" + indent + "DONE " + labels.pop() + " " + _loc_1 + "ms.");
             (level - 1);
             indent = indent.slice(0, 2 * level + 1);
-            return;
+            return _loc_1;
         }// end function
 
         public static function display(param1:String) : void

@@ -72,6 +72,8 @@
             var semsg:ServerExperienceModificatorMessage;
             var cslmsg:CharacterStatsListMessage;
             var fightBattleFrame:FightBattleFrame;
+            var fslmsg:FighterStatsListMessage;
+            var csl2msg:CharacterStatsListMessage;
             var isla:IncreaseSpellLevelAction;
             var spurmsg:SpellUpgradeRequestMessage;
             var susmsg:SpellUpgradeSuccessMessage;
@@ -137,7 +139,7 @@
                 case msg is ServerExperienceModificatorMessage:
                 {
                     semsg = msg as ServerExperienceModificatorMessage;
-                    PlayedCharacterManager.getInstance().experiencePercent = semsg.experiencePercent;
+                    PlayedCharacterManager.getInstance().experiencePercent = semsg.experiencePercent - 100;
                     return true;
                 }
                 case msg is CharacterStatsListMessage:
@@ -152,6 +154,14 @@
                     {
                         this.updateCharacterStatsList(cslmsg);
                     }
+                    return true;
+                }
+                case msg is FighterStatsListMessage:
+                {
+                    fslmsg = msg as FighterStatsListMessage;
+                    csl2msg = new CharacterStatsListMessage();
+                    csl2msg.initCharacterStatsListMessage(fslmsg.stats);
+                    this.updateCharacterStatsList(csl2msg);
                     return true;
                 }
                 case msg is IncreaseSpellLevelAction:
@@ -184,10 +194,10 @@
                             if (oldSw)
                             {
                                 previousCooldown = oldSw.actualCooldown;
-                                break;
                             }
                             updatedSW = SpellWrapper.create(sw.position, sw.id, susmsg.spellLevel, true, sw.playerId);
                             position = sw.position;
+                            break;
                         }
                     }
                     if (updatedSW == null)

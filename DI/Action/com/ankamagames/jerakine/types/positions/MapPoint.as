@@ -217,7 +217,7 @@
             {
                 
                 _loc_5 = this.getNearestCellInDirection(param1);
-                if (_loc_5 && !param2.pointMov(_loc_5._nX, _loc_5._nY, param4))
+                if (_loc_5 && !param2.pointMov(_loc_5._nX, _loc_5._nY, param4, this.cellId))
                 {
                     param1 = param1 + 1;
                     if (param1 > 7)
@@ -227,7 +227,7 @@
                     _loc_5 = null;
                 }
             }while (_loc_5 == null && _loc_6++ < 8)
-            if (!_loc_5 && param3 && param2.pointMov(this._nX, this._nY, param4))
+            if (!_loc_5 && param3 && param2.pointMov(this._nX, this._nY, param4, this.cellId))
             {
                 return this;
             }

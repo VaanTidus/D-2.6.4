@@ -74,7 +74,11 @@
             }
             if (!_loc_3.hasSwl(param2))
             {
-                param2.tag = param1;
+                if (param2.tag == null)
+                {
+                    param2.tag = new Object();
+                }
+                param2.tag.id = param1;
                 _log.info("[" + this.name + "] Load " + param2);
                 _loc_3.updateSwfState(param2);
                 this._waitingResources.push(param2);
@@ -236,46 +240,50 @@
 
         private function onLoadResource(event:ResourceLoadedEvent) : void
         {
-            var _loc_2:uint = 0;
             var _loc_3:uint = 0;
-            GraphicLibrary(this._aResources[event.uri.tag]).addSwl(event.resource, event.uri.uri);
-            if (this._aWaiting[event.uri.tag] && this._aWaiting[event.uri.tag]["ok"])
+            var _loc_4:uint = 0;
+            var _loc_2:* = event.uri.tag.id == null ? (event.uri.tag) : (event.uri.tag.id);
+            _log.info("Loaded " + event.uri);
+            trace(this._aResources[_loc_2]);
+            GraphicLibrary(this._aResources[_loc_2]).addSwl(event.resource, event.uri.uri);
+            if (this._aWaiting[_loc_2] && this._aWaiting[_loc_2]["ok"])
             {
-                _loc_2 = this._aWaiting[event.uri.tag]["ok"].length;
-                _loc_3 = 0;
-                while (_loc_3 < _loc_2)
+                _loc_3 = this._aWaiting[_loc_2]["ok"].length;
+                _loc_4 = 0;
+                while (_loc_4 < _loc_3)
                 {
                     
-                    Callback(this._aWaiting[event.uri.tag]["ok"][_loc_3]).exec();
-                    _loc_3 = _loc_3 + 1;
+                    Callback(this._aWaiting[_loc_2]["ok"][_loc_4]).exec();
+                    _loc_4 = _loc_4 + 1;
                 }
-                delete this._aWaiting[event.uri.tag];
+                delete this._aWaiting[_loc_2];
             }
             return;
         }// end function
 
         private function onLoadFailedResource(event:ResourceErrorEvent) : void
         {
-            var _loc_2:Array = null;
-            var _loc_3:int = 0;
+            var _loc_3:Array = null;
             var _loc_4:int = 0;
+            var _loc_5:int = 0;
+            var _loc_2:* = event.uri.tag;
             _log.error("Unable to load " + event.uri + " (" + event.errorMsg + ")");
-            delete this._aResources[event.uri.tag];
-            this.addResource(event.uri.tag, _uri);
-            if (this._aWaiting[event.uri.tag])
+            delete this._aResources[_loc_2];
+            this.addResource(_loc_2, _uri);
+            if (this._aWaiting[_loc_2])
             {
-                _loc_2 = this._aWaiting[event.uri.tag]["ko"];
-                if (_loc_2)
+                _loc_3 = this._aWaiting[_loc_2]["ko"];
+                if (_loc_3)
                 {
-                    _loc_3 = _loc_2.length;
-                    _loc_4 = 0;
-                    while (_loc_4 < _loc_3)
+                    _loc_4 = _loc_3.length;
+                    _loc_5 = 0;
+                    while (_loc_5 < _loc_4)
                     {
                         
-                        (_loc_2[_loc_4] as Callback).exec();
-                        _loc_4++;
+                        (_loc_3[_loc_5] as Callback).exec();
+                        _loc_5++;
                     }
-                    delete this._aWaiting[event.uri.tag];
+                    delete this._aWaiting[_loc_2];
                 }
             }
             return;

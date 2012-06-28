@@ -26,7 +26,7 @@
 
         public static function getSoundAnimationById(param1:uint) : SoundAnimation
         {
-            return GameData.getObject(MODULE, param1) as ;
+            return GameData.getObject(MODULE, param1) as SoundAnimation;
         }// end function
 
         public static function getSoundAnimations() : Array

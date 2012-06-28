@@ -56,7 +56,7 @@
                     PlayedCharacterManager.getInstance().characteristics.lifePoints = _loc_3.stats.lifePoints;
                 }
             }
-            FightEventsHelper.sendFightEvent(FightEventEnum.FIGHTER_SUMMONED, [this._summonerId, this._summonInfos.contextualId], 0, castingSpellId);
+            FightEventsHelper.sendFightEvent(FightEventEnum.FIGHTER_SUMMONED, [this._summonerId, this._summonInfos.contextualId], this._summonInfos.contextualId, castingSpellId);
             executeCallbacks();
             return;
         }// end function

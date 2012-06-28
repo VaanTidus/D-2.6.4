@@ -32,7 +32,7 @@
                 for each (_loc_7 in _loc_6)
                 {
                     
-                    if (_loc_7 is GameRolePlayGroupMonsterInformations && (_loc_7.mainCreatureGenericId == param1 || param1 == -1))
+                    if (_loc_7 is GameRolePlayGroupMonsterInformations && (_loc_7.staticInfos.mainCreatureLightInfos.creatureGenericId == param1 || param1 == -1))
                     {
                         _loc_4 = DofusEntities.getEntity(GameRolePlayGroupMonsterInformations(_loc_7).contextualId) as DisplayObject;
                         if (_loc_4 && _loc_4.stage)

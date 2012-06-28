@@ -95,7 +95,7 @@
         {
             this.name = param1.readUTF();
             this.breed = param1.readByte();
-            if (this.breed < BreedEnum.Feca || this.breed > BreedEnum.Zobal)
+            if (this.breed < PlayableBreedEnum.Feca || this.breed > PlayableBreedEnum.Steamer)
             {
                 throw new Error("Forbidden value (" + this.breed + ") on element of CharacterCreationRequestMessage.breed.");
             }

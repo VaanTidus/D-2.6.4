@@ -1,6 +1,7 @@
 ﻿package com.ankamagames.jerakine.data
 {
     import com.ankamagames.jerakine.logger.*;
+    import com.ankamagames.jerakine.managers.*;
     import com.ankamagames.jerakine.types.*;
     import com.ankamagames.jerakine.utils.errors.*;
     import flash.filesystem.*;
@@ -58,6 +59,11 @@
                 _loc_8 = this._stream.readUTF();
                 _loc_6 = this._stream.readInt();
                 this._textIndexes[_loc_8] = _loc_6;
+            }
+            for (_loc_8 in this._textIndexes)
+            {
+                
+                LangManager.getInstance().setEntry(_loc_8, this.getNamedText(_loc_8));
             }
             _log.debug("Initialized !");
             return;

@@ -22,6 +22,7 @@
     import com.ankamagames.jerakine.types.enums.*;
     import com.ankamagames.jerakine.types.positions.*;
     import com.ankamagames.jerakine.types.zones.*;
+    import com.ankamagames.tiphon.display.*;
     import flash.utils.*;
 
     public class FightPointCellFrame extends Object implements Frame
@@ -48,7 +49,7 @@
 
         public function process(param1:Message) : Boolean
         {
-            var _loc_2:* = undefined;
+            var _loc_2:KeyboardKeyUpMessage = null;
             var _loc_3:CellOverMessage = null;
             var _loc_4:EntityMouseOverMessage = null;
             var _loc_5:CellClickMessage = null;
@@ -79,7 +80,7 @@
                 }
                 case param1 is MouseClickMessage:
                 {
-                    if (!(MouseClickMessage(param1).target is GraphicCell))
+                    if (!(MouseClickMessage(param1).target is GraphicCell) && !(MouseClickMessage(param1).target is TiphonSprite))
                     {
                         this.cancelShow();
                     }

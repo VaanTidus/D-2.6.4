@@ -195,8 +195,6 @@
                             switch(true)
                             {
                                 case param1 is MouseMiddleClickMessage:
-                                {
-                                }
                                 case param1 is ChangeMessage:
                                 {
                                     break;

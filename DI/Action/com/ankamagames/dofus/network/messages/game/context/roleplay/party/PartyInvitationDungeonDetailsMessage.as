@@ -27,11 +27,11 @@
             return 6262;
         }// end function
 
-        public function initPartyInvitationDungeonDetailsMessage(param1:uint = 0, param2:uint = 0, param3:uint = 0, param4:String = "", param5:uint = 0, param6:Vector.<PartyInvitationMemberInformations> = null, param7:uint = 0, param8:Vector.<Boolean> = null) : PartyInvitationDungeonDetailsMessage
+        public function initPartyInvitationDungeonDetailsMessage(param1:uint = 0, param2:uint = 0, param3:uint = 0, param4:String = "", param5:uint = 0, param6:Vector.<PartyInvitationMemberInformations> = null, param7:Vector.<PartyGuestInformations> = null, param8:uint = 0, param9:Vector.<Boolean> = null) : PartyInvitationDungeonDetailsMessage
         {
-            super.initPartyInvitationDetailsMessage(param1, param2, param3, param4, param5, param6);
-            this.dungeonId = param7;
-            this.playersDungeonReady = param8;
+            super.initPartyInvitationDetailsMessage(param1, param2, param3, param4, param5, param6, param7);
+            this.dungeonId = param8;
+            this.playersDungeonReady = param9;
             this._isInitialized = true;
             return this;
         }// end function

@@ -131,36 +131,34 @@
             var _loc_6:* = Atouin.getInstance().options.showTransitions;
             var _loc_7:* = this._bShowGrid || Atouin.getInstance().options.alwaysShowGrid ? (1) : (0);
             var _loc_8:* = param1.getLayer(Layer.LAYER_DECOR);
-            var _loc_9:* = getTimer();
-            var _loc_10:uint = 0;
-            var _loc_11:* = this._aCells.length;
-            var _loc_12:uint = 0;
-            var _loc_13:* = this._aCells[0];
+            var _loc_9:uint = 0;
+            var _loc_10:* = this._aCells.length;
+            var _loc_11:uint = 0;
+            var _loc_12:* = this._aCells[0];
             if (!this._aCells[0])
             {
-                while (!_loc_13 && _loc_10 < _loc_11)
+                while (!_loc_12 && _loc_9 < _loc_10)
                 {
                     
-                    _loc_13 = this._aCells[_loc_10++];
+                    _loc_12 = this._aCells[_loc_9++];
                 }
-                _loc_10 = _loc_10 - 1;
+                _loc_9 = _loc_9 - 1;
             }
-            while (_loc_12 < _loc_8.numChildren && ++_loc_10 < _loc_11)
+            while (_loc_11 < _loc_8.numChildren && ++_loc_9 < _loc_10)
             {
                 
-                if (_loc_13.cellId <= CellContainer(_loc_8.getChildAt(_loc_12)).cellId)
+                if (_loc_12.cellId <= CellContainer(_loc_8.getChildAt(_loc_11)).cellId)
                 {
-                    _loc_3 = _loc_2[_loc_10];
-                    _loc_4 = this._aCells[_loc_10];
+                    _loc_3 = _loc_2[_loc_9];
+                    _loc_4 = this._aCells[_loc_9];
                     _loc_4.y = _loc_3.elevation;
                     _loc_4.visible = _loc_3.mov && !_loc_3.isDisabled;
                     _loc_4.alpha = _loc_7;
-                    _loc_8.addChildAt(_loc_4, _loc_12);
-                    _loc_13 = this._aCells[++_loc_10];
+                    _loc_8.addChildAt(_loc_4, _loc_11);
+                    _loc_12 = this._aCells[++_loc_9];
                 }
-                _loc_12 = _loc_12 + 1;
+                _loc_11 = _loc_11 + 1;
             }
-            trace(" z order : " + (getTimer() - _loc_9) + " ms");
             return;
         }// end function
 
@@ -320,9 +318,11 @@
 
         private function mouseOver(event:MouseEvent) : void
         {
-            var _loc_6:String = null;
-            var _loc_7:MapPoint = null;
-            var _loc_8:Selection = null;
+            var _loc_6:uint = 0;
+            var _loc_7:String = null;
+            var _loc_8:MapPoint = null;
+            var _loc_9:CellData = null;
+            var _loc_10:Selection = null;
             var _loc_2:* = Sprite(event.target);
             if (!_loc_2.parent)
             {
@@ -332,28 +332,30 @@
             var _loc_4:* = CellIdConverter.cellIdToCoord(parseInt(_loc_2.name));
             if (Atouin.getInstance().options.showCellIdOnOver)
             {
-                _loc_6 = _loc_2.name + " (" + _loc_4.x + "/" + _loc_4.y + ")";
-                _loc_7 = MapPoint.fromCoords(_loc_4.x, _loc_4.y);
-                _loc_6 = _loc_6 + ("\nLigne de vue : " + !DataMapProvider.getInstance().pointLos(_loc_7.x, _loc_7.y));
-                _loc_6 = _loc_6 + ("\nBlocage éditeur : " + !DataMapProvider.getInstance().pointMov(_loc_7.x, _loc_7.y));
-                _loc_6 = _loc_6 + ("\nBlocage entitée : " + !DataMapProvider.getInstance().pointMov(_loc_7.x, _loc_7.y, false));
-                DebugToolTip.getInstance().text = _loc_6;
-                _loc_8 = SelectionManager.getInstance().getSelection("infoOverCell");
-                if (!_loc_8)
+                _loc_6 = 0;
+                _loc_7 = _loc_2.name + " (" + _loc_4.x + "/" + _loc_4.y + ")";
+                _loc_8 = MapPoint.fromCoords(_loc_4.x, _loc_4.y);
+                _loc_7 = _loc_7 + ("\nLigne de vue : " + !DataMapProvider.getInstance().pointLos(_loc_8.x, _loc_8.y));
+                _loc_7 = _loc_7 + ("\nBlocage éditeur : " + !DataMapProvider.getInstance().pointMov(_loc_8.x, _loc_8.y));
+                _loc_7 = _loc_7 + ("\nBlocage entitée : " + !DataMapProvider.getInstance().pointMov(_loc_8.x, _loc_8.y, false));
+                _loc_9 = CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[parseInt(_loc_2.name)]);
+                _loc_7 = _loc_7 + ("\nID de zone : " + _loc_9.moveZone);
+                _loc_7 = _loc_7 + ("\nHauteur : " + _loc_9.floor + " px");
+                DebugToolTip.getInstance().text = _loc_7;
+                _loc_10 = SelectionManager.getInstance().getSelection("infoOverCell");
+                if (!_loc_10)
                 {
-                    _loc_8 = new Selection();
-                    _loc_8.color = new Color(0);
-                    _loc_8.renderer = new ZoneDARenderer();
-                    _loc_8.zone = new Lozenge(0, 0, DataMapProvider.getInstance());
-                    SelectionManager.getInstance().addSelection(_loc_8, "infoOverCell", parseInt(_loc_2.name));
+                    _loc_10 = new Selection();
+                    _loc_10.color = new Color(_loc_6);
+                    _loc_10.renderer = new ZoneDARenderer();
+                    _loc_10.zone = new Lozenge(0, 0, DataMapProvider.getInstance());
+                    SelectionManager.getInstance().addSelection(_loc_10, "infoOverCell", parseInt(_loc_2.name));
                 }
                 else
                 {
                     SelectionManager.getInstance().update("infoOverCell", parseInt(_loc_2.name));
                 }
                 StageShareManager.stage.addChild(DebugToolTip.getInstance());
-                DebugToolTip.getInstance().x = event.stageX;
-                DebugToolTip.getInstance().y = event.stageY + 20;
             }
             var _loc_5:* = new CellOverMessage();
             new CellOverMessage().cellContainer = _loc_2;

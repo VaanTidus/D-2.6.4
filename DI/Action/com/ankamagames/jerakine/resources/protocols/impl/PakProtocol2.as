@@ -1,5 +1,6 @@
 ﻿package com.ankamagames.jerakine.resources.protocols.impl
 {
+    import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.newCache.*;
     import com.ankamagames.jerakine.resources.*;
     import com.ankamagames.jerakine.resources.protocols.*;
@@ -11,6 +12,7 @@
     {
         private static var _indexes:Dictionary = new Dictionary();
         private static var _properties:Dictionary = new Dictionary();
+        static const _log:Logger = Log.getLogger(getQualifiedClassName(PakProtocol2));
 
         public function PakProtocol2()
         {

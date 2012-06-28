@@ -38,7 +38,7 @@
             if (param1 is HouseInformationsExtended)
             {
                 _loc_4 = param1 as HouseInformationsExtended;
-                _loc_2.guildIdentity = GuildWrapper.create(_loc_4.guildInfo.guildId, _loc_4.guildInfo.guildName, _loc_4.guildInfo.guildEmblem, 0);
+                _loc_2.guildIdentity = GuildWrapper.create(_loc_4.guildInfo.guildId, _loc_4.guildInfo.guildName, _loc_4.guildInfo.guildEmblem, 0, true);
             }
             return _loc_2;
         }// end function

@@ -4,7 +4,6 @@
     import com.ankamagames.dofus.network.enums.*;
     import com.ankamagames.dofus.network.types.game.context.fight.*;
     import com.ankamagames.dofus.types.entities.*;
-    import com.ankamagames.dofusModuleLibrary.enum.*;
     import com.ankamagames.jerakine.entities.interfaces.*;
     import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.types.positions.*;
@@ -51,7 +50,7 @@
                             }
                             break;
                         }
-                        case AlignementSideEnum.ALIGNMENT_EVIL:
+                        case AlignmentSideEnum.ALIGNMENT_EVIL:
                         {
                             if (param2.teamTypeId == TeamTypeEnum.TEAM_TYPE_BAD_PLAYER)
                             {
@@ -63,13 +62,13 @@
                             }
                             break;
                         }
-                        case AlignementSideEnum.ALIGNMENT_NEUTRAL:
-                        case AlignementSideEnum.ALIGNMENT_MERCENARY:
+                        case AlignmentSideEnum.ALIGNMENT_NEUTRAL:
+                        case AlignmentSideEnum.ALIGNMENT_MERCENARY:
                         {
                             _loc_5 = TEAM_NEUTRAL_LOOK;
                             break;
                         }
-                        case AlignementSideEnum.ALIGNMENT_WITHOUT:
+                        case AlignmentSideEnum.ALIGNMENT_WITHOUT:
                         {
                             _loc_5 = TEAM_CHALLENGER_LOOK;
                             break;

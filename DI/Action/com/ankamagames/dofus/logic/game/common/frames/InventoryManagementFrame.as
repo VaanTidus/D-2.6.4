@@ -619,11 +619,15 @@
                     {
                         return true;
                     }
+                    itemItem = Item.getItemById(oda.objectGID);
+                    if (itemItem.type.superTypeId == 14)
+                    {
+                        return true;
+                    }
                     this._objectUIDToDrop = oda.objectUID;
                     this._objectGIDToDrop = oda.objectGID;
                     this._quantityToDrop = oda.quantity;
                     commonMod = UiModuleManager.getInstance().getModule("Ankama_Common").mainClass;
-                    itemItem = Item.getItemById(oda.objectGID);
                     objectName = itemItem.name;
                     if (Dofus.getInstance().options.confirmItemDrop)
                     {

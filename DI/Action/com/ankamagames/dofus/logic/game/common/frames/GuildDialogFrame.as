@@ -16,6 +16,7 @@
 
     public class GuildDialogFrame extends Object implements Frame
     {
+        private var guildEmblem:GuildEmblem;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(GuildDialogFrame));
 
         public function GuildDialogFrame()
@@ -36,37 +37,76 @@
         public function process(param1:Message) : Boolean
         {
             var _loc_2:GuildCreationValidAction = null;
-            var _loc_3:GuildEmblem = null;
-            var _loc_4:GuildCreationValidMessage = null;
-            var _loc_5:GuildInvitationAnswerAction = null;
-            var _loc_6:GuildInvitationAnswerMessage = null;
+            var _loc_3:GuildCreationValidMessage = null;
+            var _loc_4:GuildModificationValidAction = null;
+            var _loc_5:GuildModificationValidMessage = null;
+            var _loc_6:GuildModificationNameValidAction = null;
+            var _loc_7:GuildModificationNameValidMessage = null;
+            var _loc_8:GuildModificationEmblemValidAction = null;
+            var _loc_9:GuildModificationEmblemValidMessage = null;
+            var _loc_10:GuildInvitationAnswerAction = null;
+            var _loc_11:GuildInvitationAnswerMessage = null;
             switch(true)
             {
                 case param1 is GuildCreationValidAction:
                 {
                     _loc_2 = param1 as GuildCreationValidAction;
-                    _loc_3 = new GuildEmblem();
-                    _loc_3.symbolShape = _loc_2.upEmblemId;
-                    _loc_3.symbolColor = _loc_2.upColorEmblem;
-                    _loc_3.backgroundShape = _loc_2.backEmblemId;
-                    _loc_3.backgroundColor = _loc_2.backColorEmblem;
-                    _loc_4 = new GuildCreationValidMessage();
-                    _loc_4.initGuildCreationValidMessage(_loc_2.guildName, _loc_3);
-                    ConnectionsHandler.getConnection().send(_loc_4);
+                    this.guildEmblem = new GuildEmblem();
+                    this.guildEmblem.symbolShape = _loc_2.upEmblemId;
+                    this.guildEmblem.symbolColor = _loc_2.upColorEmblem;
+                    this.guildEmblem.backgroundShape = _loc_2.backEmblemId;
+                    this.guildEmblem.backgroundColor = _loc_2.backColorEmblem;
+                    _loc_3 = new GuildCreationValidMessage();
+                    _loc_3.initGuildCreationValidMessage(_loc_2.guildName, this.guildEmblem);
+                    ConnectionsHandler.getConnection().send(_loc_3);
+                    return true;
+                }
+                case param1 is GuildModificationValidAction:
+                {
+                    _loc_4 = param1 as GuildModificationValidAction;
+                    this.guildEmblem = new GuildEmblem();
+                    this.guildEmblem.symbolShape = _loc_4.upEmblemId;
+                    this.guildEmblem.symbolColor = _loc_4.upColorEmblem;
+                    this.guildEmblem.backgroundShape = _loc_4.backEmblemId;
+                    this.guildEmblem.backgroundColor = _loc_4.backColorEmblem;
+                    _loc_5 = new GuildModificationValidMessage();
+                    _loc_5.initGuildModificationValidMessage(_loc_4.guildName, this.guildEmblem);
+                    ConnectionsHandler.getConnection().send(_loc_5);
+                    return true;
+                }
+                case param1 is GuildModificationNameValidAction:
+                {
+                    _loc_6 = param1 as GuildModificationNameValidAction;
+                    _loc_7 = new GuildModificationNameValidMessage();
+                    _loc_7.initGuildModificationNameValidMessage(_loc_6.guildName);
+                    ConnectionsHandler.getConnection().send(_loc_7);
+                    return true;
+                }
+                case param1 is GuildModificationEmblemValidAction:
+                {
+                    _loc_8 = param1 as GuildModificationEmblemValidAction;
+                    this.guildEmblem = new GuildEmblem();
+                    this.guildEmblem.symbolShape = _loc_8.upEmblemId;
+                    this.guildEmblem.symbolColor = _loc_8.upColorEmblem;
+                    this.guildEmblem.backgroundShape = _loc_8.backEmblemId;
+                    this.guildEmblem.backgroundColor = _loc_8.backColorEmblem;
+                    _loc_9 = new GuildModificationEmblemValidMessage();
+                    _loc_9.initGuildModificationEmblemValidMessage(this.guildEmblem);
+                    ConnectionsHandler.getConnection().send(_loc_9);
                     return true;
                 }
                 case param1 is GuildInvitationAnswerAction:
                 {
-                    _loc_5 = param1 as GuildInvitationAnswerAction;
-                    _loc_6 = new GuildInvitationAnswerMessage();
-                    _loc_6.initGuildInvitationAnswerMessage(_loc_5.accept);
-                    ConnectionsHandler.getConnection().send(_loc_6);
+                    _loc_10 = param1 as GuildInvitationAnswerAction;
+                    _loc_11 = new GuildInvitationAnswerMessage();
+                    _loc_11.initGuildInvitationAnswerMessage(_loc_10.accept);
+                    ConnectionsHandler.getConnection().send(_loc_11);
+                    this.leaveDialog();
                     return true;
                 }
                 case param1 is LeaveDialogMessage:
                 {
-                    Kernel.getWorker().process(ChangeWorldInteractionAction.create(true));
-                    Kernel.getWorker().removeFrame(this);
+                    this.leaveDialog();
                     return true;
                 }
                 default:
@@ -81,6 +121,13 @@
         {
             KernelEventsManager.getInstance().processCallback(HookList.LeaveDialog);
             return true;
+        }// end function
+
+        private function leaveDialog() : void
+        {
+            Kernel.getWorker().process(ChangeWorldInteractionAction.create(true));
+            Kernel.getWorker().removeFrame(this);
+            return;
         }// end function
 
     }

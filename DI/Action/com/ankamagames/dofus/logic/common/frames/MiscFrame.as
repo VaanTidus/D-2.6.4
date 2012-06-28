@@ -57,7 +57,7 @@
         public function process(param1:Message) : Boolean
         {
             var mrcMsg:MouseRightClickMessage;
-            var current:*;
+            var current:DisplayObject;
             var stage:Stage;
             var worldContainer:DisplayObjectContainer;
             var beriliaContainer:DisplayObjectContainer;

@@ -10,6 +10,8 @@
         public var hostId:uint = 0;
         public var name:String = "";
         public var guestLook:EntityLook;
+        public var breed:int = 0;
+        public var sex:Boolean = false;
         public static const protocolId:uint = 374;
 
         public function PartyGuestInformations()
@@ -23,12 +25,14 @@
             return 374;
         }// end function
 
-        public function initPartyGuestInformations(param1:uint = 0, param2:uint = 0, param3:String = "", param4:EntityLook = null) : PartyGuestInformations
+        public function initPartyGuestInformations(param1:uint = 0, param2:uint = 0, param3:String = "", param4:EntityLook = null, param5:int = 0, param6:Boolean = false) : PartyGuestInformations
         {
             this.guestId = param1;
             this.hostId = param2;
             this.name = param3;
             this.guestLook = param4;
+            this.breed = param5;
+            this.sex = param6;
             return this;
         }// end function
 
@@ -38,6 +42,7 @@
             this.hostId = 0;
             this.name = "";
             this.guestLook = new EntityLook();
+            this.sex = false;
             return;
         }// end function
 
@@ -61,6 +66,8 @@
             param1.writeInt(this.hostId);
             param1.writeUTF(this.name);
             this.guestLook.serializeAs_EntityLook(param1);
+            param1.writeByte(this.breed);
+            param1.writeBoolean(this.sex);
             return;
         }// end function
 
@@ -85,6 +92,8 @@
             this.name = param1.readUTF();
             this.guestLook = new EntityLook();
             this.guestLook.deserialize(param1);
+            this.breed = param1.readByte();
+            this.sex = param1.readBoolean();
             return;
         }// end function
 

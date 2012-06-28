@@ -7,6 +7,7 @@
     import com.ankamagames.dofus.logic.connection.actions.*;
     import com.ankamagames.dofus.logic.connection.managers.*;
     import com.ankamagames.dofus.logic.game.common.frames.*;
+    import com.ankamagames.dofus.misc.utils.errormanager.*;
     import com.ankamagames.dofus.network.messages.game.context.notification.*;
     import com.ankamagames.jerakine.data.*;
     import com.ankamagames.jerakine.messages.*;
@@ -47,6 +48,7 @@
                 case param1 is ChangeCharacterAction:
                 {
                     _loc_3 = param1 as ChangeCharacterAction;
+                    WebServiceDataHandler.getInstance().changeCharacter();
                     _loc_2 = XmlConfig.getInstance().getEntry("config.loginMode");
                     _loc_4 = AuthentificationManager.getInstance().loginValidationAction;
                     _loc_5 = LoginValidationAction.create(_loc_4.username, _loc_4.password, true, _loc_3.serverId);

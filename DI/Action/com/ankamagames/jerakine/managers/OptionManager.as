@@ -3,7 +3,6 @@
     import com.ankamagames.jerakine.types.*;
     import com.ankamagames.jerakine.types.enums.*;
     import com.ankamagames.jerakine.types.events.*;
-    import com.ankamagames.tubul.interfaces.*;
     import flash.display.*;
     import flash.events.*;
     import flash.utils.*;

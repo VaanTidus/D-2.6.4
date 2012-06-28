@@ -78,9 +78,13 @@
         public static const ambientSound:AmbientSound = null;
         public static const house:House = null;
         public static const rankName:RankName = null;
+        public static const emblemBackground:EmblemBackground = null;
+        public static const emblemSymbol:EmblemSymbol = null;
+        public static const emblemSymbolCategory:EmblemSymbolCategory = null;
         public static const interactive:Interactive = null;
         public static const itemType:ItemType = null;
         public static const emoticon:Emoticon = null;
+        public static const smiley:Smiley = null;
         public static const quest:Quest = null;
         public static const questCategory:QuestCategory = null;
         public static const questStep:QuestStep = null;

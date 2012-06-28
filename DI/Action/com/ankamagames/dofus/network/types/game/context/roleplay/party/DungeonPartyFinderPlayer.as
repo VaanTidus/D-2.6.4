@@ -82,7 +82,7 @@
             }
             this.playerName = param1.readUTF();
             this.breed = param1.readByte();
-            if (this.breed < PlayableBreedEnum.Feca || this.breed > PlayableBreedEnum.Zobal)
+            if (this.breed < PlayableBreedEnum.Feca || this.breed > PlayableBreedEnum.Steamer)
             {
                 throw new Error("Forbidden value (" + this.breed + ") on element of DungeonPartyFinderPlayer.breed.");
             }

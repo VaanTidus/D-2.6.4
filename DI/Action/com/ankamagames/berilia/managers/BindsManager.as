@@ -32,6 +32,7 @@
 
         public function BindsManager()
         {
+            this._aRegisterKey = [];
             this._avaibleKeyboard = new Array();
             if (_self != null)
             {
@@ -253,7 +254,7 @@
         {
             if (!this.canBind(param1))
             {
-                _log.error(param1.toString() + " cannot be bind.");
+                com.ankamagames.berilia.managers:GenericEventsManager::_log.error(param1.toString() + " cannot be bind.");
                 return;
             }
             this.removeBind(param1);

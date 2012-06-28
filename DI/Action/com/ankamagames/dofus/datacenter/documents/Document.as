@@ -76,7 +76,7 @@
 
         public static function getDocumentById(param1:int) : Document
         {
-            return GameData.getObject(MODULE, param1) as ;
+            return GameData.getObject(MODULE, param1) as Document;
         }// end function
 
         public static function getDocuments() : Array

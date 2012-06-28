@@ -1,7 +1,7 @@
 ﻿package com.ankamagames.jerakine.resources.loaders
 {
     import com.ankamagames.jerakine.newCache.*;
-    import com.ankamagames.tubul.interfaces.*;
+    import flash.events.*;
 
     public interface IResourceLoader extends IEventDispatcher
     {

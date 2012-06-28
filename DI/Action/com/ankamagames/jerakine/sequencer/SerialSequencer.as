@@ -4,7 +4,6 @@
     import com.ankamagames.jerakine.sequencer.*;
     import com.ankamagames.jerakine.types.events.*;
     import com.ankamagames.jerakine.utils.misc.*;
-    import com.ankamagames.tubul.interfaces.*;
     import flash.events.*;
     import flash.utils.*;
 
@@ -76,6 +75,11 @@
         public function clear() : void
         {
             var _loc_1:ISequencable = null;
+            if (this._currentStep)
+            {
+                this._currentStep.clear();
+                this._currentStep = null;
+            }
             for each (_loc_1 in this._aStep)
             {
                 

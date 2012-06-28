@@ -42,7 +42,15 @@
 
         public function get shortcut() : String
         {
-            return this.defaultAnim;
+            if (!this._shortcut)
+            {
+                this._shortcut = I18n.getText(this.shortcutId);
+            }
+            if (!this._shortcut || this._shortcut == "")
+            {
+                return this.defaultAnim;
+            }
+            return this._shortcut;
         }// end function
 
         public function getAnimName(param1:TiphonEntityLook) : String

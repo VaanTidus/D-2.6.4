@@ -11,6 +11,7 @@
     import com.ankamagames.berilia.types.listener.*;
     import com.ankamagames.berilia.types.uiDefinition.*;
     import com.ankamagames.jerakine.logger.*;
+    import com.ankamagames.jerakine.managers.*;
     import com.ankamagames.jerakine.utils.memory.*;
     import com.ankamagames.jerakine.utils.misc.*;
     import flash.display.*;
@@ -90,6 +91,7 @@
 
         public function uiRender(param1:UiDefinition, param2:String, param3:UiRootContainer, param4 = null) : void
         {
+            var _loc_6:String = null;
             MEMORY_LOG_2[param4] = 1;
             if (!this._nTimeStamp)
             {
@@ -119,7 +121,13 @@
                 param3.scaleY = Berilia.getInstance().scale;
             }
             this._scUi.scalable = this._uiDef.scalable;
-            this._scUi.constants = this._uiDef.constants;
+            var _loc_5:Array = [];
+            for (_loc_6 in this._uiDef.constants)
+            {
+                
+                _loc_5[_loc_6] = LangManager.getInstance().replaceKey(this._uiDef.constants[_loc_6]);
+            }
+            this._scUi.constants = _loc_5;
             this._scUi.disableRender = true;
             this.makeScript();
             if (this._uiDef.modal)
@@ -170,6 +178,9 @@
             var i:int;
             var anchorsList:Array;
             var stateContainer:StateContainerElement;
+            var stateData:Array;
+            var cpt:Array;
+            var prop:String;
             var gridElem:ContainerElement;
             var container:ContainerElement;
             var component:ComponentElement;
@@ -202,6 +213,28 @@
                         stateContainer = StateContainerElement(be);
                     }
                     gc = gcContainer.getStrata(stateContainer.strata).addChild(this.makeContainer(stateContainer)) as StateContainer;
+                    var _loc_4:int = 0;
+                    var _loc_5:* = stateContainer.stateChangingProperties;
+                    while (_loc_5 in _loc_4)
+                    {
+                        
+                        stateData = _loc_5[_loc_4];
+                        var _loc_6:int = 0;
+                        var _loc_7:* = stateData;
+                        while (_loc_7 in _loc_6)
+                        {
+                            
+                            cpt = _loc_7[_loc_6];
+                            var _loc_8:int = 0;
+                            var _loc_9:* = cpt;
+                            while (_loc_9 in _loc_8)
+                            {
+                                
+                                prop = _loc_9[_loc_8];
+                                cpt[prop] = LangManager.getInstance().replaceKey(cpt[prop]);
+                            }
+                        }
+                    }
                     StateContainer(gc).changingStateData = stateContainer.stateChangingProperties;
                     this.makeChilds(stateContainer.childs, gc);
                 }
@@ -312,7 +345,7 @@
                 }
                 if (be.properties["bgColor"] != null)
                 {
-                    gc.bgColor = be.properties["bgColor"];
+                    gc.bgColor = parseInt(LangManager.getInstance().replaceKey(be.properties["bgColor"]));
                 }
                 else if (this._uiDef.debug)
                 {
@@ -380,6 +413,11 @@
             for (_loc_3 in param1.properties)
             {
                 
+                if (param1.properties[_loc_3] is String)
+                {
+                    _loc_2[_loc_3] = LangManager.getInstance().replaceKey(param1.properties[_loc_3]);
+                    continue;
+                }
                 _loc_2[_loc_3] = param1.properties[_loc_3];
             }
             return _loc_2 as Sprite;
@@ -394,6 +432,11 @@
             for (_loc_4 in param1.properties)
             {
                 
+                if (param1.properties[_loc_4] is String)
+                {
+                    _loc_3[_loc_4] = LangManager.getInstance().replaceKey(param1.properties[_loc_4]);
+                    continue;
+                }
                 _loc_3[_loc_4] = param1.properties[_loc_4];
             }
             return _loc_3 as Sprite;

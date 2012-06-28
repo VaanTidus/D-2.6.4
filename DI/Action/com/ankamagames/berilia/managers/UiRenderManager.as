@@ -60,6 +60,10 @@
             }
             if (BeriliaConstants.USE_UI_CACHE)
             {
+                if (param1.module is PreCompiledUiModule)
+                {
+                    this._aCache[_loc_6] = PreCompiledUiModule(param1.module).getDefinition(param1);
+                }
                 if (this._aCache[_loc_6] != null && this._aCache[_loc_6].useCache)
                 {
                     this._lastRenderStart = getTimer();
@@ -182,7 +186,7 @@
         private function onUiRender(event:UiRenderEvent) : void
         {
             var _loc_2:* = event.uiRenderer.uiDefinition;
-            if (_loc_2 && _loc_2.useCache && !this._aCache[_loc_2.name] && BeriliaConstants.USE_UI_CACHE)
+            if (!(event.uiTarget.uiData.module is PreCompiledUiModule) && _loc_2 && _loc_2.useCache && !this._aCache[_loc_2.name] && BeriliaConstants.USE_UI_CACHE)
             {
                 this._aCache[_loc_2.name] = _loc_2;
                 StoreDataManager.getInstance().setData(BeriliaConstants.DATASTORE_UI_DEFINITION, DATASTORE_CATEGORY_CACHE, this._aCache);

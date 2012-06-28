@@ -251,7 +251,14 @@
 
         public function load(param1:URLRequest) : void
         {
-            this._htmlLoader.load(param1);
+            if (getUi().uiModule.trusted)
+            {
+                this._htmlLoader.load(param1);
+            }
+            else
+            {
+                throw new SecurityError("Only trusted module can use WebBroswer");
+            }
             return;
         }// end function
 

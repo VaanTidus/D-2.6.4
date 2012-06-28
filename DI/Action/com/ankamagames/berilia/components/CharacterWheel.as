@@ -642,6 +642,7 @@
                 _loc_2[_loc_3].ctr.parent.addChildAt(_loc_2[_loc_3].ctr, this._ctrDepth[_loc_3]);
                 _loc_3++;
             }
+            this._charaSelCtr.setChildIndex(this._frontZCtr, (this._charaSelCtr.numChildren - 1));
             if (this._nRotationPieceTrg == this._nRotation)
             {
                 this.endRotationMountains();

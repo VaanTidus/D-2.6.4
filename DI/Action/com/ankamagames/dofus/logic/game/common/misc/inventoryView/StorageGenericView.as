@@ -140,9 +140,8 @@
                 {
                     _loc_5.update(param1.position, param1.objectUID, param1.objectGID, _loc_5.quantity, param1.effectsList);
                     this.updateView();
-                    return;
                 }
-                if (param1.quantity <= param3)
+                else if (param1.quantity <= param3)
                 {
                     this.removeItem(_loc_5, param3);
                 }

@@ -140,6 +140,7 @@
         public static const PartyMemberLifeUpdate:Hook = new Hook("PartyMemberLifeUpdate", false);
         public static const PartyMemberUpdate:Hook = new Hook("PartyMemberUpdate", false);
         public static const PartyMemberUpdateDetails:Hook = new Hook("PartyMemberUpdateDetails", false);
+        public static const PartyMemberFollowUpdate:Hook = new Hook("PartyMemberFollowUpdate", false);
         public static const LifePointsRegenBegin:Hook = new Hook("LifePointsRegenBegin", false);
         public static const PlayedCharacterLookChange:Hook = new Hook("PlayedCharacterLookChange", false);
         public static const MapRunningFightList:Hook = new Hook("MapRunningFightList", false);
@@ -152,6 +153,7 @@
         public static const GameRolePlayPlayerLifeStatus:Hook = new Hook("GameRolePlayPlayerLifeStatus", false);
         public static const DoubleClickItemInventory:Hook = new Hook("DoubleClickItemInventory", false);
         public static const NonSubscriberPopup:Hook = new Hook("NonSubscriberPopup", false);
+        public static const InformationPopup:Hook = new Hook("InformationPopup", false);
         public static const SubscriptionZone:Hook = new Hook("SubscriptionZone", false);
         public static const GiftList:Hook = new Hook("GiftList", false);
         public static const GiftAssigned:Hook = new Hook("GiftAssigned", false);

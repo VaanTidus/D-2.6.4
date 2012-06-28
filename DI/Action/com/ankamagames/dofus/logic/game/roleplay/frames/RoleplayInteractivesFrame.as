@@ -1,5 +1,6 @@
 ﻿package com.ankamagames.dofus.logic.game.roleplay.frames
 {
+    import __AS3__.vec.*;
     import com.ankamagames.atouin.*;
     import com.ankamagames.atouin.managers.*;
     import com.ankamagames.berilia.factories.*;
@@ -423,6 +424,21 @@
                 this.removeInteractive(_loc_2.element as InteractiveElement);
             }
             return;
+        }// end function
+
+        public function getInteractiveElementsCells() : Vector.<uint>
+        {
+            var _loc_2:Object = null;
+            var _loc_1:* = new Vector.<uint>;
+            for each (_loc_2 in this._ie)
+            {
+                
+                if (_loc_2 != null)
+                {
+                    _loc_1.push(_loc_2.position.cellId);
+                }
+            }
+            return _loc_1;
         }// end function
 
         private function registerInteractive(param1:InteractiveElement, param2:int) : void

@@ -6,7 +6,6 @@
     import com.ankamagames.dofus.internalDatacenter.connection.*;
     import com.ankamagames.dofus.kernel.*;
     import com.ankamagames.dofus.kernel.net.*;
-    import com.ankamagames.dofus.logic.common.actions.*;
     import com.ankamagames.dofus.logic.common.frames.*;
     import com.ankamagames.dofus.logic.common.managers.*;
     import com.ankamagames.dofus.logic.connection.actions.*;
@@ -112,26 +111,24 @@
             var _loc_19:NicknameAcceptedMessage = null;
             var _loc_20:NicknameChoiceRequestAction = null;
             var _loc_21:NicknameChoiceRequestMessage = null;
-            var _loc_22:AgreementAgreedAction = null;
-            var _loc_23:String = null;
-            var _loc_24:SubscribersGiftListRequestAction = null;
-            var _loc_25:Uri = null;
-            var _loc_26:String = null;
-            var _loc_27:NewsLoginRequestAction = null;
-            var _loc_28:Uri = null;
+            var _loc_22:SubscribersGiftListRequestAction = null;
+            var _loc_23:Uri = null;
+            var _loc_24:String = null;
+            var _loc_25:NewsLoginRequestAction = null;
+            var _loc_26:Uri = null;
+            var _loc_27:String = null;
+            var _loc_28:String = null;
             var _loc_29:String = null;
-            var _loc_30:String = null;
+            var _loc_30:Object = null;
             var _loc_31:String = null;
-            var _loc_32:Object = null;
+            var _loc_32:uint = 0;
             var _loc_33:String = null;
-            var _loc_34:uint = 0;
-            var _loc_35:String = null;
-            var _loc_36:Array = null;
+            var _loc_34:Array = null;
+            var _loc_35:Array = null;
+            var _loc_36:String = null;
             var _loc_37:Array = null;
-            var _loc_38:String = null;
-            var _loc_39:Array = null;
-            var _loc_40:uint = 0;
-            var _loc_41:Object = null;
+            var _loc_38:uint = 0;
+            var _loc_39:Object = null;
             switch(true)
             {
                 case param1 is LoginValidationAction:
@@ -139,65 +136,65 @@
                     _loc_2 = LoginValidationAction(param1);
                     _loc_3 = new Array();
                     _loc_4 = XmlConfig.getInstance().getEntry("config.connection.port");
-                    for each (_loc_30 in _loc_4.split(","))
+                    for each (_loc_28 in _loc_4.split(","))
                     {
                         
-                        _loc_3.push(int(_loc_30));
+                        _loc_3.push(int(_loc_28));
                     }
                     _loc_5 = XmlConfig.getInstance().getEntry("config.connection.host").split(",");
                     _loc_6 = [];
-                    for each (_loc_31 in _loc_5)
+                    for each (_loc_29 in _loc_5)
                     {
                         
-                        _loc_6.push({host:_loc_31, random:Math.random()});
+                        _loc_6.push({host:_loc_29, random:Math.random()});
                     }
                     _loc_6.sortOn("random", Array.NUMERIC);
                     _loc_5 = [];
-                    for each (_loc_32 in _loc_6)
+                    for each (_loc_30 in _loc_6)
                     {
                         
-                        _loc_5.push(_loc_32.host);
+                        _loc_5.push(_loc_30.host);
                     }
                     _loc_7 = new DataStoreType("Dofus_ComputerOptions", true, DataStoreEnum.LOCATION_LOCAL, DataStoreEnum.BIND_ACCOUNT);
                     _loc_8 = uint(StoreDataManager.getInstance().getData(_loc_7, "connectionPortDefault"));
                     this._connexionSequence = [];
                     _loc_9 = [];
-                    for each (_loc_33 in _loc_5)
+                    for each (_loc_31 in _loc_5)
                     {
                         
-                        for each (_loc_34 in _loc_3)
+                        for each (_loc_32 in _loc_3)
                         {
                             
-                            if (_loc_8 == _loc_34)
+                            if (_loc_8 == _loc_32)
                             {
-                                _loc_9.push({host:_loc_33, port:_loc_34});
+                                _loc_9.push({host:_loc_31, port:_loc_32});
                                 continue;
                             }
-                            this._connexionSequence.push({host:_loc_33, port:_loc_34});
+                            this._connexionSequence.push({host:_loc_31, port:_loc_32});
                         }
                     }
                     this._connexionSequence = _loc_9.concat(this._connexionSequence);
                     if (Constants.EVENT_MODE)
                     {
-                        _loc_35 = Constants.EVENT_MODE_PARAM;
-                        if (_loc_35 && _loc_35.charAt(0) != "!")
+                        _loc_33 = Constants.EVENT_MODE_PARAM;
+                        if (_loc_33 && _loc_33.charAt(0) != "!")
                         {
-                            _loc_35 = Base64.decode(_loc_35);
-                            _loc_36 = [];
-                            _loc_37 = _loc_35.split(",");
-                            for each (_loc_38 in _loc_37)
+                            _loc_33 = Base64.decode(_loc_33);
+                            _loc_34 = [];
+                            _loc_35 = _loc_33.split(",");
+                            for each (_loc_36 in _loc_35)
                             {
                                 
-                                _loc_39 = _loc_38.split(":");
-                                _loc_36[_loc_39[0]] = _loc_39[1];
+                                _loc_37 = _loc_36.split(":");
+                                _loc_34[_loc_37[0]] = _loc_37[1];
                             }
-                            if (_loc_36["login"])
+                            if (_loc_34["login"])
                             {
-                                _loc_2.username = _loc_36["login"];
+                                _loc_2.username = _loc_34["login"];
                             }
-                            if (_loc_36["password"])
+                            if (_loc_34["password"])
                             {
-                                _loc_2.password = _loc_36["password"];
+                                _loc_2.password = _loc_34["password"];
                             }
                         }
                     }
@@ -213,13 +210,13 @@
                     {
                         PlayerManager.getInstance().destroy();
                         (ConnectionsHandler.getConnection() as ServerConnection).stopConnectionTimeout();
-                        _loc_40 = _loc_11.failedConnection.port;
+                        _loc_38 = _loc_11.failedConnection.port;
                         if (this._connexionSequence)
                         {
-                            _loc_41 = this._connexionSequence.shift();
-                            if (_loc_41)
+                            _loc_39 = this._connexionSequence.shift();
+                            if (_loc_39)
                             {
-                                ConnectionsHandler.connectToLoginServer(_loc_41.host, _loc_41.port);
+                                ConnectionsHandler.connectToLoginServer(_loc_39.host, _loc_39.port);
                             }
                             else
                             {
@@ -262,10 +259,6 @@
                     {
                         PartManager.getInstance().checkAndDownload("all");
                         PartManager.getInstance().checkAndDownload("subscribed");
-                    }
-                    if (PlayerManager.getInstance().hasRights)
-                    {
-                        PartManager.getInstance().checkAndDownload("admin");
                     }
                     StoreUserDataManager.getInstance().savePlayerData();
                     Kernel.getWorker().removeFrame(this);
@@ -339,51 +332,36 @@
                     ConnectionsHandler.getConnection().send(_loc_21);
                     return true;
                 }
-                case param1 is AgreementAgreedAction:
-                {
-                    _loc_22 = AgreementAgreedAction(param1);
-                    if (_loc_22.fileName == "eula")
-                    {
-                        _loc_23 = XmlConfig.getInstance().getEntry("config.lang.current") + "#" + I18n.getUiText("ui.legal." + _loc_22.fileName).length;
-                        OptionManager.getOptionManager("dofus")["legalAgreementEula"] = _loc_23;
-                    }
-                    if (_loc_22.fileName == "tou")
-                    {
-                        _loc_23 = XmlConfig.getInstance().getEntry("config.lang.current") + "#" + (I18n.getUiText("ui.legal.tou1") + I18n.getUiText("ui.legal.tou2")).length;
-                        OptionManager.getOptionManager("dofus")["legalAgreementTou"] = _loc_23;
-                    }
-                    return true;
-                }
                 case param1 is SubscribersGiftListRequestAction:
                 {
-                    _loc_24 = SubscribersGiftListRequestAction(param1);
-                    _loc_26 = XmlConfig.getInstance().getEntry("config.lang.current");
-                    if (_loc_26 == "de" || _loc_26 == "en" || _loc_26 == "es" || _loc_26 == "pt" || _loc_26 == "fr" || _loc_26 == "uk" || _loc_26 == "ru")
+                    _loc_22 = SubscribersGiftListRequestAction(param1);
+                    _loc_24 = XmlConfig.getInstance().getEntry("config.lang.current");
+                    if (_loc_24 == "de" || _loc_24 == "en" || _loc_24 == "es" || _loc_24 == "pt" || _loc_24 == "fr" || _loc_24 == "uk" || _loc_24 == "ru")
                     {
-                        _loc_25 = new Uri(XmlConfig.getInstance().getEntry("config.subscribersGift") + "subscriberGifts_" + _loc_26 + ".xml");
+                        _loc_23 = new Uri(XmlConfig.getInstance().getEntry("config.subscribersGift") + "subscriberGifts_" + _loc_24 + ".xml");
                     }
                     else
                     {
-                        _loc_25 = new Uri(XmlConfig.getInstance().getEntry("config.subscribersGift") + "subscriberGifts_en.xml");
+                        _loc_23 = new Uri(XmlConfig.getInstance().getEntry("config.subscribersGift") + "subscriberGifts_en.xml");
                     }
-                    _loc_25.loaderContext = this._contextLoader;
-                    this._loader.load(_loc_25);
+                    _loc_23.loaderContext = this._contextLoader;
+                    this._loader.load(_loc_23);
                     return true;
                 }
                 case param1 is NewsLoginRequestAction:
                 {
-                    _loc_27 = NewsLoginRequestAction(param1);
-                    _loc_29 = XmlConfig.getInstance().getEntry("config.lang.current");
-                    if (_loc_29 == "de" || _loc_29 == "en" || _loc_29 == "es" || _loc_29 == "pt" || _loc_29 == "fr" || _loc_29 == "uk" || _loc_29 == "it" || _loc_29 == "ru")
+                    _loc_25 = NewsLoginRequestAction(param1);
+                    _loc_27 = XmlConfig.getInstance().getEntry("config.lang.current");
+                    if (_loc_27 == "de" || _loc_27 == "en" || _loc_27 == "es" || _loc_27 == "pt" || _loc_27 == "fr" || _loc_27 == "uk" || _loc_27 == "it" || _loc_27 == "ru")
                     {
-                        _loc_28 = new Uri(XmlConfig.getInstance().getEntry("config.loginNews") + "news_" + _loc_29 + ".xml");
+                        _loc_26 = new Uri(XmlConfig.getInstance().getEntry("config.loginNews") + "news_" + _loc_27 + ".xml");
                     }
                     else
                     {
-                        _loc_28 = new Uri(XmlConfig.getInstance().getEntry("config.loginNews") + "news_en.xml");
+                        _loc_26 = new Uri(XmlConfig.getInstance().getEntry("config.loginNews") + "news_en.xml");
                     }
-                    _loc_28.loaderContext = this._contextLoader;
-                    this._loader.load(_loc_28);
+                    _loc_26.loaderContext = this._contextLoader;
+                    this._loader.load(_loc_26);
                     return true;
                 }
                 default:

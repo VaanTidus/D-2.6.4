@@ -18,7 +18,7 @@
         public static function getMapReferenceById(param1:int) : MapReference
         {
             var _loc_2:* = GameData.getObject(MODULE, param1);
-            return GameData.getObject(MODULE, param1) as ;
+            return GameData.getObject(MODULE, param1) as MapReference;
         }// end function
 
         public static function getAllMapReference() : Array

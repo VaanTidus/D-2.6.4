@@ -2,6 +2,7 @@
 {
     import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.utils.errors.*;
+    import com.ankamagames.jerakine.utils.system.*;
     import flash.filesystem.*;
     import flash.net.*;
     import flash.utils.*;
@@ -123,19 +124,27 @@
         public static function getCustomSharedObjectDirectory() : String
         {
             var _loc_1:Array = null;
-            var _loc_2:Array = null;
-            var _loc_3:File = null;
+            var _loc_2:File = null;
+            var _loc_3:Array = null;
             if (!COMMON_FOLDER)
             {
                 _loc_1 = File.applicationDirectory.nativePath.split(File.separator);
-                _loc_2 = File.applicationStorageDirectory.nativePath.split(File.separator);
-                _loc_2.pop();
-                _loc_2.pop();
-                COMMON_FOLDER = _loc_2.join(File.separator) + File.separator + _loc_1[_loc_1.length - 2] + File.separator;
-                _loc_3 = new File(COMMON_FOLDER);
-                if (!_loc_3.exists)
+                if (AirScanner.hasAir())
                 {
-                    _loc_3.createDirectory();
+                    _loc_3 = File.applicationStorageDirectory.nativePath.split(File.separator);
+                    _loc_3.pop();
+                    _loc_3.pop();
+                    COMMON_FOLDER = _loc_3.join(File.separator) + File.separator + _loc_1[_loc_1.length - 2];
+                }
+                else
+                {
+                    COMMON_FOLDER = File.applicationDirectory.nativePath;
+                }
+                COMMON_FOLDER = COMMON_FOLDER + File.separator;
+                _loc_2 = new File(COMMON_FOLDER);
+                if (!_loc_2.exists)
+                {
+                    _loc_2.createDirectory();
                 }
             }
             return COMMON_FOLDER;

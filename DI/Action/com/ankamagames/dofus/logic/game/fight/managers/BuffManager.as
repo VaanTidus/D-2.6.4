@@ -42,6 +42,22 @@
             return;
         }// end function
 
+        public function synchronize() : void
+        {
+            var _loc_1:Array = null;
+            var _loc_2:BasicBuff = null;
+            for each (_loc_1 in this._buffs)
+            {
+                
+                for each (_loc_2 in _loc_1)
+                {
+                    
+                    _loc_2.undisable();
+                }
+            }
+            return;
+        }// end function
+
         public function incrementDuration(param1:int, param2:int, param3:Boolean = false, param4:int = 1) : void
         {
             var _loc_7:Array = null;
@@ -126,7 +142,7 @@
                             }
                             if (_loc_7 == 1)
                             {
-                                if (_loc_8 == _loc_4.aliveSource)
+                                if (_loc_8 == _loc_4.aliveSource && (_loc_8 != _loc_6.currentPlayerId || !param2))
                                 {
                                     _loc_7 = 2;
                                     _loc_5 = true;
@@ -244,7 +260,7 @@
             for each (_loc_7 in this._buffs[param1])
             {
                 
-                if (_loc_7.canBeDispell(param2, param3, param4))
+                if (_loc_7.canBeDispell(param2, int.MIN_VALUE, param4))
                 {
                     KernelEventsManager.getInstance().processCallback(FightHookList.BuffRemove, _loc_7, param1, "Dispell");
                     _loc_7.onRemoved();
@@ -257,33 +273,33 @@
             return;
         }// end function
 
-        public function dispellSpell(param1:int, param2:uint) : void
+        public function dispellSpell(param1:int, param2:uint, param3:Boolean = false, param4:Boolean = false, param5:Boolean = false) : void
         {
-            var _loc_5:BasicBuff = null;
-            var _loc_6:BasicBuff = null;
-            var _loc_3:* = new Array();
-            var _loc_4:* = new Array();
-            for each (_loc_5 in this._buffs[param1])
+            var _loc_8:BasicBuff = null;
+            var _loc_9:BasicBuff = null;
+            var _loc_6:* = new Array();
+            var _loc_7:* = new Array();
+            for each (_loc_8 in this._buffs[param1])
             {
                 
-                if (param2 == _loc_5.castingSpell.spell.id)
+                if (param2 == _loc_8.castingSpell.spell.id && _loc_8.canBeDispell(param3, int.MIN_VALUE, param5))
                 {
-                    _loc_5.onRemoved();
-                    _loc_3.push(_loc_5);
+                    _loc_8.onRemoved();
+                    _loc_6.push(_loc_8);
                     continue;
                 }
-                _loc_4.push(_loc_5);
+                _loc_7.push(_loc_8);
             }
-            this._buffs[param1] = _loc_4;
-            for each (_loc_6 in _loc_3)
+            this._buffs[param1] = _loc_7;
+            for each (_loc_9 in _loc_6)
             {
                 
-                KernelEventsManager.getInstance().processCallback(FightHookList.BuffRemove, _loc_6, param1, "Dispell");
+                KernelEventsManager.getInstance().processCallback(FightHookList.BuffRemove, _loc_9, param1, "Dispell");
             }
             return;
         }// end function
 
-        public function dispellUniqueBuff(param1:int, param2:int, param3:Boolean = false, param4:Boolean = false, param5:Boolean = false) : void
+        public function dispellUniqueBuff(param1:int, param2:int, param3:Boolean = false, param4:Boolean = false, param5:Boolean = true) : void
         {
             var _loc_6:* = this.getBuffIndex(param1, param2);
             if (this.getBuffIndex(param1, param2) == -1)
@@ -291,10 +307,14 @@
                 return;
             }
             var _loc_7:* = this._buffs[param1][_loc_6];
-            if (this._buffs[param1][_loc_6].canBeDispell(param3, param4, param5))
+            if (this._buffs[param1][_loc_6].canBeDispell(param3, param5 ? (param2) : (int.MIN_VALUE), param4))
             {
                 switch(_loc_7.actionId)
                 {
+                    case 293:
+                    {
+                        break;
+                    }
                     case 788:
                     {
                         break;
@@ -314,41 +334,41 @@
             return;
         }// end function
 
-        public function removeLinkedBuff(param1:int, param2:Boolean = false, param3:Boolean = false, param4:Boolean = false) : Array
+        public function removeLinkedBuff(param1:int, param2:Boolean = false, param3:Boolean = false) : Array
         {
+            var _loc_7:Array = null;
             var _loc_8:Array = null;
-            var _loc_9:Array = null;
-            var _loc_10:BasicBuff = null;
-            var _loc_5:Array = [];
-            var _loc_6:* = Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame;
-            var _loc_7:* = (Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame).getEntityInfos(param1) as GameFightFighterInformations;
-            for each (_loc_8 in this._buffs)
+            var _loc_9:BasicBuff = null;
+            var _loc_4:Array = [];
+            var _loc_5:* = Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame;
+            var _loc_6:* = (Kernel.getWorker().getFrame(FightEntitiesFrame) as FightEntitiesFrame).getEntityInfos(param1) as GameFightFighterInformations;
+            for each (_loc_7 in this._buffs)
             {
                 
-                _loc_9 = new Array();
-                for each (_loc_10 in _loc_8)
+                _loc_8 = new Array();
+                for each (_loc_9 in _loc_7)
                 {
                     
-                    _loc_9.push(_loc_10);
+                    _loc_8.push(_loc_9);
                 }
-                for each (_loc_10 in _loc_9)
+                for each (_loc_9 in _loc_8)
                 {
                     
-                    if (_loc_10.source == param1)
+                    if (_loc_9.source == param1)
                     {
-                        this.dispellUniqueBuff(_loc_10.targetId, _loc_10.id, param2, param3, param4);
-                        if (_loc_5.indexOf(_loc_10.targetId) == -1)
+                        this.dispellUniqueBuff(_loc_9.targetId, _loc_9.id, param2, param3, false);
+                        if (_loc_4.indexOf(_loc_9.targetId) == -1)
                         {
-                            _loc_5.push(_loc_10.targetId);
+                            _loc_4.push(_loc_9.targetId);
                         }
-                        if (param4 && _loc_7.stats.summoned)
+                        if (param3 && _loc_6.stats.summoned)
                         {
-                            _loc_10.aliveSource = _loc_7.stats.summoner;
+                            _loc_9.aliveSource = _loc_6.stats.summoner;
                         }
                     }
                 }
             }
-            return _loc_5;
+            return _loc_4;
         }// end function
 
         public function reaffectBuffs(param1:int) : void

@@ -46,7 +46,7 @@
             return PROTOCOL_BOLD[param1] ? (true) : (false);
         }// end function
 
-        public static function createHyperlink(param1:TextField, param2:Boolean = false) : void
+        public static function createHyperlink(param1, param2:Boolean = false) : void
         {
             var _loc_3:* = decode(param1.htmlText, true, param2 ? (param1) : (null));
             param1.htmlText = _loc_3;

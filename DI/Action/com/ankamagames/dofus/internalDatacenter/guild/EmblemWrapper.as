@@ -1,5 +1,6 @@
 ﻿package com.ankamagames.dofus.internalDatacenter.guild
 {
+    import com.ankamagames.dofus.datacenter.guild.*;
     import com.ankamagames.jerakine.data.*;
     import com.ankamagames.jerakine.interfaces.*;
     import com.ankamagames.jerakine.logger.*;
@@ -13,6 +14,8 @@
         private var _color:uint;
         private var _type:uint;
         public var idEmblem:uint;
+        public var order:int;
+        public var category:int;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(EmblemWrapper));
         private static var _cache:Array = new Array();
         public static const UP:uint = 1;
@@ -77,18 +80,28 @@
         {
             var _loc_4:String = null;
             var _loc_5:String = null;
+            var _loc_6:int = 0;
+            var _loc_7:EmblemSymbol = null;
+            var _loc_8:EmblemBackground = null;
             this.idEmblem = param1;
             this._type = param2;
             switch(param2)
             {
                 case UP:
                 {
+                    _loc_7 = EmblemSymbol.getEmblemSymbolById(param1);
+                    _loc_6 = _loc_7.iconId;
+                    this.order = _loc_7.order;
+                    this.category = _loc_7.categoryId;
                     _loc_4 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.small") + "up/";
                     _loc_5 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.large") + "up/";
                     break;
                 }
                 case BACK:
                 {
+                    _loc_8 = EmblemBackground.getEmblemBackgroundById(param1);
+                    this.order = _loc_8.order;
+                    _loc_6 = param1;
                     _loc_4 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.small") + "back/";
                     _loc_5 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.large") + "back/";
                     break;
@@ -98,8 +111,8 @@
                     break;
                 }
             }
-            this._uri = new Uri(_loc_4 + param1 + ".png");
-            this._fullSizeUri = new Uri(_loc_5 + param1 + ".swf");
+            this._uri = new Uri(_loc_4 + _loc_6 + ".png");
+            this._fullSizeUri = new Uri(_loc_5 + _loc_6 + ".swf");
             this._color = param3;
             return;
         }// end function
@@ -119,6 +132,9 @@
             var _loc_5:EmblemWrapper = null;
             var _loc_6:String = null;
             var _loc_7:String = null;
+            var _loc_8:int = 0;
+            var _loc_9:EmblemSymbol = null;
+            var _loc_10:EmblemBackground = null;
             if (!_cache[param1] || !param4)
             {
                 _loc_5 = new EmblemWrapper;
@@ -137,12 +153,19 @@
             {
                 case UP:
                 {
+                    _loc_9 = EmblemSymbol.getEmblemSymbolById(param1);
+                    _loc_8 = _loc_9.iconId;
+                    _loc_5.order = _loc_9.order;
+                    _loc_5.category = _loc_9.categoryId;
                     _loc_6 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.small") + "up/";
                     _loc_7 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.large") + "up/";
                     break;
                 }
                 case BACK:
                 {
+                    _loc_10 = EmblemBackground.getEmblemBackgroundById(param1);
+                    _loc_5.order = _loc_10.order;
+                    _loc_8 = param1;
                     _loc_6 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.small") + "back/";
                     _loc_7 = XmlConfig.getInstance().getEntry("config.gfx.path.emblem_icons.large") + "back/";
                     break;
@@ -152,8 +175,8 @@
                     break;
                 }
             }
-            _loc_5._uri = new Uri(_loc_6 + param1 + ".png");
-            _loc_5._fullSizeUri = new Uri(_loc_7 + param1 + ".swf");
+            _loc_5._uri = new Uri(_loc_6 + _loc_8 + ".png");
+            _loc_5._fullSizeUri = new Uri(_loc_7 + _loc_8 + ".swf");
             _loc_5._color = param3;
             return _loc_5;
         }// end function

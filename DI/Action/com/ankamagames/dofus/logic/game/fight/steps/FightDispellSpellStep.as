@@ -26,7 +26,7 @@
         override public function start() : void
         {
             FightEventsHelper.sendFightEvent(FightEventEnum.FIGHTER_SPELL_DISPELLED, [this._fighterId, this._spellId], 0, castingSpellId);
-            BuffManager.getInstance().dispellSpell(this._fighterId, this._spellId);
+            BuffManager.getInstance().dispellSpell(this._fighterId, this._spellId, true);
             executeCallbacks();
             return;
         }// end function

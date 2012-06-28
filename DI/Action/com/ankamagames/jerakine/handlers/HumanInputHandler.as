@@ -7,7 +7,6 @@
     import com.ankamagames.jerakine.utils.display.*;
     import com.ankamagames.jerakine.utils.errors.*;
     import com.ankamagames.jerakine.utils.memory.*;
-    import com.ankamagames.jerakine.utils.system.*;
     import flash.display.*;
     import flash.events.*;
     import flash.ui.*;
@@ -74,11 +73,8 @@
             StageShareManager.stage.addEventListener(MouseEvent.MOUSE_OUT, this.onMouseOut, true, 1, true);
             StageShareManager.stage.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown, true, 1, true);
             StageShareManager.stage.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp, true, 1, true);
-            if (AirScanner.hasAir())
-            {
-                StageShareManager.stage.addEventListener(MouseEvent["MIDDLE_CLICK"], this.onMiddleClick, true, 1, true);
-            }
-            StageShareManager.stage.addEventListener("rightClick", this.onRightClick, true, 1, true);
+            StageShareManager.stage.addEventListener(MouseEvent.MIDDLE_CLICK, this.onMiddleClick, true, 1, true);
+            StageShareManager.stage.addEventListener(MouseEvent.RIGHT_CLICK, this.onRightClick, true, 1, true);
             StageShareManager.stage.addEventListener(KeyboardEvent.KEY_DOWN, this.onKeyDown, false, 1, true);
             StageShareManager.stage.addEventListener(KeyboardEvent.KEY_UP, this.onKeyUp, false, 1, true);
             return;

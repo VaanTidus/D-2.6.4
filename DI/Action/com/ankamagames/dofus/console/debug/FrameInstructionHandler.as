@@ -1,10 +1,10 @@
 ﻿package com.ankamagames.dofus.console.debug
 {
-    import avmplus.*;
     import com.ankamagames.dofus.kernel.*;
     import com.ankamagames.jerakine.console.*;
     import com.ankamagames.jerakine.messages.*;
     import com.ankamagames.jerakine.types.enums.*;
+    import flash.utils.*;
 
     public class FrameInstructionHandler extends Object implements ConsoleInstructionHandler
     {

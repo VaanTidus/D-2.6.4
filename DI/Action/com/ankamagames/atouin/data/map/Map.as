@@ -43,6 +43,7 @@
         public var presetId:int;
         public var cellsCount:int;
         public var layersCount:int;
+        public var isUsingNewMovementSystem:Boolean = false;
         public var layers:Array;
         public var cells:Array;
         private var _parsed:Boolean;
@@ -91,6 +92,7 @@
             var i:int;
             var j:int;
             var k:int;
+            var _oldMvtSystem:uint;
             var l:int;
             var dataLen:uint;
             var encryptedData:ByteArray;
@@ -304,8 +306,20 @@
                         _log.debug("Cell data at index " + l + " :");
                     }
                     cd.fromRaw(raw);
+                    if (!_oldMvtSystem)
+                    {
+                        _oldMvtSystem = cd.moveZone;
+                    }
+                    if (cd.moveZone != _oldMvtSystem)
+                    {
+                        this.isUsingNewMovementSystem = true;
+                    }
                     this.cells.push(cd);
                     l = (l + 1);
+                }
+                if (AtouinConstants.DEBUG_FILES_PARSING)
+                {
+                    trace(this.isUsingNewMovementSystem ? ("This map is using the new movement system") : ("This map is using the old movement system"));
                 }
                 this._parsed = true;
             }

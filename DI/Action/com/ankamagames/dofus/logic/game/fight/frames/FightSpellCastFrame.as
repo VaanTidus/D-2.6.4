@@ -188,13 +188,13 @@
                 case param1 is EntityClickMessage:
                 {
                     _loc_7 = param1 as EntityClickMessage;
-                    this.castSpell(_loc_7.entity.position.cellId);
+                    this.castSpell(_loc_7.entity.position.cellId, _loc_7.entity.id);
                     return true;
                 }
                 case param1 is TimelineEntityClickAction:
                 {
                     _loc_8 = param1 as TimelineEntityClickAction;
-                    this.castSpell(_loc_8.cellId);
+                    this.castSpell(0, _loc_8.fighterId);
                     return true;
                 }
                 case param1 is AdjacentMapClickMessage:
@@ -400,24 +400,32 @@
             return;
         }// end function
 
-        private function castSpell(param1:uint) : void
+        private function castSpell(param1:uint, param2:int = 0) : void
         {
-            var _loc_3:GameActionFightCastRequestMessage = null;
-            var _loc_2:* = Kernel.getWorker().getFrame(FightTurnFrame) as FightTurnFrame;
-            if (!_loc_2.myTurn)
+            var _loc_4:GameActionFightCastOnTargetRequestMessage = null;
+            var _loc_5:GameActionFightCastRequestMessage = null;
+            var _loc_3:* = Kernel.getWorker().getFrame(FightTurnFrame) as FightTurnFrame;
+            if (!_loc_3 || !_loc_3.myTurn)
             {
                 return;
             }
-            if (this.isValidCell(param1) && _loc_2 && _loc_2.myTurn)
+            if (CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().actionPointsCurrent < this._spellLevel.apCost)
             {
-                if (CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().actionPointsCurrent < this._spellLevel.apCost)
-                {
-                    return;
-                }
+                return;
+            }
+            if (param2 != 0 && !FightEntitiesFrame.getCurrentInstance().entityIsIllusion(param2))
+            {
                 CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().actionPointsCurrent = CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().actionPointsCurrent - this._spellLevel.apCost;
-                _loc_3 = new GameActionFightCastRequestMessage();
-                _loc_3.initGameActionFightCastRequestMessage(this._spellId, param1);
-                ConnectionsHandler.getConnection().send(_loc_3);
+                _loc_4 = new GameActionFightCastOnTargetRequestMessage();
+                _loc_4.initGameActionFightCastOnTargetRequestMessage(this._spellId, param2);
+                ConnectionsHandler.getConnection().send(_loc_4);
+            }
+            else if (this.isValidCell(param1))
+            {
+                CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().actionPointsCurrent = CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().actionPointsCurrent - this._spellLevel.apCost;
+                _loc_5 = new GameActionFightCastRequestMessage();
+                _loc_5.initGameActionFightCastRequestMessage(this._spellId, param1);
+                ConnectionsHandler.getConnection().send(_loc_5);
             }
             this.cancelCast();
             return;

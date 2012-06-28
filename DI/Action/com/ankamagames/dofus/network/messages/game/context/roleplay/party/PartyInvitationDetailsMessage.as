@@ -13,11 +13,13 @@
         public var fromName:String = "";
         public var leaderId:uint = 0;
         public var members:Vector.<PartyInvitationMemberInformations>;
+        public var guests:Vector.<PartyGuestInformations>;
         public static const protocolId:uint = 6263;
 
         public function PartyInvitationDetailsMessage()
         {
             this.members = new Vector.<PartyInvitationMemberInformations>;
+            this.guests = new Vector.<PartyGuestInformations>;
             return;
         }// end function
 
@@ -31,7 +33,7 @@
             return 6263;
         }// end function
 
-        public function initPartyInvitationDetailsMessage(param1:uint = 0, param2:uint = 0, param3:uint = 0, param4:String = "", param5:uint = 0, param6:Vector.<PartyInvitationMemberInformations> = null) : PartyInvitationDetailsMessage
+        public function initPartyInvitationDetailsMessage(param1:uint = 0, param2:uint = 0, param3:uint = 0, param4:String = "", param5:uint = 0, param6:Vector.<PartyInvitationMemberInformations> = null, param7:Vector.<PartyGuestInformations> = null) : PartyInvitationDetailsMessage
         {
             super.initAbstractPartyMessage(param1);
             this.partyType = param2;
@@ -39,6 +41,7 @@
             this.fromName = param4;
             this.leaderId = param5;
             this.members = param6;
+            this.guests = param7;
             this._isInitialized = true;
             return this;
         }// end function
@@ -51,6 +54,7 @@
             this.fromName = "";
             this.leaderId = 0;
             this.members = new Vector.<PartyInvitationMemberInformations>;
+            this.guests = new Vector.<PartyGuestInformations>;
             this._isInitialized = false;
             return;
         }// end function
@@ -98,6 +102,14 @@
                 (this.members[_loc_2] as PartyInvitationMemberInformations).serializeAs_PartyInvitationMemberInformations(param1);
                 _loc_2 = _loc_2 + 1;
             }
+            param1.writeShort(this.guests.length);
+            var _loc_3:uint = 0;
+            while (_loc_3 < this.guests.length)
+            {
+                
+                (this.guests[_loc_3] as PartyGuestInformations).serializeAs_PartyGuestInformations(param1);
+                _loc_3 = _loc_3 + 1;
+            }
             return;
         }// end function
 
@@ -109,7 +121,8 @@
 
         public function deserializeAs_PartyInvitationDetailsMessage(param1:IDataInput) : void
         {
-            var _loc_4:PartyInvitationMemberInformations = null;
+            var _loc_6:PartyInvitationMemberInformations = null;
+            var _loc_7:PartyGuestInformations = null;
             super.deserialize(param1);
             this.partyType = param1.readByte();
             if (this.partyType < 0)
@@ -132,10 +145,20 @@
             while (_loc_3 < _loc_2)
             {
                 
-                _loc_4 = new PartyInvitationMemberInformations();
-                _loc_4.deserialize(param1);
-                this.members.push(_loc_4);
+                _loc_6 = new PartyInvitationMemberInformations();
+                _loc_6.deserialize(param1);
+                this.members.push(_loc_6);
                 _loc_3 = _loc_3 + 1;
+            }
+            var _loc_4:* = param1.readUnsignedShort();
+            var _loc_5:uint = 0;
+            while (_loc_5 < _loc_4)
+            {
+                
+                _loc_7 = new PartyGuestInformations();
+                _loc_7.deserialize(param1);
+                this.guests.push(_loc_7);
+                _loc_5 = _loc_5 + 1;
             }
             return;
         }// end function

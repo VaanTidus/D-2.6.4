@@ -32,6 +32,7 @@
     {
         private var _currentMap:WorldPoint;
         private var _currentRenderId:uint;
+        private var _isDefaultMap:Boolean;
         private var _lastMap:WorldPoint;
         private var _loader:IResourceLoader;
         private var _currentDataMap:DataMapContainer;
@@ -61,6 +62,11 @@
             }
             this.init();
             return;
+        }// end function
+
+        public function get isDefaultMap() : Boolean
+        {
+            return this._isDefaultMap;
         }// end function
 
         public function get renderer() : MapRenderer
@@ -155,7 +161,7 @@
 
         public function capture() : void
         {
-            if (Atouin.getInstance().options.tweentInterMap)
+            if (Atouin.getInstance().options.tweentInterMap || Atouin.getInstance().options.hideInterMap)
             {
                 if (!this._screenshotData)
                 {
@@ -222,6 +228,7 @@
             this._renderer.addEventListener(RenderMapEvent.GFX_LOADING_END, this.logGfxLoadTime, false, 0, true);
             this._renderer.addEventListener(RenderMapEvent.MAP_RENDER_START, this.mapRendered, false, 0, true);
             this._renderer.addEventListener(RenderMapEvent.MAP_RENDER_END, this.mapRendered, false, 0, true);
+            this._renderer.addEventListener(ProgressEvent.PROGRESS, this.mapRenderProgress, false, 0, true);
             AdapterFactory.addAdapter("dlm", MapsAdapter);
             this._loader = ResourceLoaderFactory.getLoader(ResourceLoaderType.SERIAL_LOADER);
             this._loader.addEventListener(ResourceLoadedEvent.LOADED, this.onMapLoaded, false, 0, true);
@@ -298,10 +305,11 @@
                 }
                 catch (e:Error)
                 {
-                    _log.fatal("Erreur durant le parsing de la map\n" + e.getStackTrace());
+                    _log.fatal("Exception sur le parsing du fichier de map :\n" + e.getStackTrace());
                     map = new DefaultMap();
                 }
             }
+            this._isDefaultMap = map is DefaultMap;
             this.unloadMap();
             DataMapProvider.getInstance().resetUpdatedCell();
             DataMapProvider.getInstance().resetSpecialEffects();
@@ -344,9 +352,18 @@
             if (this._screenshot.alpha < 0.01)
             {
                 Atouin.getInstance().worldContainer.cacheAsBitmap = false;
-                Atouin.getInstance().rootContainer.removeChild(this._screenshot);
+                this._screenshot.parent.removeChild(this._screenshot);
                 EnterFrameDispatcher.removeEventListener(this.tweenInterMap);
             }
+            return;
+        }// end function
+
+        private function mapRenderProgress(event:ProgressEvent) : void
+        {
+            var _loc_2:* = new MapRenderProgressMessage(event.bytesLoaded / event.bytesTotal * 100);
+            _loc_2.id = this._currentMap.mapId;
+            _loc_2.renderRequestId = this._currentRenderId;
+            Atouin.getInstance().handler.process(_loc_2);
             return;
         }// end function
 
@@ -372,11 +389,18 @@
                 _loc_5.gfxLoadingTime = _loc_4;
                 _loc_5.renderingTime = this._nRenderMapEnd - this._nRenderMapStart;
                 _loc_5.globalRenderingTime = _loc_2;
-                _log.info("map rendered [total : " + _loc_2 + "ms, " + (_loc_2 < 100 ? (" " + (_loc_2 < 10 ? (" ") : (""))) : ("")) + "map load : " + _loc_3 + "ms, " + (_loc_3 < 100 ? (" " + (_loc_3 < 10 ? (" ") : (""))) : ("")) + "gfx load : " + _loc_4 + "ms, " + (_loc_4 < 100 ? (" " + (_loc_4 < 10 ? (" ") : (""))) : ("")) + "render : " + (this._nRenderMapEnd - this._nRenderMapStart) + "ms] file : " + (this._currentMap ? (this._currentMap.mapId) : ("???")) + ".dlm / renderRequestID #" + this._currentRenderId);
+                _log.info("map rendered [total : " + _loc_2 + "ms, " + (_loc_2 < 100 ? (" " + (_loc_2 < 10 ? (" ") : (""))) : ("")) + "map load : " + _loc_3 + "ms, " + (_loc_3 < 100 ? (" " + (_loc_3 < 10 ? (" ") : (""))) : ("")) + "gfx load : " + _loc_4 + "ms, " + (_loc_4 < 100 ? (" " + (_loc_4 < 10 ? (" ") : (""))) : ("")) + "render : " + (this._nRenderMapEnd - this._nRenderMapStart) + "ms] file : " + (this._currentMap ? (this._currentMap.mapId) : ("???")) + ".dlm" + (this._isDefaultMap ? (" (/!\\ DEFAULT MAP) ") : ("")) + " / renderRequestID #" + this._currentRenderId);
                 if (this._screenshot && this._screenshot.parent)
                 {
-                    Atouin.getInstance().worldContainer.cacheAsBitmap = true;
-                    EnterFrameDispatcher.addEventListener(this.tweenInterMap, "tweentInterMap");
+                    if (Atouin.getInstance().options.tweentInterMap)
+                    {
+                        Atouin.getInstance().worldContainer.cacheAsBitmap = true;
+                        EnterFrameDispatcher.addEventListener(this.tweenInterMap, "tweentInterMap");
+                    }
+                    else
+                    {
+                        this._screenshot.parent.removeChild(this._screenshot);
+                    }
                 }
                 _loc_5.id = this._currentMap.mapId;
                 Atouin.getInstance().handler.process(_loc_5);

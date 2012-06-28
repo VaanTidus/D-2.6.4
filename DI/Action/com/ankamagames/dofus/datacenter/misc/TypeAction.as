@@ -17,7 +17,7 @@
 
         public static function getTypeActionById(param1:int) : TypeAction
         {
-            return GameData.getObject(MODULE, param1) as ;
+            return GameData.getObject(MODULE, param1) as TypeAction;
         }// end function
 
         public static function getAllTypeAction() : Array

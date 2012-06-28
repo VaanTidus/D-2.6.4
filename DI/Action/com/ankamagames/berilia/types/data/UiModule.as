@@ -36,6 +36,7 @@
         var _loader:Loader;
         private var _moduleAppDomain:ApplicationDomain;
         private var _enable:Boolean = true;
+        private var _rawXml:XML;
         private static var ID_COUNT:uint = 0;
         public static var MEMORY_LOG:Dictionary = new Dictionary(true);
         static const _log:Logger = Log.getLogger(getQualifiedClassName(UiModule));
@@ -257,6 +258,11 @@
             return this._groups;
         }// end function
 
+        public function get rawXml() : XML
+        {
+            return this._rawXml;
+        }// end function
+
         public function getUi(param1:String) : UiData
         {
             return this._uis[param1];
@@ -293,20 +299,7 @@
             return;
         }// end function
 
-        private function setProperty(param1:String, param2:String) : void
-        {
-            if (param2 && param2.length)
-            {
-                this["_" + param1] = param2;
-            }
-            else
-            {
-                this["_" + param1] = null;
-            }
-            return;
-        }// end function
-
-        public static function createFromXml(param1:XML, param2:String, param3:String) : UiModule
+        protected function fillFromXml(param1:XML, param2:String, param3:String) : void
         {
             var uiGroup:UiGroup;
             var group:XML;
@@ -325,33 +318,33 @@
             var xml:* = param1;
             var nativePath:* = param2;
             var id:* = param3;
-            var um:* = new UiModule;
-            um.setProperty("name", xml..header..name);
-            um.setProperty("version", xml..header..version);
-            um.setProperty("gameVersion", xml..header..gameVersion);
-            um.setProperty("author", xml..header..author);
-            um.setProperty("description", xml..header..description);
-            um.setProperty("iconUri", xml..header..icon);
-            um.setProperty("shortDescription", xml..header..shortDescription);
-            um.setProperty("script", xml..script);
-            um.setProperty("shortcuts", xml..shortcuts);
+            this.setProperty("name", xml..header..name);
+            this.setProperty("version", xml..header..version);
+            this.setProperty("gameVersion", xml..header..gameVersion);
+            this.setProperty("author", xml..header..author);
+            this.setProperty("description", xml..header..description);
+            this.setProperty("iconUri", xml..header..icon);
+            this.setProperty("shortDescription", xml..header..shortDescription);
+            this.setProperty("script", xml..script);
+            this.setProperty("shortcuts", xml..shortcuts);
+            this._rawXml = xml;
             nativePath = nativePath.split("app:/").join("");
             if (nativePath.indexOf("file://") == -1 && nativePath.substr(0, 2) != "\\\\")
             {
                 nativePath = "file://" + nativePath;
             }
-            um._id = id;
-            if (um.script)
+            this._id = id;
+            if (this.script)
             {
-                um._script = nativePath + "/" + um.script;
+                this._script = nativePath + "/" + this.script;
             }
-            if (um.shortcuts)
+            if (this.shortcuts)
             {
-                um._shortcuts = nativePath + "/" + um.shortcuts;
+                this._shortcuts = nativePath + "/" + this.shortcuts;
             }
-            um._rootPath = nativePath + "/";
-            um._storagePath = unescape(um._rootPath + "storage/").replace("file://", "");
-            um._groups = new Vector.<UiGroup>;
+            this._rootPath = nativePath + "/";
+            this._storagePath = unescape(this._rootPath + "storage/").replace("file://", "");
+            this._groups = new Vector.<UiGroup>;
             var _loc_5:int = 0;
             var _loc_6:* = xml.uiGroup;
             while (_loc_6 in _loc_5)
@@ -392,7 +385,7 @@
                 }
                 uiGroup = new UiGroup(group.@name, group.@exclusive.toString() == "true", group.@permanent.toString() == "true", uiNames);
                 UiGroupManager.getInstance().registerGroup(uiGroup);
-                um._groups.push(uiGroup);
+                this._groups.push(uiGroup);
             }
             var _loc_5:int = 0;
             var _loc_6:* = xml.uis;
@@ -426,8 +419,8 @@
                             file = nativePath + "/" + ui.@file;
                         }
                     }
-                    uiData = new UiData(um, ui.@name, file, ui["class"], uisGroup);
-                    um._uis[uiData.name] = uiData;
+                    uiData = new UiData(this, ui.@name, file, ui["class"], uisGroup);
+                    this._uis[uiData.name] = uiData;
                 }
             }
             var _loc_5:int = 0;
@@ -436,9 +429,29 @@
             {
                 
                 path = _loc_6[_loc_5];
-                um.cachedFiles.push(path.children().toString());
+                this.cachedFiles.push(path.children().toString());
             }
-            return um;
+            return;
+        }// end function
+
+        private function setProperty(param1:String, param2:String) : void
+        {
+            if (param2 && param2.length)
+            {
+                this["_" + param1] = param2;
+            }
+            else
+            {
+                this["_" + param1] = null;
+            }
+            return;
+        }// end function
+
+        public static function createFromXml(param1:XML, param2:String, param3:String) : UiModule
+        {
+            var _loc_4:* = new UiModule;
+            new UiModule.fillFromXml(param1, param2, param3);
+            return _loc_4;
         }// end function
 
     }

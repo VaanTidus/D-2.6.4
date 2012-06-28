@@ -73,7 +73,7 @@
             }
             this._needToWarn = true;
             BuffManager.getInstance().dispell(_loc_1.id, false, false, true);
-            var _loc_4:* = BuffManager.getInstance().removeLinkedBuff(_loc_1.id, false, false, true);
+            var _loc_4:* = BuffManager.getInstance().removeLinkedBuff(_loc_1.id, false, true);
             BuffManager.getInstance().reaffectBuffs(_loc_1.id);
             _loc_2.stats.lifePoints = 0;
             if (PlayedCharacterManager.getInstance().infos.id == this._entityId)

@@ -23,7 +23,7 @@
 
         override public function start() : void
         {
-            BuffManager.getInstance().dispellUniqueBuff(this._fighterId, this._boostUID, true, true);
+            BuffManager.getInstance().dispellUniqueBuff(this._fighterId, this._boostUID, true, false, true);
             executeCallbacks();
             return;
         }// end function

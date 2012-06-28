@@ -655,12 +655,13 @@
 
         public function buildSoundLabel(param1:int, param2:String, param3:String) : String
         {
-            var _loc_9:SoundAnimation = null;
-            var _loc_10:RegExp = null;
+            var _loc_8:RegExp = null;
+            var _loc_9:Vector.<SoundEventParamWrapper> = null;
+            var _loc_10:SoundAnimation = null;
             if (param3 != null)
             {
-                _loc_10 = /^\s*(.*?)\s*$""^\s*(.*?)\s*$/g;
-                param3 = param3.replace(_loc_10, "$1");
+                _loc_8 = /^\s*(.*?)\s*$""^\s*(.*?)\s*$/g;
+                param3 = param3.replace(_loc_8, "$1");
                 if (param3.length == 0)
                 {
                     param3 = null;
@@ -679,18 +680,16 @@
             }
             var _loc_6:* = _loc_5.look.bonesId;
             var _loc_7:* = SoundBones.getSoundBonesById(_loc_6);
-            if (!SoundBones.getSoundBonesById(_loc_6))
+            if (SoundBones.getSoundBonesById(_loc_6) != null)
             {
-                _log.error(param1 + " : donnés incomplètes pour ce bones (pas de données sons), impossible de créer les sons");
-                return null;
+                _loc_9 = new Vector.<SoundEventParamWrapper>;
+                for each (_loc_10 in _loc_7.getSoundAnimationByLabel(param2, param3))
+                {
+                    
+                    _loc_9.push(new SoundEventParamWrapper(_loc_10.filename, _loc_10.volume, _loc_10.rolloff, _loc_10.automationDuration, _loc_10.automationVolume, _loc_10.automationFadeIn, _loc_10.automationFadeOut, _loc_10.noCutSilence));
+                }
             }
-            var _loc_8:* = new Vector.<SoundEventParamWrapper>;
-            for each (_loc_9 in _loc_7.getSoundAnimationByLabel(param2, param3))
-            {
-                
-                _loc_8.push(new SoundEventParamWrapper(_loc_9.filename, _loc_9.volume, _loc_9.rolloff, _loc_9.automationDuration, _loc_9.automationVolume, _loc_9.automationFadeIn, _loc_9.automationFadeOut, _loc_9.noCutSilence));
-            }
-            return FLAEventLabelParser.buildSoundLabel(_loc_8);
+            return FLAEventLabelParser.buildSoundLabel(_loc_9);
         }// end function
 
     }

@@ -152,14 +152,29 @@
                     _loc_2 = new SexItemCriterion(param1);
                     break;
                 }
+                case "PT":
+                {
+                    _loc_2 = new SpellItemCriterion(param1);
+                    break;
+                }
                 case "PU":
                 {
                     _loc_2 = new BonesItemCriterion(param1);
                     break;
                 }
+                case "Pw":
+                {
+                    _loc_2 = new GuildItemCriterion(param1);
+                    break;
+                }
                 case "PW":
                 {
                     _loc_2 = new WeightItemCriterion(param1);
+                    break;
+                }
+                case "Px":
+                {
+                    _loc_2 = new GuildRightsItemCriterion(param1);
                     break;
                 }
                 case "PX":
@@ -169,6 +184,11 @@
                 }
                 case "Pz":
                 {
+                    break;
+                }
+                case "Py":
+                {
+                    _loc_2 = new GuildLevelItemCriterion(param1);
                     break;
                 }
                 case "PZ":

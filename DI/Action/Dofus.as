@@ -6,6 +6,7 @@
     import com.ankamagames.berilia.components.*;
     import com.ankamagames.berilia.interfaces.*;
     import com.ankamagames.berilia.managers.*;
+    import com.ankamagames.berilia.utils.web.*;
     import com.ankamagames.dofus.*;
     import com.ankamagames.dofus.console.moduleLogger.*;
     import com.ankamagames.dofus.kernel.*;
@@ -56,6 +57,7 @@
         private var _invokeArguments:Array;
         private var _blockLoading:Boolean;
         private var _initialized:Boolean = false;
+        private var _displayState:String;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(Dofus));
         private static var _self:Dofus;
 
@@ -68,6 +70,12 @@
             }
             _self = this;
             var r:* = stage.stageWidth / stage.stageHeight;
+            var clientDimentionSo:* = CustomSharedObject.getLocal("clientData");
+            if (clientDimentionSo.data != null && clientDimentionSo.data.displayState == NativeWindowDisplayState.MAXIMIZED)
+            {
+                stage.nativeWindow.maximize();
+                this._displayState = NativeWindowDisplayState.MAXIMIZED;
+            }
             if (Screen.mainScreen.bounds.width < Screen.mainScreen.bounds.height)
             {
                 stage.stageWidth = Screen.mainScreen.bounds.width * 0.8;
@@ -86,8 +94,11 @@
             }
             else
             {
+                clientDimentionSo.close();
+                stage.showDefaultContextMenu = false;
                 scaleX = 800 / 1280;
                 scaleY = 600 / 1024;
+                Security.allowDomain("*");
             }
             new DofusErrorHandler();
             if (AirScanner.hasAir())
@@ -97,14 +108,19 @@
             ErrorManager.registerLoaderInfo(loaderInfo);
             mouseEnabled = false;
             tabChildren = false;
-            try
+            if (AirScanner.hasAir())
             {
-                new AppIdModifier();
+                try
+                {
+                    new AppIdModifier();
+                }
+                catch (e:Error)
+                {
+                }
             }
-            catch (e:Error)
-            {
-            }
+            NativeApplication.nativeApplication.addEventListener(Event.EXITING, this.onExiting);
             NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, this.onCall);
+            stage.nativeWindow.addEventListener(NativeWindowDisplayStateEvent.DISPLAY_STATE_CHANGING, this.onResize);
             return;
         }// end function
 
@@ -244,6 +260,12 @@
             return;
         }// end function
 
+        private function onResize(event:NativeWindowDisplayStateEvent) : void
+        {
+            this._displayState = event.afterDisplayState;
+            return;
+        }// end function
+
         public function getUiContainer() : DisplayObjectContainer
         {
             return this._uiContainer;
@@ -338,15 +360,51 @@
             return;
         }// end function
 
+        private function onExiting(event:Event) : void
+        {
+            this.saveClientSize();
+            if (WebServiceDataHandler.getInstance().quit())
+            {
+                event.preventDefault();
+                event.stopPropagation();
+                WebServiceDataHandler.getInstance().addEventListener(WebServiceDataHandler.ALL_DATA_SENT, this.quitHandler);
+            }
+            return;
+        }// end function
+
         public function quit() : void
         {
+            if (!WebServiceDataHandler.getInstance().quit())
+            {
+                this.quitHandler();
+            }
+            else
+            {
+                _log.trace("We have data to send to the webservice. waiting...");
+                WebServiceDataHandler.getInstance().addEventListener(WebServiceDataHandler.ALL_DATA_SENT, this.quitHandler);
+                WebServiceDataHandler.getInstance().sendWaitingException();
+            }
+            return;
+        }// end function
+
+        private function quitHandler(event:Event = null) : void
+        {
+            if (event != null)
+            {
+                event.currentTarget.removeEventListener(WebServiceDataHandler.ALL_DATA_SENT, this.quitHandler);
+                _log.trace("Data sent. Good to go. Bye bye");
+            }
             if (Constants.EVENT_MODE)
             {
                 this.reboot();
             }
             else if (AirScanner.hasAir())
             {
-                stage["nativeWindow"].close();
+                stage.nativeWindow.close();
+                if (NativeApplication.nativeApplication.openedWindows.length == 0)
+                {
+                    NativeApplication.nativeApplication.exit(0);
+                }
             }
             return;
         }// end function
@@ -430,6 +488,7 @@
 
         public function reboot() : void
         {
+            this.saveClientSize();
             var _loc_1:* = Kernel.getWorker();
             if (_loc_1)
             {
@@ -547,6 +606,15 @@
                 _loc_2 = RasterizedAnimation.countFrames();
                 this._fpsDisplay.htmlText = "<font color=\'#FFFFFF\'>" + param1 + " fps - " + this._buildType + "\n<font color=\'#B9B6ED\'>" + Memory.humanReadableUsage() + " - r" + BuildInfos.BUILD_REVISION + "\n<font color=\'#92D5D8\'> Anim/Img en cache - " + _loc_2.animations + "/" + _loc_2.frames;
             }
+            return;
+        }// end function
+
+        private function saveClientSize() : void
+        {
+            var _loc_1:* = CustomSharedObject.getLocal("clientData");
+            _loc_1.data.displayState = this._displayState;
+            _loc_1.flush();
+            _loc_1.close();
             return;
         }// end function
 

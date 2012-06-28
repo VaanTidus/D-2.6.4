@@ -19,6 +19,16 @@
             return;
         }// end function
 
+        public function get socket() : XMLSocket
+        {
+            return _socket;
+        }// end function
+
+        public function get connected() : Boolean
+        {
+            return _connecting;
+        }// end function
+
         override public function logEvent(event:LogEvent) : void
         {
             var _loc_2:String = null;

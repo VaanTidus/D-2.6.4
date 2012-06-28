@@ -3,11 +3,13 @@
     import com.ankamagames.berilia.*;
     import com.ankamagames.berilia.types.data.*;
     import com.ankamagames.berilia.types.messages.*;
+    import com.ankamagames.berilia.utils.*;
     import com.ankamagames.jerakine.data.*;
     import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.managers.*;
     import com.ankamagames.jerakine.resources.events.*;
     import com.ankamagames.jerakine.resources.loaders.*;
+    import com.ankamagames.jerakine.resources.protocols.*;
     import com.ankamagames.jerakine.types.*;
     import com.ankamagames.jerakine.utils.errors.*;
     import flash.filesystem.*;
@@ -35,6 +37,7 @@
             this._loader = ResourceLoaderFactory.getLoader(ResourceLoaderType.PARALLEL_LOADER);
             this._loader.addEventListener(ResourceErrorEvent.ERROR, this.onLoadError, false, 0, true);
             this._loader.addEventListener(ResourceLoadedEvent.LOADED, this.onLoad, false, 0, true);
+            ProtocolFactory.addProtocol("theme", ThemeProtocol);
             return;
         }// end function
 

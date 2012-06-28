@@ -179,7 +179,7 @@
                 if (_loc_6 is GameRolePlayGroupMonsterInformations)
                 {
                     _loc_8 = _loc_6 as GameRolePlayGroupMonsterInformations;
-                    _loc_9 = Monster.getMonsterById(_loc_8.mainCreatureGenericId);
+                    _loc_9 = Monster.getMonsterById(_loc_8.staticInfos.mainCreatureLightInfos.creatureGenericId);
                     if (!_loc_9 || _loc_9.animFunList.length == 0)
                     {
                         return;
@@ -254,7 +254,7 @@
                 
                 if (_loc_5 is GameRolePlayGroupMonsterInformations)
                 {
-                    _loc_6 = Monster.getMonsterById((_loc_5 as GameRolePlayGroupMonsterInformations).mainCreatureGenericId);
+                    _loc_6 = Monster.getMonsterById((_loc_5 as GameRolePlayGroupMonsterInformations).staticInfos.mainCreatureLightInfos.creatureGenericId);
                     if (_loc_6 && _loc_6.animFunList.length != 0)
                     {
                         _loc_4.push(_loc_5);
@@ -294,7 +294,7 @@
             if (_loc_4.getEntityInfos(param1) is GameRolePlayGroupMonsterInformations)
             {
                 _loc_11 = _loc_5 as GameRolePlayGroupMonsterInformations;
-                _loc_12 = Monster.getMonsterById(_loc_11.mainCreatureGenericId);
+                _loc_12 = Monster.getMonsterById(_loc_11.staticInfos.mainCreatureLightInfos.creatureGenericId);
                 if (!_loc_12)
                 {
                     return 0;

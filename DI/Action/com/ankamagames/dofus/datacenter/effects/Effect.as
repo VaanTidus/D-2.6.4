@@ -19,6 +19,7 @@
         public var showInSet:Boolean;
         public var bonusType:int;
         public var useInFight:Boolean;
+        public var effectPriority:uint;
         private var _description:String;
         private static const MODULE:String = "Effects";
 

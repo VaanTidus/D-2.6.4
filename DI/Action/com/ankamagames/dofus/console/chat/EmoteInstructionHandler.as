@@ -36,17 +36,20 @@
 
         private function getEmoteId(param1:String) : uint
         {
-            var _loc_3:* = undefined;
-            var _loc_2:uint = 0;
-            for each (_loc_3 in Emoticon.getEmoticons())
+            var _loc_2:Emoticon = null;
+            for each (_loc_2 in Emoticon.getEmoticons())
             {
                 
-                if (_loc_3.shortcut == param1)
+                if (_loc_2.shortcut == param1)
                 {
-                    _loc_2 = _loc_3.id;
+                    return _loc_2.id;
+                }
+                if (_loc_2.defaultAnim == param1)
+                {
+                    return _loc_2.id;
                 }
             }
-            return _loc_2;
+            return 0;
         }// end function
 
         public function getParamPossibilities(param1:String, param2:uint = 0, param3:Array = null) : Array

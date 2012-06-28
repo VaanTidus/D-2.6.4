@@ -8,7 +8,7 @@
 
     public class ListView extends Object implements IInventoryView
     {
-        private var _view:Vector.<ItemWrapper>;
+        protected var _view:Vector.<ItemWrapper>;
         protected var _hookLock:IHookLock;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(ListView));
 

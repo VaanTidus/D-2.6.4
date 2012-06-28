@@ -7,6 +7,7 @@
     import com.ankamagames.berilia.types.graphic.*;
     import com.ankamagames.jerakine.data.*;
     import com.ankamagames.jerakine.handlers.messages.mouse.*;
+    import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.messages.*;
     import com.ankamagames.jerakine.types.*;
     import com.ankamagames.jerakine.utils.display.*;
@@ -55,6 +56,7 @@
         private var _lastMouseX:int = 0;
         private var _lastMouseY:int = 0;
         public static var MEMORY_LOG:Dictionary = new Dictionary(true);
+        static const _log:Logger = Log.getLogger(getQualifiedClassName(MapViewer));
 
         public function MapViewer()
         {
@@ -127,6 +129,30 @@
         public function get zoomFactor() : Number
         {
             return this._mapContainer.scaleX;
+        }// end function
+
+        override public function set width(param1:Number) : void
+        {
+            super.width = param1;
+            if (this.finalized)
+            {
+                this.initMask();
+                this.updateVisibleChunck();
+                this.updateMapElements();
+            }
+            return;
+        }// end function
+
+        override public function set height(param1:Number) : void
+        {
+            super.height = param1;
+            if (this.finalized)
+            {
+                this.initMask();
+                this.updateVisibleChunck();
+                this.updateMapElements();
+            }
+            return;
         }// end function
 
         public function finalize() : void
@@ -214,7 +240,6 @@
                 _loc_11.mouseChildren = false;
                 _loc_11.scaleX = Math.min(2, param6);
                 _loc_11.scaleY = _loc_11.scaleX;
-                _loc_11.finalize();
                 if (param9 != -1)
                 {
                     _loc_13 = param9 >> 16 & 255;
@@ -444,7 +469,7 @@
             return;
         }// end function
 
-        public function moveTo(param1:int, param2:int, param3:uint = 1, param4:uint = 1, param5:Boolean = true, param6:Boolean = true) : void
+        public function moveTo(param1:Number, param2:Number, param3:uint = 1, param4:uint = 1, param5:Boolean = true, param6:Boolean = true) : void
         {
             var _loc_8:int = 0;
             var _loc_9:int = 0;
@@ -480,7 +505,7 @@
             }
             else
             {
-                this._mapContainer.x = (-(param1 * this.mapWidth + this.origineX)) * this._mapContainer.scaleX;
+                this._mapContainer.x = (-(param1 * this.mapWidth + Number(this.origineX))) * this._mapContainer.scaleX;
                 this._mapContainer.y = (-(param2 * this.mapHeight + this.origineY)) * this._mapContainer.scaleY;
             }
             if (this._mapContainer.x < param3 - this._mapBitmapContainer.width)
@@ -635,7 +660,7 @@
             {
                 
                 _loc_3 = _loc_8 as MapIconElement;
-                if (!_loc_3 || !_loc_3.follow)
+                if (!_loc_3)
                 {
                     continue;
                 }
@@ -647,8 +672,16 @@
                     continue;
                 }
                 _loc_2.visible = this._layers[_loc_3.layer].visible != false && _loc_4.intersects(_loc_1);
+                if (_loc_2.visible && !_loc_2.finalized)
+                {
+                    _loc_2.finalize();
+                }
+                if (!_loc_3.follow)
+                {
+                    continue;
+                }
                 _loc_14 = Math.floor(Math.sqrt(Math.pow(_loc_5.x - _loc_3.x, 2) + Math.pow(_loc_5.y - _loc_3.y, 2)));
-                if (_loc_2.visible && this._arrowAllocation[_loc_2] && (!_loc_7 || _loc_14 < _loc_6))
+                if (_loc_2.visible && this._arrowAllocation[_loc_2] && _loc_14 < _loc_6)
                 {
                     this._arrowContainer.removeChild(this._arrowAllocation[_loc_2]);
                     this._arrowPool.push(this._arrowAllocation[_loc_2]);
@@ -657,7 +690,7 @@
                     delete this._arrowAllocation[_loc_2];
                     continue;
                 }
-                if (_loc_3.follow && (!_loc_2.parent || _loc_14 >= _loc_6 && _loc_7))
+                if (_loc_3.follow && (!_loc_2.parent || _loc_14 >= _loc_6))
                 {
                     _loc_15 = this.getIconArrow(_loc_2);
                     _loc_15.visible = this._layers[_loc_3.layer].visible;
@@ -829,10 +862,12 @@
             return;
         }// end function
 
-        private function initMap() : void
+        private function initMask() : void
         {
-            var _loc_2:Sprite = null;
-            this._mapContainer = new Sprite();
+            if (this._mapContainer.mask)
+            {
+                this._mapContainer.mask.parent.removeChild(this._mapContainer.mask);
+            }
             var _loc_1:* = new Sprite();
             _loc_1.doubleClickEnabled = true;
             _loc_1.graphics.beginFill(7798784, 0.3);
@@ -846,6 +881,14 @@
             }
             addChild(_loc_1);
             this._mapContainer.mask = _loc_1;
+            return;
+        }// end function
+
+        private function initMap() : void
+        {
+            var _loc_1:Sprite = null;
+            this._mapContainer = new Sprite();
+            this.initMask();
             this._mapContainer.addChild(this._mapBitmapContainer);
             this._grid = new Shape();
             this.drawGrid();
@@ -856,11 +899,11 @@
             this.zoom(this.startScale);
             if (this._enable3DMode)
             {
-                _loc_2 = new Sprite();
-                _loc_2.addChild(this._mapContainer);
-                _loc_2.rotationX = -30;
-                _loc_2.doubleClickEnabled = true;
-                addChild(_loc_2);
+                _loc_1 = new Sprite();
+                _loc_1.addChild(this._mapContainer);
+                _loc_1.rotationX = -30;
+                _loc_1.doubleClickEnabled = true;
+                addChild(_loc_1);
             }
             else
             {

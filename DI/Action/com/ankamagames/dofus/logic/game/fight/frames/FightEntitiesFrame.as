@@ -52,8 +52,10 @@
         private var arrowId:uint;
         private var _ie:Dictionary;
         private var _tempFighterList:Array;
-        public var _entitiesNumber:Dictionary;
-        public var _lastKnownPosition:Dictionary;
+        private var _illusionEntities:Dictionary;
+        private var _entitiesNumber:Dictionary;
+        private var _lastKnownPosition:Dictionary;
+        private var _lastKnownMovementPoint:Dictionary;
         private static const TEAM_CIRCLE_CLIP:Class = FightEntitiesFrame_TEAM_CIRCLE_CLIP;
         private static const SWORDS_CLIP:Class = FightEntitiesFrame_SWORDS_CLIP;
         private static const TEAM_CIRCLE_COLOR_1:uint = 255;
@@ -71,7 +73,9 @@
             Atouin.getInstance().cellOverEnabled = true;
             Dofus.getInstance().options.addEventListener(PropertyChangeEvent.PROPERTY_CHANGED, this.onPropertyChanged);
             this._entitiesNumber = new Dictionary();
+            this._illusionEntities = new Dictionary();
             this._lastKnownPosition = new Dictionary();
+            this._lastKnownMovementPoint = new Dictionary();
             return super.pushed();
         }// end function
 
@@ -116,17 +120,16 @@
             var _loc_20:GameActionFightCarryCharacterMessage = null;
             var _loc_21:GameActionFightThrowCharacterMessage = null;
             var _loc_22:GameActionFightDropCharacterMessage = null;
-            var _loc_23:GameActionFightInvisibleDetectedMessage = null;
-            var _loc_24:IAnimationModifier = null;
-            var _loc_25:Sprite = null;
-            var _loc_26:IdentifiedEntityDispositionInformations = null;
-            var _loc_27:MapComplementaryInformationsWithCoordsMessage = null;
-            var _loc_28:MapComplementaryInformationsDataInHouseMessage = null;
-            var _loc_29:Boolean = false;
-            var _loc_30:MapObstacle = null;
-            var _loc_31:InteractiveElement = null;
-            var _loc_32:StatedElement = null;
-            var _loc_33:GameFightFighterInformations = null;
+            var _loc_23:IAnimationModifier = null;
+            var _loc_24:Sprite = null;
+            var _loc_25:IdentifiedEntityDispositionInformations = null;
+            var _loc_26:MapComplementaryInformationsWithCoordsMessage = null;
+            var _loc_27:MapComplementaryInformationsDataInHouseMessage = null;
+            var _loc_28:Boolean = false;
+            var _loc_29:MapObstacle = null;
+            var _loc_30:InteractiveElement = null;
+            var _loc_31:StatedElement = null;
+            var _loc_32:GameFightFighterInformations = null;
             switch(true)
             {
                 case param1 is GameFightRefreshFighterMessage:
@@ -155,13 +158,15 @@
                     _loc_5 = param1 as GameFightShowFighterMessage;
                     if (param1 is GameFightShowFighterRandomStaticPoseMessage)
                     {
-                        _loc_24 = new CustomAnimStatiqueAnimationModifier();
-                        (_loc_24 as CustomAnimStatiqueAnimationModifier).randomStatique = true;
-                        this.updateFighter(_loc_5.informations, _loc_24);
+                        _loc_23 = new CustomAnimStatiqueAnimationModifier();
+                        (_loc_23 as CustomAnimStatiqueAnimationModifier).randomStatique = true;
+                        this.updateFighter(_loc_5.informations, _loc_23);
+                        this._illusionEntities[_loc_5.informations.contextualId] = true;
                     }
                     else
                     {
                         this.updateFighter(_loc_5.informations);
+                        this._illusionEntities[_loc_5.informations.contextualId] = false;
                         if (Kernel.getWorker().getFrame(FightPreparationFrame))
                         {
                             KernelEventsManager.getInstance().processCallback(FightHookList.UpdatePreFightersList, _loc_5.informations.contextualId);
@@ -179,8 +184,8 @@
                     _loc_7 = this.addOrUpdateActor(getEntityInfos(_loc_6.characterId) as GameFightFighterInformations);
                     if (_loc_6.isReady)
                     {
-                        _loc_25 = new SWORDS_CLIP() as Sprite;
-                        _loc_7.addBackground("readySwords", _loc_25);
+                        _loc_24 = new SWORDS_CLIP() as Sprite;
+                        _loc_7.addBackground("readySwords", _loc_24);
                     }
                     else
                     {
@@ -202,14 +207,14 @@
                 case param1 is GameEntitiesDispositionMessage:
                 {
                     _loc_9 = param1 as GameEntitiesDispositionMessage;
-                    for each (_loc_26 in _loc_9.dispositions)
+                    for each (_loc_25 in _loc_9.dispositions)
                     {
                         
-                        if (getEntityInfos(_loc_26.id) && GameFightFighterInformations(getEntityInfos(_loc_26.id)).stats.invisibilityState != GameActionFightInvisibilityStateEnum.INVISIBLE)
+                        if (getEntityInfos(_loc_25.id) && GameFightFighterInformations(getEntityInfos(_loc_25.id)).stats.invisibilityState != GameActionFightInvisibilityStateEnum.INVISIBLE)
                         {
-                            this.updateActorDisposition(_loc_26.id, _loc_26);
+                            this.updateActorDisposition(_loc_25.id, _loc_25);
                         }
-                        KernelEventsManager.getInstance().processCallback(FightHookList.GameEntityDisposition, _loc_26.id, _loc_26.cellId, _loc_26.direction);
+                        KernelEventsManager.getInstance().processCallback(FightHookList.GameEntityDisposition, _loc_25.id, _loc_25.cellId, _loc_25.direction);
                     }
                     return true;
                 }
@@ -262,28 +267,28 @@
                     _interactiveElements = _loc_19.interactiveElements;
                     if (param1 is MapComplementaryInformationsWithCoordsMessage)
                     {
-                        _loc_27 = param1 as MapComplementaryInformationsWithCoordsMessage;
+                        _loc_26 = param1 as MapComplementaryInformationsWithCoordsMessage;
                         if (PlayedCharacterManager.getInstance().isInHouse)
                         {
                             KernelEventsManager.getInstance().processCallback(HookList.HouseExit);
                         }
                         PlayedCharacterManager.getInstance().isInHouse = false;
                         PlayedCharacterManager.getInstance().isInHisHouse = false;
-                        PlayedCharacterManager.getInstance().currentMap.setOutdoorCoords(_loc_27.worldX, _loc_27.worldY);
-                        _worldPoint = new WorldPointWrapper(_loc_27.mapId, true, _loc_27.worldX, _loc_27.worldY);
+                        PlayedCharacterManager.getInstance().currentMap.setOutdoorCoords(_loc_26.worldX, _loc_26.worldY);
+                        _worldPoint = new WorldPointWrapper(_loc_26.mapId, true, _loc_26.worldX, _loc_26.worldY);
                     }
                     else if (param1 is MapComplementaryInformationsDataInHouseMessage)
                     {
-                        _loc_28 = param1 as MapComplementaryInformationsDataInHouseMessage;
-                        _loc_29 = PlayerManager.getInstance().nickname == _loc_28.currentHouse.ownerName;
+                        _loc_27 = param1 as MapComplementaryInformationsDataInHouseMessage;
+                        _loc_28 = PlayerManager.getInstance().nickname == _loc_27.currentHouse.ownerName;
                         PlayedCharacterManager.getInstance().isInHouse = true;
-                        if (_loc_29)
+                        if (_loc_28)
                         {
                             PlayedCharacterManager.getInstance().isInHisHouse = true;
                         }
-                        PlayedCharacterManager.getInstance().currentMap.setOutdoorCoords(_loc_28.currentHouse.worldX, _loc_28.currentHouse.worldY);
-                        KernelEventsManager.getInstance().processCallback(HookList.HouseEntered, _loc_29, _loc_28.currentHouse.ownerId, _loc_28.currentHouse.ownerName, _loc_28.currentHouse.price, _loc_28.currentHouse.isLocked, _loc_28.currentHouse.worldX, _loc_28.currentHouse.worldY, HouseWrapper.manualCreate(_loc_28.currentHouse.modelId, -1, _loc_28.currentHouse.ownerName, _loc_28.currentHouse.price != 0));
-                        _worldPoint = new WorldPointWrapper(_loc_28.mapId, true, _loc_28.currentHouse.worldX, _loc_28.currentHouse.worldY);
+                        PlayedCharacterManager.getInstance().currentMap.setOutdoorCoords(_loc_27.currentHouse.worldX, _loc_27.currentHouse.worldY);
+                        KernelEventsManager.getInstance().processCallback(HookList.HouseEntered, _loc_28, _loc_27.currentHouse.ownerId, _loc_27.currentHouse.ownerName, _loc_27.currentHouse.price, _loc_27.currentHouse.isLocked, _loc_27.currentHouse.worldX, _loc_27.currentHouse.worldY, HouseWrapper.manualCreate(_loc_27.currentHouse.modelId, -1, _loc_27.currentHouse.ownerName, _loc_27.currentHouse.price != 0));
+                        _worldPoint = new WorldPointWrapper(_loc_27.mapId, true, _loc_27.currentHouse.worldX, _loc_27.currentHouse.worldY);
                     }
                     else
                     {
@@ -300,28 +305,28 @@
                     PlayedCharacterManager.getInstance().currentMap = _worldPoint;
                     PlayedCharacterManager.getInstance().currentSubArea = SubArea.getSubAreaById(_currentSubAreaId);
                     TooltipManager.hide();
-                    for each (_loc_30 in _loc_19.obstacles)
+                    for each (_loc_29 in _loc_19.obstacles)
                     {
                         
-                        InteractiveCellManager.getInstance().updateCell(_loc_30.obstacleCellId, _loc_30.state == MapObstacleStateEnum.OBSTACLE_OPENED);
+                        InteractiveCellManager.getInstance().updateCell(_loc_29.obstacleCellId, _loc_29.state == MapObstacleStateEnum.OBSTACLE_OPENED);
                     }
-                    for each (_loc_31 in _loc_19.interactiveElements)
+                    for each (_loc_30 in _loc_19.interactiveElements)
                     {
                         
-                        if (_loc_31.enabledSkills.length)
+                        if (_loc_30.enabledSkills.length)
                         {
-                            this.registerInteractive(_loc_31, _loc_31.enabledSkills[0].skillId);
+                            this.registerInteractive(_loc_30, _loc_30.enabledSkills[0].skillId);
                             continue;
                         }
-                        if (_loc_31.disabledSkills.length)
+                        if (_loc_30.disabledSkills.length)
                         {
-                            this.registerInteractive(_loc_31, _loc_31.disabledSkills[0].skillId);
+                            this.registerInteractive(_loc_30, _loc_30.disabledSkills[0].skillId);
                         }
                     }
-                    for each (_loc_32 in _loc_19.statedElements)
+                    for each (_loc_31 in _loc_19.statedElements)
                     {
                         
-                        this.updateStatedElement(_loc_32);
+                        this.updateStatedElement(_loc_31);
                     }
                     KernelEventsManager.getInstance().processCallback(HookList.MapComplementaryInformationsData, PlayedCharacterManager.getInstance().currentMap, _currentSubAreaId, Dofus.getInstance().options.mapCoordinates, _currentSubAreaSide);
                     KernelEventsManager.getInstance().processCallback(HookList.MapFightCount, 0);
@@ -332,13 +337,13 @@
                     _loc_20 = param1 as GameActionFightCarryCharacterMessage;
                     if (_loc_20.cellId != -1)
                     {
-                        for each (_loc_33 in _entities)
+                        for each (_loc_32 in _entities)
                         {
                             
-                            if (_loc_33.contextualId == _loc_20.targetId)
+                            if (_loc_32.contextualId == _loc_20.targetId)
                             {
-                                (_loc_33.disposition as FightEntityDispositionInformations).carryingCharacterId = _loc_20.sourceId;
-                                this._tempFighterList.push(new TmpFighterInfos(_loc_33.contextualId, _loc_20.sourceId));
+                                (_loc_32.disposition as FightEntityDispositionInformations).carryingCharacterId = _loc_20.sourceId;
+                                this._tempFighterList.push(new TmpFighterInfos(_loc_32.contextualId, _loc_20.sourceId));
                                 break;
                             }
                         }
@@ -355,12 +360,6 @@
                 {
                     _loc_22 = param1 as GameActionFightDropCharacterMessage;
                     this.dropEntity(_loc_22.targetId);
-                    return true;
-                }
-                case param1 is GameActionFightInvisibleDetectedMessage:
-                {
-                    _loc_23 = param1 as GameActionFightInvisibleDetectedMessage;
-                    this._lastKnownPosition[_loc_23.sourceId] = _loc_23.cellId;
                     return true;
                 }
                 default:
@@ -406,9 +405,42 @@
             return;
         }// end function
 
+        public function entityIsIllusion(param1:int) : Boolean
+        {
+            return this._illusionEntities[param1];
+        }// end function
+
         public function getLastKnownEntityPosition(param1:int) : int
         {
             return this._lastKnownPosition[param1] != null ? (this._lastKnownPosition[param1]) : (-1);
+        }// end function
+
+        public function setLastKnownEntityPosition(param1:int, param2:int) : void
+        {
+            this._lastKnownPosition[param1] = param2;
+            return;
+        }// end function
+
+        public function getLastKnownEntityMovementPoint(param1:int) : int
+        {
+            return this._lastKnownMovementPoint[param1] != null ? (this._lastKnownMovementPoint[param1]) : (0);
+        }// end function
+
+        public function setLastKnownEntityMovementPoint(param1:int, param2:int, param3:Boolean = false) : void
+        {
+            if (this._lastKnownMovementPoint[param1] == null)
+            {
+                this._lastKnownMovementPoint[param1] = 0;
+            }
+            if (!param3)
+            {
+                this._lastKnownMovementPoint[param1] = param2;
+            }
+            else
+            {
+                this._lastKnownMovementPoint[param1] = this._lastKnownMovementPoint[param1] + param2;
+            }
+            return;
         }// end function
 
         override public function pulled() : Boolean

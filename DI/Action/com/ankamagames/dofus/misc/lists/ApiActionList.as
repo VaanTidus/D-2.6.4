@@ -18,6 +18,7 @@
 
     public class ApiActionList extends Object
     {
+        public static const OpenPopup:DofusApiAction = new DofusApiAction("OpenPopup", OpenPopupAction);
         public static const BasicSwitchMode:DofusApiAction = new DofusApiAction("BasicSwitchMode", BasicSwitchModeAction);
         public static const ChatCommand:DofusApiAction = new DofusApiAction("ChatCommand", ChatCommandAction);
         public static const ChatLoaded:DofusApiAction = new DofusApiAction("ChatLoaded", ChatLoadedAction);

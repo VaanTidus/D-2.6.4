@@ -15,6 +15,7 @@
         public var isInFight:Boolean;
         private var _updatedCell:Dictionary;
         private var _specialEffects:Dictionary;
+        private static const TOLERANCE_ELEVATION:int = 11;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(DataMapProvider));
         private static var _self:DataMapProvider;
         private static var _playerClass:Class;
@@ -60,31 +61,56 @@
             return CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[_loc_3]).farmCell;
         }// end function
 
-        public function pointMov(param1:int, param2:int, param3:Boolean = true) : Boolean
+        public function isChangeZone(param1:uint, param2:uint) : Boolean
         {
-            var _loc_4:uint = 0;
-            var _loc_5:CellData = null;
-            var _loc_6:Boolean = false;
-            var _loc_7:Array = null;
-            var _loc_8:IObstacle = null;
+            var _loc_3:* = CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[param1]);
+            var _loc_4:* = CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[param2]);
+            var _loc_5:* = Math.abs(Math.abs(_loc_3.floor) - Math.abs(_loc_4.floor));
+            if (_loc_3.moveZone != _loc_4.moveZone && _loc_5 == 0)
+            {
+                return true;
+            }
+            return false;
+        }// end function
+
+        public function pointMov(param1:int, param2:int, param3:Boolean = true, param4:int = -1) : Boolean
+        {
+            var _loc_5:Boolean = false;
+            var _loc_6:uint = 0;
+            var _loc_7:CellData = null;
+            var _loc_8:Boolean = false;
+            var _loc_9:CellData = null;
+            var _loc_10:int = 0;
+            var _loc_11:Array = null;
+            var _loc_12:IObstacle = null;
             if (param2 <= param1 && param2 + param1 >= 0 && param1 - param2 < 2 * AtouinConstants.MAP_HEIGHT && param1 + param2 < 2 * AtouinConstants.MAP_WIDTH)
             {
-                _loc_4 = MapPoint.fromCoords(param1, param2).cellId;
-                _loc_5 = CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[_loc_4]);
-                _loc_6 = _loc_5.mov && (!this.isInFight || !_loc_5.nonWalkableDuringFight);
-                if (this._updatedCell[_loc_4] != null)
+                _loc_5 = MapDisplayManager.getInstance().getDataMapContainer().dataMap.isUsingNewMovementSystem;
+                _loc_6 = MapPoint.fromCoords(param1, param2).cellId;
+                _loc_7 = CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[_loc_6]);
+                _loc_8 = _loc_7.mov && (!this.isInFight || !_loc_7.nonWalkableDuringFight);
+                if (this._updatedCell[_loc_6] != null)
                 {
-                    _loc_6 = this._updatedCell[_loc_4];
+                    _loc_8 = this._updatedCell[_loc_6];
+                }
+                if (_loc_8 && _loc_5 && param4 != -1 && param4 != _loc_6)
+                {
+                    _loc_9 = CellData(MapDisplayManager.getInstance().getDataMapContainer().dataMap.cells[param4]);
+                    _loc_10 = Math.abs(Math.abs(_loc_7.floor) - Math.abs(_loc_9.floor));
+                    if (_loc_9.moveZone != _loc_7.moveZone && _loc_10 > 0 || _loc_9.moveZone == _loc_7.moveZone && _loc_7.moveZone == 0 && _loc_10 > TOLERANCE_ELEVATION)
+                    {
+                        _loc_8 = false;
+                    }
                 }
                 if (!param3)
                 {
-                    _loc_7 = EntitiesManager.getInstance().getEntitiesOnCell(_loc_4, IObstacle);
-                    if (_loc_7.length)
+                    _loc_11 = EntitiesManager.getInstance().getEntitiesOnCell(_loc_6, IObstacle);
+                    if (_loc_11.length)
                     {
-                        for each (_loc_8 in _loc_7)
+                        for each (_loc_12 in _loc_11)
                         {
                             
-                            if (!IObstacle(_loc_8).canSeeThrough())
+                            if (!IObstacle(_loc_12).canSeeThrough())
                             {
                                 return false;
                             }
@@ -94,9 +120,9 @@
             }
             else
             {
-                _loc_6 = false;
+                _loc_8 = false;
             }
-            return _loc_6;
+            return _loc_8;
         }// end function
 
         public function pointCanStop(param1:int, param2:int, param3:Boolean = true) : Boolean

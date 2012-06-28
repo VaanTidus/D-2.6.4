@@ -22,7 +22,6 @@
             add("remindTurn", true);
             add("showGlowOverTarget", true);
             add("confirmItemDrop", true);
-            add("confirmBeforeUnknownCraft", true);
             add("switchUiSkin", "dofus1");
             add("allowBannerShortcuts", true);
             add("dofusQuality", 1);
@@ -35,6 +34,7 @@
             add("allowHitAnim", true);
             add("legalAgreementEula", "fr#0");
             add("legalAgreementTou", "fr#0");
+            add("legalAgreementModsTou", "fr#0");
             add("allowLog", BuildInfos.BUILD_TYPE != BuildTypeEnum.RELEASE);
             add("flashQuality", 2);
             add("cellSelectionOnly", false);

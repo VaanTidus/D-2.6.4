@@ -27,6 +27,11 @@
                     KernelEventsManager.getInstance().processCallback(ChatHookList.TabNameChange, param3[0], param3[1]);
                     break;
                 }
+                case "clear":
+                {
+                    KernelEventsManager.getInstance().processCallback(ChatHookList.ClearChat);
+                    break;
+                }
                 default:
                 {
                     break;
@@ -42,6 +47,10 @@
                 case "tab":
                 {
                     return I18n.getUiText("ui.chat.console.help.tab");
+                }
+                case "clear":
+                {
+                    return I18n.getUiText("ui.chat.console.help.clear");
                 }
                 default:
                 {

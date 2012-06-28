@@ -23,9 +23,9 @@
         private var _currentFrameTypesCache:Dictionary;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(Worker));
         private static const DEBUG_FRAMES:Boolean = true;
-        private static const DEBUG_MESSAGES:Boolean = false;
+        private static const DEBUG_MESSAGES:Boolean = true;
         private static const MAX_MESSAGES_PER_FRAME:uint = 100;
-        private static const MAX_TIME_FRAME:uint = 200;
+        private static const MAX_TIME_FRAME:uint = 40;
 
         public function Worker()
         {
@@ -295,36 +295,24 @@
         {
             var _loc_2:Boolean = false;
             var _loc_3:Frame = null;
-            var _loc_4:String = null;
             this._processingMessage = true;
-            if (DEBUG_MESSAGES)
-            {
-                _log.info("Processing message: " + param1);
-            }
-            if (getQualifiedClassName(param1).indexOf("GameFightEndMessage") != -1)
-            {
-                _loc_4 = "";
-                for each (_loc_3 in this._framesList)
-                {
-                    
-                    _loc_4 = _loc_4 + (_loc_3 + " / " + _loc_3.priority);
-                }
-                _log.info("Liste des frames : " + _loc_4);
-            }
             for each (_loc_3 in this._framesList)
             {
                 
                 if (_loc_3.process(param1))
                 {
-                    _log.info(param1 + " eat by " + _loc_3);
                     _loc_2 = true;
                     break;
                 }
             }
+            if (DEBUG_MESSAGES && _loc_2)
+            {
+                _log.info("Message " + param1 + " processed by " + getQualifiedClassName(_loc_3).split("::")[1] + " (at frame " + FrameIdManager.frameId + ")");
+            }
             this._processingMessage = false;
             if (!_loc_2 && !(param1 is DiscardableMessage))
             {
-                _log.warn("Discarded message: " + param1);
+                _log.warn("Discarded message: " + param1 + " (at frame " + FrameIdManager.frameId + ")");
             }
             return;
         }// end function

@@ -24,6 +24,10 @@
                 {
                     return new HttpProtocol();
                 }
+                case "httpc":
+                {
+                    return new HttpCacheProtocol();
+                }
                 case "file":
                 {
                     if (AirScanner.hasAir())

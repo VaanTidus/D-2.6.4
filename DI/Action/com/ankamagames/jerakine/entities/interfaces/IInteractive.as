@@ -2,7 +2,7 @@
 {
     import com.ankamagames.jerakine.entities.interfaces.*;
     import com.ankamagames.jerakine.messages.*;
-    import com.ankamagames.tubul.interfaces.*;
+    import flash.events.*;
 
     public interface IInteractive extends IEventDispatcher, IEntity
     {

@@ -494,6 +494,7 @@
             var _loc_1:SwitchCreatureModeAction = null;
             if (this._creaturesMode != (!Kernel.getWorker().getFrame(FightEntitiesFrame) && this._creaturesLimit < 50 && this._humanNumber >= this._creaturesLimit))
             {
+                _log.debug("human number: " + this._humanNumber + ", creature limit: " + this._creaturesLimit + " => " + this._creaturesMode);
                 _loc_1 = SwitchCreatureModeAction.create(!this._creaturesMode);
                 Kernel.getWorker().process(_loc_1);
                 return true;
@@ -515,7 +516,7 @@
                 {
                     _loc_5 = Breed.getBreedFromSkin(_loc_2.skins[0]).id;
                 }
-                else if (_loc_2.getBone() == 639 || _loc_2.getBone() == 1824 || _loc_2.getBone() == 1659 || _loc_2.getBone() == 1834)
+                else if (_loc_2.getBone() == 639 || _loc_2.getBone() == 1824 || _loc_2.getBone() == 1659 || _loc_2.getBone() == 1834 || _loc_2.getBone() == 1792)
                 {
                     _loc_4 = TiphonUtility.getLookWithoutMount(_loc_2);
                     if (_loc_4 != _loc_2)

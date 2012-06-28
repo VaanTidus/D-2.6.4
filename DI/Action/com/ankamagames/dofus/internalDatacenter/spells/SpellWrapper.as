@@ -559,6 +559,7 @@
             {
                 param4 = false;
             }
+            param1 = 63;
             if (param4)
             {
                 if (_cache[param2] && _cache[param2].length > 0 && _cache[param2][param1] && !param5)

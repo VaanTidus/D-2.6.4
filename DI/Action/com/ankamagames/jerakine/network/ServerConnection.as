@@ -5,7 +5,6 @@
     import com.ankamagames.jerakine.network.*;
     import com.ankamagames.jerakine.network.messages.*;
     import com.ankamagames.jerakine.replay.*;
-    import com.ankamagames.tubul.interfaces.*;
     import flash.events.*;
     import flash.net.*;
     import flash.utils.*;

@@ -20,13 +20,14 @@
         private static const ERROR_SPACE:IOError = new IOError("Not enough space free", 1);
         private static const ERROR_FILE_NUM:IOError = new IOError("Maximum number of files reaches", 2);
         private static const ERROR_FILE_NOT_EXISTS:IOError = new IOError("File does not exist", 3);
+        private static const AUTHORIZED_URL_CHAR_REGEXPR:RegExp = new RegExp(/[^a-zA-Z0-9-_\/]""[^a-zA-Z0-9-_\/]/mg);
         public static const MAX_SIZE:uint = 10 * Math.pow(2, 20);
         public static const MODULE_FILE_HEADER:String = "Ankama DOFUS 2 module File";
 
         public function ModuleFilestream(param1:String, param2:String, param3:UiModule)
         {
             ModuleFileManager.getInstance().initModuleFiles(param3.id);
-            param1 = param1.replace(".", "");
+            param1 = cleanUrl(param1);
             this._url = param1;
             this._file = checkCreation(param1, param3);
             if (param2 == FileMode.READ && !this._file.exists)
@@ -340,7 +341,7 @@
             var _loc_6:String = null;
             var _loc_7:String = null;
             ModuleFileManager.getInstance().initModuleFiles(param2.id);
-            param1 = param1.replace(".", "");
+            param1 = cleanUrl(param1);
             var _loc_3:* = new File(param2.storagePath + param1 + ".dmf");
             if (!_loc_3.exists)
             {
@@ -363,6 +364,11 @@
                 ModuleFileManager.getInstance().updateModuleFileNum(param2.id, _loc_5);
             }
             return _loc_3;
+        }// end function
+
+        public static function cleanUrl(param1:String) : String
+        {
+            return param1.replace(AUTHORIZED_URL_CHAR_REGEXPR, "");
         }// end function
 
     }

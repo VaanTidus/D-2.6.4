@@ -412,6 +412,7 @@
 
         private function addTab() : void
         {
+            var _loc_6:ButtonContainer = null;
             var _loc_1:* = new ButtonContainer();
             _loc_1.soundId = "16009";
             _loc_1.width = this._nWidthTab;
@@ -462,8 +463,8 @@
             _loc_5[StatesEnum.STATE_SELECTED][_loc_3.name]["cssClass"] = "selected";
             _loc_1.changingStateData = _loc_5;
             _loc_1.finalize();
-            var _loc_6:* = new ButtonContainer();
-            new ButtonContainer().x = this._nXCloseTab;
+            _loc_6 = new ButtonContainer();
+            _loc_6.x = this._nXCloseTab;
             _loc_6.y = this._nYCloseTab;
             _loc_6.width = this._nWidthPlusTab;
             _loc_6.height = __height;

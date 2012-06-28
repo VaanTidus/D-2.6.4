@@ -62,21 +62,21 @@
             return null;
         }// end function
 
-        public function getItemQty(param1:uint) : uint
+        public function getItemQty(param1:uint, param2:uint = 0) : uint
         {
-            var _loc_4:ItemWrapper = null;
-            var _loc_2:uint = 0;
-            var _loc_3:* = InventoryManager.getInstance().realInventory;
-            for each (_loc_4 in _loc_3)
+            var _loc_5:ItemWrapper = null;
+            var _loc_3:uint = 0;
+            var _loc_4:* = InventoryManager.getInstance().realInventory;
+            for each (_loc_5 in _loc_4)
             {
                 
-                if (_loc_4.objectGID != param1 || _loc_4.position < 63)
+                if (_loc_5.position < 63 || _loc_5.objectGID != param1 || param2 > 0 && _loc_5.objectUID != param2)
                 {
                     continue;
                 }
-                _loc_2 = _loc_2 + _loc_4.quantity;
+                _loc_3 = _loc_3 + _loc_5.quantity;
             }
-            return _loc_2;
+            return _loc_3;
         }// end function
 
         public function getItem(param1:uint) : ItemWrapper

@@ -23,6 +23,7 @@
     import com.ankamagames.dofus.network.types.game.context.roleplay.party.*;
     import com.ankamagames.dofus.types.enums.*;
     import com.ankamagames.dofus.uiApi.*;
+    import com.ankamagames.dofusModuleLibrary.enum.*;
     import com.ankamagames.jerakine.data.*;
     import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.messages.*;
@@ -239,6 +240,7 @@
             var pplra:PartyPledgeLoyaltyRequestAction;
             var pplrmsg:PartyPledgeLoyaltyRequestMessage;
             var plsmsg:PartyLoyaltyStatusMessage;
+            var pfsumsg:PartyFollowStatusUpdateMessage;
             var pfma:PartyFollowMemberAction;
             var pfmrmsg:PartyFollowMemberRequestMessage;
             var psfma:PartyStopFollowingMemberAction;
@@ -436,6 +438,7 @@
                 {
                     pngmsg = msg as PartyNewGuestMessage;
                     newGuest = new PartyMemberWrapper(pngmsg.guest.guestId, pngmsg.guest.name, false, false, 0, pngmsg.guest.guestLook);
+                    newGuest.breed = pngmsg.guest.breed;
                     newGuest.hostId = pngmsg.guest.hostId;
                     if (pngmsg.partyId == this._arenaPartyId)
                     {
@@ -489,13 +492,13 @@
                 case msg is PartyInvitationDungeonDetailsMessage:
                 {
                     piddmsg = msg as PartyInvitationDungeonDetailsMessage;
-                    KernelEventsManager.getInstance().processCallback(HookList.PartyInvitation, piddmsg.partyId, piddmsg.fromName, piddmsg.leaderId, piddmsg.partyType, piddmsg.members, piddmsg.dungeonId, piddmsg.playersDungeonReady);
+                    KernelEventsManager.getInstance().processCallback(HookList.PartyInvitation, piddmsg.partyId, piddmsg.fromName, piddmsg.leaderId, piddmsg.partyType, piddmsg.members, piddmsg.guests, piddmsg.dungeonId, piddmsg.playersDungeonReady);
                     return true;
                 }
                 case msg is PartyInvitationDetailsMessage:
                 {
                     pidemsg = msg as PartyInvitationDetailsMessage;
-                    KernelEventsManager.getInstance().processCallback(HookList.PartyInvitation, pidemsg.partyId, pidemsg.fromName, pidemsg.leaderId, pidemsg.partyType, pidemsg.members, 0, null);
+                    KernelEventsManager.getInstance().processCallback(HookList.PartyInvitation, pidemsg.partyId, pidemsg.fromName, pidemsg.leaderId, pidemsg.partyType, pidemsg.members, pidemsg.guests, 0, null);
                     return true;
                 }
                 case msg is PartyAcceptInvitationAction:
@@ -531,16 +534,19 @@
                                 member.maxLifePoints = pumsg.memberInformations.maxLifePoints;
                                 member.maxInitiative = pumsg.memberInformations.initiative;
                                 member.rank = (pumsg.memberInformations as PartyMemberArenaInformations).rank;
-                                member.prospecting = 0;
                                 member.pvpEnabled = pumsg.memberInformations.pvpEnabled;
                                 member.alignmentSide = pumsg.memberInformations.alignmentSide;
                                 member.regenRate = pumsg.memberInformations.regenRate;
+                                member.worldX = pumsg.memberInformations.worldX;
+                                member.worldY = pumsg.memberInformations.worldY;
+                                member.mapId = pumsg.memberInformations.mapId;
+                                member.subAreaId = pumsg.memberInformations.subAreaId;
                                 existingMember;
                             }
                         }
                         if (!existingMember)
                         {
-                            newMember = new PartyMemberWrapper(pumsg.memberInformations.id, pumsg.memberInformations.name, true, false, pumsg.memberInformations.level, pumsg.memberInformations.entityLook, pumsg.memberInformations.lifePoints, pumsg.memberInformations.maxLifePoints, pumsg.memberInformations.initiative, 0, pumsg.memberInformations.pvpEnabled, pumsg.memberInformations.alignmentSide, pumsg.memberInformations.regenRate, (pumsg.memberInformations as PartyMemberArenaInformations).rank);
+                            newMember = new PartyMemberWrapper(pumsg.memberInformations.id, pumsg.memberInformations.name, true, false, pumsg.memberInformations.level, pumsg.memberInformations.entityLook, pumsg.memberInformations.lifePoints, pumsg.memberInformations.maxLifePoints, pumsg.memberInformations.initiative, 0, pumsg.memberInformations.pvpEnabled, pumsg.memberInformations.alignmentSide, pumsg.memberInformations.regenRate, (pumsg.memberInformations as PartyMemberArenaInformations).rank, pumsg.memberInformations.worldX, pumsg.memberInformations.worldY, pumsg.memberInformations.mapId, pumsg.memberInformations.subAreaId);
                             this._arenaPartyMembers.push(newMember);
                         }
                     }
@@ -565,12 +571,16 @@
                                 member.pvpEnabled = pumsg.memberInformations.pvpEnabled;
                                 member.alignmentSide = pumsg.memberInformations.alignmentSide;
                                 member.regenRate = pumsg.memberInformations.regenRate;
+                                member.worldX = pumsg.memberInformations.worldX;
+                                member.worldY = pumsg.memberInformations.worldY;
+                                member.mapId = pumsg.memberInformations.mapId;
+                                member.subAreaId = pumsg.memberInformations.subAreaId;
                                 existingMember;
                             }
                         }
                         if (!existingMember)
                         {
-                            newMember = new PartyMemberWrapper(pumsg.memberInformations.id, pumsg.memberInformations.name, true, false, pumsg.memberInformations.level, pumsg.memberInformations.entityLook, pumsg.memberInformations.lifePoints, pumsg.memberInformations.maxLifePoints, pumsg.memberInformations.initiative, pumsg.memberInformations.prospecting, pumsg.memberInformations.pvpEnabled, pumsg.memberInformations.alignmentSide, pumsg.memberInformations.regenRate);
+                            newMember = new PartyMemberWrapper(pumsg.memberInformations.id, pumsg.memberInformations.name, true, false, pumsg.memberInformations.level, pumsg.memberInformations.entityLook, pumsg.memberInformations.lifePoints, pumsg.memberInformations.maxLifePoints, pumsg.memberInformations.initiative, pumsg.memberInformations.prospecting, pumsg.memberInformations.pvpEnabled, pumsg.memberInformations.alignmentSide, pumsg.memberInformations.regenRate, pumsg.memberInformations.worldX, pumsg.memberInformations.worldY, pumsg.memberInformations.mapId, pumsg.memberInformations.subAreaId);
                             this._partyMembers.push(newMember);
                         }
                     }
@@ -1023,6 +1033,25 @@
                     KernelEventsManager.getInstance().processCallback(HookList.PartyLoyaltyStatus, plsmsg.partyId, plsmsg.loyal);
                     return true;
                 }
+                case msg is PartyFollowStatusUpdateMessage:
+                {
+                    pfsumsg = msg as PartyFollowStatusUpdateMessage;
+                    if (pfsumsg.success)
+                    {
+                        if (pfsumsg.followedId == 0)
+                        {
+                            KernelEventsManager.getInstance().processCallback(HookList.RemoveMapFlag, "flag_srv" + CompassTypeEnum.COMPASS_TYPE_PARTY + "_" + PlayedCharacterManager.getInstance().followingPlayerId);
+                            KernelEventsManager.getInstance().processCallback(HookList.PartyMemberFollowUpdate, pfsumsg.partyId, PlayedCharacterManager.getInstance().followingPlayerId, false);
+                            PlayedCharacterManager.getInstance().followingPlayerId = -1;
+                        }
+                        else
+                        {
+                            KernelEventsManager.getInstance().processCallback(HookList.PartyMemberFollowUpdate, pfsumsg.partyId, pfsumsg.followedId, true);
+                            PlayedCharacterManager.getInstance().followingPlayerId = pfsumsg.followedId;
+                        }
+                    }
+                    return true;
+                }
                 case msg is PartyFollowMemberAction:
                 {
                     pfma = msg as PartyFollowMemberAction;
@@ -1106,6 +1135,10 @@
                         prinText = prinText + (" " + PatternDecoder.combine(I18n.getUiText("ui.party.teleportCriterionFallenAngels", [poorBuddiesNames]), "n", poorBuddiesNames.split(", ").length == 1));
                     }
                     KernelEventsManager.getInstance().processCallback(ChatHookList.TextInformation, prinText, ChatActivableChannelsEnum.CHANNEL_PARTY, TimeManager.getInstance().getTimestamp());
+                    if (Kernel.getWorker().contains(TeleportBuddiesDialogFrame))
+                    {
+                        Kernel.getWorker().removeFrame(Kernel.getWorker().getFrame(TeleportBuddiesDialogFrame) as TeleportBuddiesDialogFrame);
+                    }
                     return true;
                 }
                 case msg is TeleportToBuddyOfferMessage:
@@ -1351,8 +1384,8 @@
                         else
                         {
                             this._arenaCurrentStatus = PvpArenaStepEnum.ARENA_STEP_REGISTRED;
-                            NotificationManager.getInstance().closeNotification("fightProposition_" + grpafsmsg.fightId);
                         }
+                        NotificationManager.getInstance().closeNotification("fightProposition_" + grpafsmsg.fightId);
                         this._arenaReadyPartyMemberIds = new Array();
                         this._arenaAlliesIds = new Array();
                         KernelEventsManager.getInstance().processCallback(RoleplayHookList.ArenaRegistrationStatusUpdate, this._isArenaRegistered, this._arenaCurrentStatus);

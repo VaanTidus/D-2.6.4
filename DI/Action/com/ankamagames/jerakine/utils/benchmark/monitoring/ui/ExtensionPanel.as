@@ -20,6 +20,11 @@
             return;
         }// end function
 
+        public function get lastGc() : int
+        {
+            return this._memoryState.lastGc;
+        }// end function
+
         public function changeState() : void
         {
             switch(this._currentState)

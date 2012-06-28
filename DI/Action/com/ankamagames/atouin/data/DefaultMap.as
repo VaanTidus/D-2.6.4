@@ -2,6 +2,7 @@
 {
     import com.ankamagames.atouin.*;
     import com.ankamagames.atouin.data.map.*;
+    import flash.utils.*;
 
     public class DefaultMap extends Map
     {
@@ -26,6 +27,11 @@
                 cells.push(_loc_3);
                 _loc_2++;
             }
+            return;
+        }// end function
+
+        override public function fromRaw(param1:IDataInput, param2:ByteArray = null) : void
+        {
             return;
         }// end function
 

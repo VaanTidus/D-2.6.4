@@ -52,6 +52,7 @@
                 {
                     CurrentPlayedFighterManager.getInstance().getCharacteristicsInformations().movementPointsCurrent = _loc_1.stats.movementPoints;
                 }
+                FightEntitiesFrame.getCurrentInstance().setLastKnownEntityMovementPoint(_targetId, -this._intValue, true);
                 if (_loc_1.disposition.cellId == -1)
                 {
                     super.executeCallbacks();

@@ -206,6 +206,7 @@
         override public function onRemoved() : void
         {
             var _loc_1:Effect = null;
+            this.onDisabled();
             if (!_removed)
             {
                 _loc_1 = Effect.getEffectById(actionId);

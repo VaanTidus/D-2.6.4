@@ -643,6 +643,26 @@
             return null;
         }// end function
 
+        public function get slots() : Array
+        {
+            if (this._items == null || this.dataProvider.length == 0)
+            {
+                return new Array();
+            }
+            var _loc_1:* = new Array();
+            var _loc_2:uint = 0;
+            while (_loc_2 < this._items.length)
+            {
+                
+                if (this._items[_loc_2])
+                {
+                    _loc_1.push(this._items[_loc_2].container);
+                }
+                _loc_2 = _loc_2 + 1;
+            }
+            return _loc_1;
+        }// end function
+
         override public function remove() : void
         {
             var _loc_1:GridItem = null;

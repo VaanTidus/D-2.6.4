@@ -17,11 +17,11 @@
             add("useCacheAsBitmap", true);
             add("useSmooth", true);
             add("frustum", new Frustum(), false);
-            add("useMapScrolling", false);
             add("alwaysShowGrid", false);
             add("debugLayer", false);
             add("showCellIdOnOver", false);
             add("tweentInterMap", false);
+            add("hideInterMap", false);
             add("virtualPlayerJump", false);
             add("reloadLoadedMap", false);
             add("hideForeground", false);
@@ -37,6 +37,7 @@
             add("groundOnly", false);
             add("showTransitions", false);
             add("useLowDefSkin", true);
+            add("showProgressBar", false);
             this._container = param1;
             this._handler = param2;
             return;

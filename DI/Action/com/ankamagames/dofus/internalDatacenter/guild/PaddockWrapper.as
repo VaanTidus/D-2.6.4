@@ -41,7 +41,7 @@
             if (param1 is PaddockPrivateInformations)
             {
                 _loc_5 = param1 as PaddockPrivateInformations;
-                _loc_2.guildIdentity = GuildWrapper.create(_loc_5.guildInfo.guildId, _loc_5.guildInfo.guildName, _loc_5.guildInfo.guildEmblem, 0);
+                _loc_2.guildIdentity = GuildWrapper.create(_loc_5.guildInfo.guildId, _loc_5.guildInfo.guildName, _loc_5.guildInfo.guildEmblem, 0, true);
             }
             return _loc_2;
         }// end function

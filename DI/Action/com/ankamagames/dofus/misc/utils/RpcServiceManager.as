@@ -32,8 +32,6 @@
 
         private function onComplete(event:Event) : void
         {
-            this._loader.removeEventListener(Event.COMPLETE, this.onComplete);
-            this._loader.removeEventListener(IOErrorEvent.IO_ERROR, this.onError);
             var _loc_2:Boolean = true;
             if (this._type == "json")
             {
@@ -89,7 +87,7 @@
                     }
                     default:
                     {
-                        _log.error("ERROR RPS SERVICE: " + de.error);
+                        _log.error("ERROR RPC SERVICE: " + de.error);
                         break;
                     }
                 }
@@ -132,6 +130,10 @@
             if (this._loader.hasEventListener(IOErrorEvent.IO_ERROR))
             {
                 this._loader.removeEventListener(IOErrorEvent.IO_ERROR, this.onError);
+            }
+            if (this._loader.hasEventListener(SecurityErrorEvent.SECURITY_ERROR))
+            {
+                this._loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.onError);
             }
             this._loader = null;
             this._request = null;
@@ -214,15 +216,23 @@
             this._loader = new URLLoader();
             this._loader.addEventListener(Event.COMPLETE, this.onComplete);
             this._loader.addEventListener(IOErrorEvent.IO_ERROR, this.onError);
+            this._loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.onError);
             return;
         }// end function
 
         private function onError(event:Event) : void
         {
-            this._loader.removeEventListener(Event.COMPLETE, this.onComplete);
-            this._loader.removeEventListener(IOErrorEvent.IO_ERROR, this.onError);
             dispatchEvent(event);
             return;
+        }// end function
+
+        public function get requestData()
+        {
+            if (this._request == null)
+            {
+                return null;
+            }
+            return JSON.decode(this._request.data as String);
         }// end function
 
     }

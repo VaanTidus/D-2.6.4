@@ -22,7 +22,7 @@
 
         public function RoleplayApi()
         {
-            this._log = Log.getLogger(getQualifiedClassName(RoleplayApi));
+            this._log = Log.getLogger(getQualifiedClassName());
             return;
         }// end function
 
@@ -146,6 +146,21 @@
                 }
             }
             return null;
+        }// end function
+
+        public function switchButtonWrappers(param1:Object, param2:Object) : void
+        {
+            var _loc_3:* = param2.position;
+            var _loc_4:* = param1.position;
+            param2.setPosition(_loc_4);
+            param1.setPosition(_loc_3);
+            return;
+        }// end function
+
+        public function setButtonWrapperActivation(param1:Object, param2:Boolean) : void
+        {
+            param1.active = param2;
+            return;
         }// end function
 
     }

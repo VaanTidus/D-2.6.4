@@ -27,6 +27,7 @@
         private var _loader:IResourceLoader;
         private var _parseReference:Dictionary;
         private var _fontManager:FontManager;
+        private var _replaceErrorCallback:Function;
         private static var _self:LangManager;
         static const _log:Logger = Log.getLogger(getQualifiedClassName(LangManager));
         static const KEY_LANG_INDEX:String = "langIndex";
@@ -76,6 +77,12 @@
         public function get category() : Array
         {
             return this._aCategory;
+        }// end function
+
+        public function set replaceErrorCallback(param1:Function) : void
+        {
+            this._replaceErrorCallback = param1;
+            return;
         }// end function
 
         public function loadFile(param1:String, param2:Boolean = true) : void
@@ -228,15 +235,22 @@
                             if (_loc_8.charAt(0) == "~")
                             {
                             }
-                            _loc_6 = "!" + _loc_8;
-                            _loc_7 = this.findCategory(_loc_8);
-                            if (_loc_7.length)
+                            if (this._replaceErrorCallback != null)
                             {
-                                _log.warn("Référence incorrect vers la clef [" + _loc_8 + "] dans : " + param1 + " (pourrait être " + _loc_7.join(" ou ") + ")");
+                                _loc_6 = this._replaceErrorCallback(_loc_8);
                             }
-                            else
+                            if (_loc_6 == null)
                             {
-                                _log.warn("Référence inconue vers la clef [" + _loc_8 + "] dans : " + param1);
+                                _loc_6 = "!" + _loc_8;
+                                _loc_7 = this.findCategory(_loc_8);
+                                if (_loc_7.length)
+                                {
+                                    _log.warn("Référence incorrect vers la clef [" + _loc_8 + "] dans : " + param1 + " (pourrait être " + _loc_7.join(" ou ") + ")");
+                                }
+                                else
+                                {
+                                    _log.warn("Référence inconue vers la clef [" + _loc_8 + "] dans : " + param1);
+                                }
                             }
                         }
                     }

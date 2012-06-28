@@ -44,7 +44,6 @@
         private var _useCache:Boolean = true;
         private var _bitmap:Bitmap;
         private var _showLoadingError:Boolean = true;
-        private var _return2:Boolean;
         private var rle_uri_path:Object;
         public static var MEMORY_LOG:Dictionary = new Dictionary(true);
 
@@ -234,18 +233,21 @@
 
         public function set gotoAndStop(param1) : void
         {
-            if (this._child && this._child is MovieClip)
+            var mv:MovieClip;
+            var value:* = param1;
+            mv = this._child as MovieClip;
+            if (mv != null)
             {
-                if (param1)
+                try
                 {
-                    (this._child as MovieClip).gotoAndStop(param1);
+                    mv.gotoAndStop(value);
                 }
-                else
+                catch (error:ArgumentError)
                 {
-                    (this._child as MovieClip).gotoAndStop(1);
+                    mv.stop();
                 }
+                this._gotoFrame = value;
             }
-            this._gotoFrame = param1;
             return;
         }// end function
 
@@ -256,6 +258,21 @@
                 return (this._child as MovieClip).currentFrame.toString();
             }
             return this._gotoFrame;
+        }// end function
+
+        private function hasLabel(param1:MovieClip, param2:String) : Boolean
+        {
+            var _loc_4:FrameLabel = null;
+            var _loc_3:* = param1.currentLabels;
+            for each (_loc_4 in _loc_3)
+            {
+                
+                if (param2 == _loc_4.name)
+                {
+                    return true;
+                }
+            }
+            return false;
         }// end function
 
         public function set gotoAndPlay(param1) : void
@@ -484,11 +501,11 @@
                 }
                 if (this._uri.subPath)
                 {
-                    if (this._uri.protocol == "mod" || this._uri.protocol == "pak" || this._uri.protocol == "d2p" || this._uri.protocol == "pak2" || this._uri.protocol == "d2pOld")
+                    if (this._uri.protocol == "mod" || this._uri.protocol == "theme" || this._uri.protocol == "pak" || this._uri.protocol == "d2p" || this._uri.protocol == "pak2" || this._uri.protocol == "d2pOld")
                     {
                         _loc_1 = new Uri(this._uri.normalizedUri);
                     }
-                    else if (AirScanner.hasAir())
+                    else if (AirScanner.hasAir() && this._uri.protocol != "httpc")
                     {
                         _loc_1 = new Uri(this._uri.path);
                     }
@@ -630,7 +647,6 @@
             var aswf:ASwf;
             var error:ResourceErrorEvent;
             var rle:* = event;
-            this._return2 = false;
             if (__removed)
             {
                 return;
@@ -638,7 +654,6 @@
             this._loader = null;
             if (!this._uri || this._uri.path != rle.uri.path && this._uri.normalizedUri != rle.uri.path)
             {
-                this._return2 = true;
                 this.rle_uri_path = rle.uri.path;
                 return;
             }

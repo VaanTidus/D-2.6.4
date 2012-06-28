@@ -590,7 +590,7 @@
             FpsManager.getInstance().stopTracking("ui");
             KernelEventsManager.getInstance().processCallback(BeriliaHookList.UiUnloaded, sName);
             dispatchEvent(new UiUnloadEvent(UiUnloadEvent.UNLOAD_UI_COMPLETE, sName));
-            _log.debug(sName + " correctly unloaded");
+            _log.info(sName + " correctly unloaded");
             return true;
         }// end function
 

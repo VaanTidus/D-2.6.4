@@ -13,8 +13,6 @@
         private static var _rootContainer:DisplayObjectContainer;
         private static var _customMouseX:int = -77777;
         private static var _customMouseY:int = -77777;
-        private static var _lastStageX:Number;
-        private static var _lastStageY:Number;
         private static var _setQualityIsEnable:Boolean;
 
         public function StageShareManager()

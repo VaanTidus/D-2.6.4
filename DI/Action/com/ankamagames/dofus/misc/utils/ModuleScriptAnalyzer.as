@@ -2,6 +2,7 @@
 {
     import com.ankamagames.berilia.managers.*;
     import com.ankamagames.berilia.types.data.*;
+    import com.ankamagames.berilia.utils.web.*;
     import com.ankamagames.dofus.datacenter.misc.*;
     import com.ankamagames.jerakine.resources.adapters.impl.*;
     import com.ankamagames.jerakine.resources.events.*;

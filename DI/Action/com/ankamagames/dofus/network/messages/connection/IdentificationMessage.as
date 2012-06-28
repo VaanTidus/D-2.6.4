@@ -9,7 +9,7 @@
     public class IdentificationMessage extends NetworkMessage implements INetworkMessage
     {
         private var _isInitialized:Boolean = false;
-        public var version:Version;
+        public var version:VersionExtended;
         public var lang:String = "";
         public var login:String = "";
         public var credentials:Vector.<int>;
@@ -21,7 +21,7 @@
 
         public function IdentificationMessage()
         {
-            this.version = new Version();
+            this.version = new VersionExtended();
             this.credentials = new Vector.<int>;
             return;
         }// end function
@@ -36,7 +36,7 @@
             return 4;
         }// end function
 
-        public function initIdentificationMessage(param1:Version = null, param2:String = "", param3:String = "", param4:Vector.<int> = null, param5:int = 0, param6:Boolean = false, param7:Boolean = false, param8:Boolean = false) : IdentificationMessage
+        public function initIdentificationMessage(param1:VersionExtended = null, param2:String = "", param3:String = "", param4:Vector.<int> = null, param5:int = 0, param6:Boolean = false, param7:Boolean = false, param8:Boolean = false) : IdentificationMessage
         {
             this.version = param1;
             this.lang = param2;
@@ -52,7 +52,7 @@
 
         override public function reset() : void
         {
-            this.version = new Version();
+            this.version = new VersionExtended();
             this.login = "";
             this.credentials = new Vector.<int>;
             this.serverId = 0;
@@ -90,7 +90,7 @@
             _loc_2 = BooleanByteWrapper.setFlag(_loc_2, 1, this.useCertificate);
             _loc_2 = BooleanByteWrapper.setFlag(_loc_2, 2, this.useLoginToken);
             param1.writeByte(_loc_2);
-            this.version.serializeAs_Version(param1);
+            this.version.serializeAs_VersionExtended(param1);
             param1.writeUTF(this.lang);
             param1.writeUTF(this.login);
             param1.writeShort(this.credentials.length);
@@ -118,7 +118,7 @@
             this.autoconnect = BooleanByteWrapper.getFlag(_loc_2, 0);
             this.useCertificate = BooleanByteWrapper.getFlag(_loc_2, 1);
             this.useLoginToken = BooleanByteWrapper.getFlag(_loc_2, 2);
-            this.version = new Version();
+            this.version = new VersionExtended();
             this.version.deserialize(param1);
             this.lang = param1.readUTF();
             this.login = param1.readUTF();

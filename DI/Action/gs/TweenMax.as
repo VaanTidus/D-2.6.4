@@ -1,6 +1,5 @@
 ﻿package gs
 {
-    import com.ankamagames.tubul.interfaces.*;
     import flash.events.*;
     import flash.utils.*;
     import gs.events.*;

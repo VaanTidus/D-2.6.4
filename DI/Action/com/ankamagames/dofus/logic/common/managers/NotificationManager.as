@@ -13,7 +13,7 @@
 
         public function NotificationManager(param1:PrivateClass)
         {
-            this._notificationList = new Vector.<Notification>;
+            this._notificationList = new Vector.<>;
             return;
         }// end function
 
@@ -83,7 +83,7 @@
             }
             else if (param1 >= 0 && param1 < this._notificationList.length && this._notificationList[param1] != null)
             {
-                this.openNotification(this._notificationList[param1] as Notification);
+                this.openNotification(this._notificationList[param1] as );
                 this._notificationList.splice(param1, 1);
             }
             return;
@@ -91,7 +91,7 @@
 
         public function clearAllNotification() : void
         {
-            this._notificationList = new Vector.<Notification>;
+            this._notificationList = new Vector.<>;
             return;
         }// end function
 

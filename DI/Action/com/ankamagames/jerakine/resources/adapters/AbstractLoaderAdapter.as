@@ -61,7 +61,7 @@
                 {
                     if (AirScanner.hasAir())
                     {
-                        this._uri.loaderContext["allowLoadBytesCodeExecution"] = true;
+                        this._uri.loaderContext.allowLoadBytesCodeExecution = true;
                     }
                 }
                 else
@@ -69,7 +69,7 @@
                     this._uri.loaderContext = new LoaderContext();
                     if (AirScanner.hasAir())
                     {
-                        this._uri.loaderContext["allowLoadBytesCodeExecution"] = true;
+                        this._uri.loaderContext.allowLoadBytesCodeExecution = true;
                     }
                 }
                 this._ldr.loadBytes(data, this._uri.loaderContext);

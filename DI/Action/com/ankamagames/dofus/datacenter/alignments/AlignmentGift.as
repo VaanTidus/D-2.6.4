@@ -31,7 +31,7 @@
 
         public static function getAlignmentGiftById(param1:int) : AlignmentGift
         {
-            return GameData.getObject(MODULE, param1) as ;
+            return GameData.getObject(MODULE, param1) as AlignmentGift;
         }// end function
 
         public static function getAlignmentGifts() : Array

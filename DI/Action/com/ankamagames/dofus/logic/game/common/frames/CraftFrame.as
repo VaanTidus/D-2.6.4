@@ -344,7 +344,7 @@
                     {
                         case ExchangeCraftResultMessage.protocolId:
                         {
-                            _loc_17 = I18n.getUiText("ui.craft.noCraftResult");
+                            _loc_17 = I18n.getUiText("ui.craft.noResult");
                             break;
                         }
                         case ExchangeCraftResultWithObjectIdMessage.protocolId:

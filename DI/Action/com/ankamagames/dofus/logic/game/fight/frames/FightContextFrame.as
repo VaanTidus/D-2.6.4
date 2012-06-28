@@ -7,7 +7,6 @@
     import com.ankamagames.atouin.messages.*;
     import com.ankamagames.atouin.renderers.*;
     import com.ankamagames.atouin.types.*;
-    import com.ankamagames.atouin.utils.*;
     import com.ankamagames.berilia.managers.*;
     import com.ankamagames.berilia.types.*;
     import com.ankamagames.dofus.datacenter.monsters.*;
@@ -352,6 +351,7 @@
                     Atouin.getInstance().cancelZoom();
                     KernelEventsManager.getInstance().processCallback(HookList.StartZoom, false);
                     MapDisplayManager.getInstance().activeIdentifiedElements(false);
+                    FightEventsHelper.reset();
                     KernelEventsManager.getInstance().processCallback(HookList.GameFightStarting, _loc_2.fightType);
                     this.fightType = _loc_2.fightType;
                     CurrentPlayedFighterManager.getInstance().currentFighterId = PlayedCharacterManager.getInstance().id;
@@ -375,7 +375,6 @@
                     if (_loc_3.mapKey && _loc_3.mapKey.length)
                     {
                         _loc_44 = XmlConfig.getInstance().getEntry("config.maps.encryptionKey");
-                        _loc_44 = "649ae451ca33ec53bbcbcc33becf15f4";
                         if (!_loc_44)
                         {
                             _loc_44 = _loc_3.mapKey;
@@ -853,6 +852,7 @@
                         _loc_78 = new Object();
                         _loc_78.results = _loc_73;
                         _loc_78.ageBonus = _loc_33.ageBonus;
+                        _loc_78.sizeMalus = _loc_33.lootShareLimitMalus;
                         _loc_78.duration = _loc_33.duration;
                         _loc_78.challenges = this.challengesList;
                         _loc_78.turns = this._battleFrame.turnsCount;
@@ -1164,10 +1164,11 @@
             var _loc_10:GameFightFighterInformations = null;
             var _loc_11:Selection = null;
             var _loc_12:int = 0;
-            var _loc_13:FightSpellCastFrame = null;
-            var _loc_14:GlowFilter = null;
-            var _loc_15:FightTurnFrame = null;
-            var _loc_16:Boolean = false;
+            var _loc_13:FightReachableCellsMaker = null;
+            var _loc_14:FightSpellCastFrame = null;
+            var _loc_15:GlowFilter = null;
+            var _loc_16:FightTurnFrame = null;
+            var _loc_17:Boolean = false;
             var _loc_3:* = this._entitiesFrame.getEntitiesIdsList();
             fighterEntityTooltipId = param1;
             var _loc_4:* = DofusEntities.getEntity(fighterEntityTooltipId);
@@ -1214,12 +1215,13 @@
                     _loc_11 = new Selection();
                     _loc_11.color = new Color(52326);
                     _loc_11.renderer = new ZoneDARenderer();
-                    _loc_11.zone = new Lozenge(0, 0, DataMapProvider.getInstance());
                     SelectionManager.getInstance().addSelection(_loc_11, this.INVISIBLE_POSITION_SELECTION);
                 }
                 _loc_12 = FightEntitiesFrame.getCurrentInstance().getLastKnownEntityPosition(_loc_5.contextualId);
                 if (_loc_12 > -1)
                 {
+                    _loc_13 = new FightReachableCellsMaker(this._currentFighterInfo, _loc_12, FightEntitiesFrame.getCurrentInstance().getLastKnownEntityMovementPoint(_loc_5.contextualId));
+                    _loc_11.zone = new Custom(_loc_13.reachableCells);
                     SelectionManager.getInstance().update(this.INVISIBLE_POSITION_SELECTION, _loc_12);
                 }
                 return;
@@ -1252,27 +1254,27 @@
             var _loc_9:* = _loc_4 as Sprite;
             if (_loc_4 as Sprite && Dofus.getInstance().options.showGlowOverTarget)
             {
-                _loc_13 = Kernel.getWorker().getFrame(FightSpellCastFrame) as FightSpellCastFrame;
-                _loc_15 = Kernel.getWorker().getFrame(FightTurnFrame) as FightTurnFrame;
-                _loc_16 = _loc_15 ? (_loc_15.myTurn) : (true);
-                if ((!_loc_13 || _loc_13 && _loc_13.currentTargetIsTargetable) && _loc_16)
+                _loc_14 = Kernel.getWorker().getFrame(FightSpellCastFrame) as FightSpellCastFrame;
+                _loc_16 = Kernel.getWorker().getFrame(FightTurnFrame) as FightTurnFrame;
+                _loc_17 = _loc_16 ? (_loc_16.myTurn) : (true);
+                if ((!_loc_14 || _loc_14 && _loc_14.currentTargetIsTargetable) && _loc_17)
                 {
-                    _loc_14 = this._overEffectOk;
+                    _loc_15 = this._overEffectOk;
                 }
                 else
                 {
-                    _loc_14 = this._overEffectKo;
+                    _loc_15 = this._overEffectKo;
                 }
                 if (_loc_9.filters.length)
                 {
-                    if (_loc_9.filters[0] != _loc_14)
+                    if (_loc_9.filters[0] != _loc_15)
                     {
-                        _loc_9.filters = [_loc_14];
+                        _loc_9.filters = [_loc_15];
                     }
                 }
                 else
                 {
-                    _loc_9.filters = [_loc_14];
+                    _loc_9.filters = [_loc_15];
                 }
                 this._lastEffectEntity = new WeakReference(_loc_4);
             }

@@ -311,7 +311,7 @@
             {
                 return false;
             }
-            if (_loc_18.cooldown > 0)
+            if (_loc_18.cooldown > 0 || _loc_6.actualCooldown > 0)
             {
                 return false;
             }

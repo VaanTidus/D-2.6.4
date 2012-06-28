@@ -7,6 +7,7 @@
     import com.ankamagames.jerakine.types.*;
     import flash.text.*;
     import flash.utils.*;
+    import flashx.textLayout.formats.*;
 
     public class ExtendedStyleSheet extends StyleSheet
     {
@@ -138,6 +139,44 @@
                 _loc_3 = _loc_3 + 1;
             }
             return _loc_1;
+        }// end function
+
+        public function TLFTransform(param1:Object) : TextLayoutFormat
+        {
+            var _loc_2:* = new TextLayoutFormat();
+            if (param1["color"])
+            {
+                _loc_2.color = param1["color"];
+            }
+            if (param1["fontFamily"])
+            {
+                _loc_2.fontFamily = param1["fontFamily"];
+            }
+            if (param1["fontSize"])
+            {
+                _loc_2.fontSize = param1["fontSize"];
+            }
+            if (param1["paddingLeft"])
+            {
+                _loc_2.paddingLeft = param1["paddingLeft"];
+            }
+            if (param1["paddingRight"])
+            {
+                _loc_2.paddingRight = param1["paddingRight"];
+            }
+            if (param1["paddingBottom"])
+            {
+                _loc_2.paddingBottom = param1["paddingBottom"];
+            }
+            if (param1["paddingTop"])
+            {
+                _loc_2.paddingTop = param1["paddingTop"];
+            }
+            if (param1["textIndent"])
+            {
+                _loc_2.textIndent = param1["textIndent"];
+            }
+            return _loc_2;
         }// end function
 
         private function makeMerge(param1:String) : void

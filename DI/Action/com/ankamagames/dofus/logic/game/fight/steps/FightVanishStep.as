@@ -54,7 +54,7 @@
                 return;
             }
             BuffManager.getInstance().dispell(_loc_1.id, false, false, true);
-            _loc_2 = BuffManager.getInstance().removeLinkedBuff(_loc_1.id, false, false, true);
+            _loc_2 = BuffManager.getInstance().removeLinkedBuff(_loc_1.id, false, true);
             BuffManager.getInstance().reaffectBuffs(_loc_1.id);
             this._vanishSubSequence = new SerialSequencer(FightBattleFrame.FIGHT_SEQUENCER_NAME);
             _loc_3 = FightEntitiesFrame.getCurrentInstance().getEntityInfos(this._sourceId).disposition.cellId;

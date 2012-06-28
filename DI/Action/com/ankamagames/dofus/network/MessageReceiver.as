@@ -202,6 +202,7 @@
             StoreDataManager.getInstance().registerClass(new MapComplementaryInformationsWithCoordsMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new GameRolePlayShowActorMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new CharacterStatsListMessage(), true, true);
+            StoreDataManager.getInstance().registerClass(new FighterStatsListMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new CharacterLevelUpMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new CharacterExperienceGainMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new CharacterLevelUpInformationMessage(), true, true);
@@ -403,6 +404,7 @@
             StoreDataManager.getInstance().registerClass(new IgnoredAddedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new IgnoredDeleteResultMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new GuildCreationStartedMessage(), true, true);
+            StoreDataManager.getInstance().registerClass(new GuildModificationStartedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new GuildCreationResultMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new GuildInvitedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new GuildInvitationStateRecruterMessage(), true, true);
@@ -544,6 +546,7 @@
             StoreDataManager.getInstance().registerClass(new ExchangeBidHouseGenericItemAddedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new ExchangeBidHouseGenericItemRemovedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new ExchangeBidHouseInListAddedMessage(), true, true);
+            StoreDataManager.getInstance().registerClass(new ExchangeBidHouseInListUpdatedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new ExchangeBidHouseInListRemovedMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new ExchangeIsReadyMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new ExchangeErrorMessage(), true, true);
@@ -601,6 +604,8 @@
             StoreDataManager.getInstance().registerClass(new ExchangeRemovedPaymentForCraftMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new ExchangeClearPaymentForCraftMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new UpdateMountBoostMessage(), true, true);
+            StoreDataManager.getInstance().registerClass(new ObjectAveragePricesErrorMessage(), true, true);
+            StoreDataManager.getInstance().registerClass(new ObjectAveragePricesMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new PurchasableDialogMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new AccountHouseMessage(), true, true);
             StoreDataManager.getInstance().registerClass(new HousePropertiesMessage(), true, true);
@@ -737,6 +742,7 @@
         _messagesTypes[6268] = MapComplementaryInformationsWithCoordsMessage;
         _messagesTypes[5632] = GameRolePlayShowActorMessage;
         _messagesTypes[500] = CharacterStatsListMessage;
+        _messagesTypes[6322] = FighterStatsListMessage;
         _messagesTypes[5670] = CharacterLevelUpMessage;
         _messagesTypes[6321] = CharacterExperienceGainMessage;
         _messagesTypes[6076] = CharacterLevelUpInformationMessage;
@@ -938,6 +944,7 @@
         _messagesTypes[5678] = IgnoredAddedMessage;
         _messagesTypes[5677] = IgnoredDeleteResultMessage;
         _messagesTypes[5920] = GuildCreationStartedMessage;
+        _messagesTypes[6324] = GuildModificationStartedMessage;
         _messagesTypes[5554] = GuildCreationResultMessage;
         _messagesTypes[5552] = GuildInvitedMessage;
         _messagesTypes[5563] = GuildInvitationStateRecruterMessage;
@@ -1079,6 +1086,7 @@
         _messagesTypes[5947] = ExchangeBidHouseGenericItemAddedMessage;
         _messagesTypes[5948] = ExchangeBidHouseGenericItemRemovedMessage;
         _messagesTypes[5949] = ExchangeBidHouseInListAddedMessage;
+        _messagesTypes[6337] = ExchangeBidHouseInListUpdatedMessage;
         _messagesTypes[5950] = ExchangeBidHouseInListRemovedMessage;
         _messagesTypes[5509] = ExchangeIsReadyMessage;
         _messagesTypes[5513] = ExchangeErrorMessage;
@@ -1136,6 +1144,8 @@
         _messagesTypes[6031] = ExchangeRemovedPaymentForCraftMessage;
         _messagesTypes[6145] = ExchangeClearPaymentForCraftMessage;
         _messagesTypes[6179] = UpdateMountBoostMessage;
+        _messagesTypes[6336] = ObjectAveragePricesErrorMessage;
+        _messagesTypes[6335] = ObjectAveragePricesMessage;
         _messagesTypes[5739] = PurchasableDialogMessage;
         _messagesTypes[6315] = AccountHouseMessage;
         _messagesTypes[5734] = HousePropertiesMessage;

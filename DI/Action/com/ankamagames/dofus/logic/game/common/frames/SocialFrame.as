@@ -19,7 +19,6 @@
     import com.ankamagames.dofus.network.enums.*;
     import com.ankamagames.dofus.network.messages.game.chat.report.*;
     import com.ankamagames.dofus.network.messages.game.context.roleplay.npc.*;
-    import com.ankamagames.dofus.network.messages.game.context.roleplay.party.*;
     import com.ankamagames.dofus.network.messages.game.friend.*;
     import com.ankamagames.dofus.network.messages.game.guild.*;
     import com.ankamagames.dofus.network.messages.game.guild.tax.*;
@@ -201,9 +200,9 @@
             var _loc_44:FriendWarnOnConnectionStateMessage = null;
             var _loc_45:GuildMemberWarnOnConnectionStateMessage = null;
             var _loc_46:FriendWarnOnLevelGainStateMessage = null;
-            var _loc_47:PartyFollowStatusUpdateMessage = null;
-            var _loc_48:GuildInformationsMembersMessage = null;
-            var _loc_49:GuildHousesInformationMessage = null;
+            var _loc_47:GuildInformationsMembersMessage = null;
+            var _loc_48:GuildHousesInformationMessage = null;
+            var _loc_49:GuildModificationStartedMessage = null;
             var _loc_50:GuildCreationResultMessage = null;
             var _loc_51:String = null;
             var _loc_52:GuildInvitedMessage = null;
@@ -277,52 +276,50 @@
             var _loc_120:GuildFightLeaveRequestAction = null;
             var _loc_121:GuildFightLeaveRequestMessage = null;
             var _loc_122:TaxCollectorHireRequestAction = null;
-            var _loc_123:TaxCollectorFireRequestAction = null;
-            var _loc_124:TaxCollectorFireRequestMessage = null;
-            var _loc_125:CharacterReportAction = null;
-            var _loc_126:CharacterReportMessage = null;
-            var _loc_127:ChatReportAction = null;
-            var _loc_128:ChatMessageReportMessage = null;
-            var _loc_129:ChatFrame = null;
-            var _loc_130:uint = 0;
-            var _loc_131:FriendInformations = null;
-            var _loc_132:FriendWrapper = null;
-            var _loc_133:FriendOnlineInformations = null;
-            var _loc_134:FriendInformations = null;
-            var _loc_135:FriendWrapper = null;
-            var _loc_136:* = undefined;
-            var _loc_137:EnemyWrapper = null;
-            var _loc_138:IgnoredOnlineInformations = null;
-            var _loc_139:FriendAddRequestMessage = null;
-            var _loc_140:IgnoredAddRequestMessage = null;
-            var _loc_141:EnemyWrapper = null;
+            var _loc_123:CharacterReportAction = null;
+            var _loc_124:CharacterReportMessage = null;
+            var _loc_125:ChatReportAction = null;
+            var _loc_126:ChatMessageReportMessage = null;
+            var _loc_127:ChatFrame = null;
+            var _loc_128:uint = 0;
+            var _loc_129:FriendInformations = null;
+            var _loc_130:FriendWrapper = null;
+            var _loc_131:FriendOnlineInformations = null;
+            var _loc_132:FriendInformations = null;
+            var _loc_133:FriendWrapper = null;
+            var _loc_134:* = undefined;
+            var _loc_135:EnemyWrapper = null;
+            var _loc_136:IgnoredOnlineInformations = null;
+            var _loc_137:FriendAddRequestMessage = null;
+            var _loc_138:IgnoredAddRequestMessage = null;
+            var _loc_139:EnemyWrapper = null;
+            var _loc_140:* = undefined;
+            var _loc_141:* = undefined;
             var _loc_142:* = undefined;
             var _loc_143:* = undefined;
             var _loc_144:* = undefined;
             var _loc_145:* = undefined;
-            var _loc_146:* = undefined;
-            var _loc_147:* = undefined;
-            var _loc_148:IgnoredAddRequestMessage = null;
-            var _loc_149:GuildMember = null;
-            var _loc_150:HouseInformationsForGuild = null;
-            var _loc_151:GuildHouseWrapper = null;
-            var _loc_152:int = 0;
-            var _loc_153:int = 0;
-            var _loc_154:GuildMember = null;
-            var _loc_155:String = null;
-            var _loc_156:CharacterMinimalPlusLookInformations = null;
-            var _loc_157:GuildGetInformationsMessage = null;
-            var _loc_158:TaxCollectorWrapper = null;
-            var _loc_159:TaxCollectorInFightWrapper = null;
-            var _loc_160:TaxCollectorFightersWrapper = null;
-            var _loc_161:TaxCollectorHireRequestMessage = null;
-            var _loc_162:GuildHouseUpdateInformationMessage = null;
-            var _loc_163:Boolean = false;
-            var _loc_164:GuildHouseWrapper = null;
-            var _loc_165:GuildHouseWrapper = null;
-            var _loc_166:GuildHouseRemoveMessage = null;
-            var _loc_167:Boolean = false;
-            var _loc_168:int = 0;
+            var _loc_146:IgnoredAddRequestMessage = null;
+            var _loc_147:GuildMember = null;
+            var _loc_148:HouseInformationsForGuild = null;
+            var _loc_149:GuildHouseWrapper = null;
+            var _loc_150:int = 0;
+            var _loc_151:int = 0;
+            var _loc_152:GuildMember = null;
+            var _loc_153:String = null;
+            var _loc_154:CharacterMinimalPlusLookInformations = null;
+            var _loc_155:GuildGetInformationsMessage = null;
+            var _loc_156:TaxCollectorWrapper = null;
+            var _loc_157:TaxCollectorInFightWrapper = null;
+            var _loc_158:TaxCollectorFightersWrapper = null;
+            var _loc_159:TaxCollectorHireRequestMessage = null;
+            var _loc_160:GuildHouseUpdateInformationMessage = null;
+            var _loc_161:Boolean = false;
+            var _loc_162:GuildHouseWrapper = null;
+            var _loc_163:GuildHouseWrapper = null;
+            var _loc_164:GuildHouseRemoveMessage = null;
+            var _loc_165:Boolean = false;
+            var _loc_166:int = 0;
             switch(true)
             {
                 case param1 is GuildMembershipMessage:
@@ -330,11 +327,11 @@
                     _loc_2 = param1 as GuildMembershipMessage;
                     if (this._guild != null)
                     {
-                        this._guild.update(_loc_2.guildInfo.guildId, _loc_2.guildInfo.guildName, _loc_2.guildInfo.guildEmblem, _loc_2.memberRights);
+                        this._guild.update(_loc_2.guildInfo.guildId, _loc_2.guildInfo.guildName, _loc_2.guildInfo.guildEmblem, _loc_2.memberRights, _loc_2.enabled);
                     }
                     else
                     {
-                        this._guild = GuildWrapper.create(_loc_2.guildInfo.guildId, _loc_2.guildInfo.guildName, _loc_2.guildInfo.guildEmblem, _loc_2.memberRights);
+                        this._guild = GuildWrapper.create(_loc_2.guildInfo.guildId, _loc_2.guildInfo.guildName, _loc_2.guildInfo.guildEmblem, _loc_2.memberRights, _loc_2.enabled);
                     }
                     this._hasGuild = true;
                     KernelEventsManager.getInstance().processCallback(SocialHookList.GuildMembership);
@@ -345,17 +342,17 @@
                 {
                     _loc_3 = param1 as FriendsListMessage;
                     this._friendsList = new Array();
-                    for each (_loc_131 in _loc_3.friendsList)
+                    for each (_loc_129 in _loc_3.friendsList)
                     {
                         
-                        if (_loc_131 is FriendOnlineInformations)
+                        if (_loc_129 is FriendOnlineInformations)
                         {
-                            _loc_133 = _loc_131 as FriendOnlineInformations;
-                            AccountManager.getInstance().setAccount(_loc_133.playerName, _loc_133.accountId, _loc_133.accountName);
-                            ChatAutocompleteNameManager.getInstance().addEntry((_loc_131 as FriendOnlineInformations).playerName, 2);
+                            _loc_131 = _loc_129 as FriendOnlineInformations;
+                            AccountManager.getInstance().setAccount(_loc_131.playerName, _loc_131.accountId, _loc_131.accountName);
+                            ChatAutocompleteNameManager.getInstance().addEntry((_loc_129 as FriendOnlineInformations).playerName, 2);
                         }
-                        _loc_132 = new FriendWrapper(_loc_131);
-                        this._friendsList.push(_loc_132);
+                        _loc_130 = new FriendWrapper(_loc_129);
+                        this._friendsList.push(_loc_130);
                     }
                     if (this._spouse)
                     {
@@ -371,15 +368,15 @@
                     _loc_4 = param1 as FriendsListWithSpouseMessage;
                     _loc_5 = new SpouseWrapper(_loc_4.spouse);
                     this._spouse = _loc_5;
-                    for each (_loc_134 in _loc_4.friendsList)
+                    for each (_loc_132 in _loc_4.friendsList)
                     {
                         
-                        if (_loc_134 is FriendOnlineInformations)
+                        if (_loc_132 is FriendOnlineInformations)
                         {
-                            ChatAutocompleteNameManager.getInstance().addEntry((_loc_134 as FriendOnlineInformations).playerName, 2);
+                            ChatAutocompleteNameManager.getInstance().addEntry((_loc_132 as FriendOnlineInformations).playerName, 2);
                         }
-                        _loc_135 = new FriendWrapper(_loc_134);
-                        this._friendsList.push(_loc_135);
+                        _loc_133 = new FriendWrapper(_loc_132);
+                        this._friendsList.push(_loc_133);
                     }
                     KernelEventsManager.getInstance().processCallback(SocialHookList.FriendsListUpdated);
                     KernelEventsManager.getInstance().processCallback(SocialHookList.SpouseUpdated);
@@ -389,16 +386,16 @@
                 {
                     this._enemiesList = new Array();
                     _loc_6 = param1 as IgnoredListMessage;
-                    for each (_loc_136 in _loc_6.ignoredList)
+                    for each (_loc_134 in _loc_6.ignoredList)
                     {
                         
-                        if (_loc_136 is IgnoredOnlineInformations)
+                        if (_loc_134 is IgnoredOnlineInformations)
                         {
-                            _loc_138 = _loc_131 as IgnoredOnlineInformations;
-                            AccountManager.getInstance().setAccount(_loc_138.playerName, _loc_138.accountId, _loc_138.accountName);
+                            _loc_136 = _loc_129 as IgnoredOnlineInformations;
+                            AccountManager.getInstance().setAccount(_loc_136.playerName, _loc_136.accountId, _loc_136.accountName);
                         }
-                        _loc_137 = new EnemyWrapper(_loc_136);
-                        this._enemiesList.push(_loc_137);
+                        _loc_135 = new EnemyWrapper(_loc_134);
+                        this._enemiesList.push(_loc_135);
                     }
                     KernelEventsManager.getInstance().processCallback(SocialHookList.EnemiesListUpdated);
                     return true;
@@ -437,9 +434,9 @@
                     }
                     else if (_loc_11.name != PlayedCharacterManager.getInstance().infos.name)
                     {
-                        _loc_139 = new FriendAddRequestMessage();
-                        _loc_139.initFriendAddRequestMessage(_loc_11.name);
-                        ConnectionsHandler.getConnection().send(_loc_139);
+                        _loc_137 = new FriendAddRequestMessage();
+                        _loc_137.initFriendAddRequestMessage(_loc_11.name);
+                        ConnectionsHandler.getConnection().send(_loc_137);
                     }
                     else
                     {
@@ -453,8 +450,8 @@
                     _loc_12 = param1 as FriendAddedMessage;
                     if (_loc_12.friendAdded is FriendOnlineInformations)
                     {
-                        _loc_133 = _loc_12.friendAdded as FriendOnlineInformations;
-                        AccountManager.getInstance().setAccount(_loc_133.playerName, _loc_133.accountId, _loc_133.accountName);
+                        _loc_131 = _loc_12.friendAdded as FriendOnlineInformations;
+                        AccountManager.getInstance().setAccount(_loc_131.playerName, _loc_131.accountId, _loc_131.accountName);
                         ChatAutocompleteNameManager.getInstance().addEntry((_loc_12.friendAdded as FriendInformations).accountName, 2);
                     }
                     KernelEventsManager.getInstance().processCallback(SocialHookList.FriendAdded, true);
@@ -511,9 +508,9 @@
                     }
                     else if (_loc_16.name != PlayedCharacterManager.getInstance().infos.name)
                     {
-                        _loc_140 = new IgnoredAddRequestMessage();
-                        _loc_140.initIgnoredAddRequestMessage(_loc_16.name);
-                        ConnectionsHandler.getConnection().send(_loc_140);
+                        _loc_138 = new IgnoredAddRequestMessage();
+                        _loc_138.initIgnoredAddRequestMessage(_loc_16.name);
+                        ConnectionsHandler.getConnection().send(_loc_138);
                     }
                     else
                     {
@@ -527,22 +524,22 @@
                     _loc_17 = param1 as IgnoredAddedMessage;
                     if (_loc_17.ignoreAdded is IgnoredOnlineInformations)
                     {
-                        _loc_138 = _loc_17.ignoreAdded as IgnoredOnlineInformations;
-                        AccountManager.getInstance().setAccount(_loc_138.playerName, _loc_138.accountId, _loc_138.accountName);
+                        _loc_136 = _loc_17.ignoreAdded as IgnoredOnlineInformations;
+                        AccountManager.getInstance().setAccount(_loc_136.playerName, _loc_136.accountId, _loc_136.accountName);
                     }
                     if (!_loc_17.session)
                     {
                         KernelEventsManager.getInstance().processCallback(SocialHookList.EnemyAdded, true);
-                        _loc_141 = new EnemyWrapper(_loc_17.ignoreAdded);
-                        this._enemiesList.push(_loc_141);
+                        _loc_139 = new EnemyWrapper(_loc_17.ignoreAdded);
+                        this._enemiesList.push(_loc_139);
                         KernelEventsManager.getInstance().processCallback(SocialHookList.EnemiesListUpdated);
                     }
                     else
                     {
-                        for each (_loc_142 in this._ignoredList)
+                        for each (_loc_140 in this._ignoredList)
                         {
                             
-                            if (_loc_142.name == _loc_17.ignoreAdded.accountName)
+                            if (_loc_140.name == _loc_17.ignoreAdded.accountName)
                             {
                                 return true;
                             }
@@ -605,12 +602,12 @@
                     KernelEventsManager.getInstance().processCallback(SocialHookList.FriendRemoved, _loc_22.success);
                     if (_loc_22.success)
                     {
-                        for (_loc_143 in this._friendsList)
+                        for (_loc_141 in this._friendsList)
                         {
                             
-                            if (this._friendsList[_loc_143].name == _loc_22.name)
+                            if (this._friendsList[_loc_141].name == _loc_22.name)
                             {
-                                this._friendsList.splice(_loc_143, 1);
+                                this._friendsList.splice(_loc_141, 1);
                             }
                         }
                         KernelEventsManager.getInstance().processCallback(SocialHookList.FriendsListUpdated);
@@ -622,12 +619,12 @@
                 {
                     _loc_24 = param1 as FriendUpdateMessage;
                     _loc_25 = new FriendWrapper(_loc_24.friendUpdated);
-                    for each (_loc_144 in this._friendsList)
+                    for each (_loc_142 in this._friendsList)
                     {
                         
-                        if (_loc_144.name == _loc_25.name)
+                        if (_loc_142.name == _loc_25.name)
                         {
-                            _loc_144 = _loc_25;
+                            _loc_142 = _loc_25;
                         }
                     }
                     KernelEventsManager.getInstance().processCallback(SocialHookList.FriendsListUpdated);
@@ -649,12 +646,12 @@
                         KernelEventsManager.getInstance().processCallback(SocialHookList.EnemyRemoved, _loc_28.success);
                         if (_loc_28.success)
                         {
-                            for (_loc_145 in this._enemiesList)
+                            for (_loc_143 in this._enemiesList)
                             {
                                 
-                                if (this._enemiesList[_loc_145].name == _loc_28.name)
+                                if (this._enemiesList[_loc_143].name == _loc_28.name)
                                 {
-                                    this._enemiesList.splice(_loc_145, 1);
+                                    this._enemiesList.splice(_loc_143, 1);
                                 }
                             }
                         }
@@ -662,12 +659,12 @@
                     }
                     else if (_loc_28.success)
                     {
-                        for (_loc_146 in this._ignoredList)
+                        for (_loc_144 in this._ignoredList)
                         {
                             
-                            if (this._ignoredList[_loc_146].name == _loc_28.name)
+                            if (this._ignoredList[_loc_144].name == _loc_28.name)
                             {
-                                this._ignoredList.splice(_loc_146, 1);
+                                this._ignoredList.splice(_loc_144, 1);
                             }
                         }
                         KernelEventsManager.getInstance().processCallback(SocialHookList.IgnoredRemoved);
@@ -684,18 +681,18 @@
                     }
                     else if (_loc_29.name != PlayedCharacterManager.getInstance().infos.name)
                     {
-                        for each (_loc_147 in this._ignoredList)
+                        for each (_loc_145 in this._ignoredList)
                         {
                             
-                            _log.debug(" " + _loc_147.playerName + " == " + _loc_29.name);
-                            if (_loc_147.playerName == _loc_29.name)
+                            _log.debug(" " + _loc_145.playerName + " == " + _loc_29.name);
+                            if (_loc_145.playerName == _loc_29.name)
                             {
                                 return true;
                             }
                         }
-                        _loc_148 = new IgnoredAddRequestMessage();
-                        _loc_148.initIgnoredAddRequestMessage(_loc_29.name, true);
-                        ConnectionsHandler.getConnection().send(_loc_148);
+                        _loc_146 = new IgnoredAddRequestMessage();
+                        _loc_146.initIgnoredAddRequestMessage(_loc_29.name, true);
+                        ConnectionsHandler.getConnection().send(_loc_146);
                     }
                     else
                     {
@@ -768,6 +765,8 @@
                     if (!this._hasSpouse)
                     {
                         this._spouse = null;
+                        KernelEventsManager.getInstance().processCallback(SocialHookList.SpouseFollowStatusUpdated, false);
+                        KernelEventsManager.getInstance().processCallback(HookList.RemoveMapFlag, "flag_srv" + CompassTypeEnum.COMPASS_TYPE_SPOUSE);
                     }
                     KernelEventsManager.getInstance().processCallback(SocialHookList.SpouseUpdated);
                     return true;
@@ -793,44 +792,27 @@
                     KernelEventsManager.getInstance().processCallback(SocialHookList.FriendOrGuildMemberLevelUpWarningState, _loc_46.enable);
                     return true;
                 }
-                case param1 is PartyFollowStatusUpdateMessage:
-                {
-                    _loc_47 = param1 as PartyFollowStatusUpdateMessage;
-                    if (_loc_47.success)
-                    {
-                        if (_loc_47.followedId == 0)
-                        {
-                            KernelEventsManager.getInstance().processCallback(HookList.RemoveMapFlag, "flag_srv" + CompassTypeEnum.COMPASS_TYPE_PARTY + "_" + PlayedCharacterManager.getInstance().followingPlayerId);
-                            PlayedCharacterManager.getInstance().followingPlayerId = -1;
-                        }
-                        else
-                        {
-                            PlayedCharacterManager.getInstance().followingPlayerId = _loc_47.followedId;
-                        }
-                    }
-                    return true;
-                }
                 case param1 is GuildInformationsMembersMessage:
                 {
-                    _loc_48 = param1 as GuildInformationsMembersMessage;
-                    for each (_loc_149 in _loc_48.members)
+                    _loc_47 = param1 as GuildInformationsMembersMessage;
+                    for each (_loc_147 in _loc_47.members)
                     {
                         
-                        ChatAutocompleteNameManager.getInstance().addEntry(_loc_149.name, 2);
+                        ChatAutocompleteNameManager.getInstance().addEntry(_loc_147.name, 2);
                     }
-                    this._guildMembers = _loc_48.members;
+                    this._guildMembers = _loc_47.members;
                     KernelEventsManager.getInstance().processCallback(SocialHookList.GuildInformationsMembers, this._guildMembers);
                     return true;
                 }
                 case param1 is GuildHousesInformationMessage:
                 {
-                    _loc_49 = param1 as GuildHousesInformationMessage;
+                    _loc_48 = param1 as GuildHousesInformationMessage;
                     this._guildHouses = new Vector.<GuildHouseWrapper>;
-                    for each (_loc_150 in _loc_49.housesInformations)
+                    for each (_loc_148 in _loc_48.housesInformations)
                     {
                         
-                        _loc_151 = GuildHouseWrapper.create(_loc_150);
-                        this._guildHouses.push(_loc_151);
+                        _loc_149 = GuildHouseWrapper.create(_loc_148);
+                        this._guildHouses.push(_loc_149);
                     }
                     this._guildHousesList = true;
                     this._guildHousesListUpdate = true;
@@ -840,7 +822,14 @@
                 case param1 is GuildCreationStartedMessage:
                 {
                     Kernel.getWorker().addFrame(this._guildDialogFrame);
-                    KernelEventsManager.getInstance().processCallback(SocialHookList.GuildCreationStarted);
+                    KernelEventsManager.getInstance().processCallback(SocialHookList.GuildCreationStarted, false, false);
+                    return true;
+                }
+                case param1 is GuildModificationStartedMessage:
+                {
+                    _loc_49 = param1 as GuildModificationStartedMessage;
+                    Kernel.getWorker().addFrame(this._guildDialogFrame);
+                    KernelEventsManager.getInstance().processCallback(SocialHookList.GuildCreationStarted, _loc_49.canChangeName, _loc_49.canChangeEmblem);
                     return true;
                 }
                 case param1 is GuildCreationResultMessage:
@@ -883,6 +872,7 @@
                         }
                         case GuildCreationResultEnum.GUILD_CREATE_OK:
                         {
+                            Kernel.getWorker().removeFrame(this._guildDialogFrame);
                             this._hasGuild = true;
                             break;
                         }
@@ -909,7 +899,10 @@
                 {
                     _loc_53 = param1 as GuildInvitationStateRecruterMessage;
                     KernelEventsManager.getInstance().processCallback(SocialHookList.GuildInvitationStateRecruter, _loc_53.invitationState, _loc_53.recrutedName);
-                    Kernel.getWorker().addFrame(this._guildDialogFrame);
+                    if (_loc_53.invitationState == 2 || _loc_53.invitationState == 3)
+                    {
+                        Kernel.getWorker().removeFrame(this._guildDialogFrame);
+                    }
                     return true;
                 }
                 case param1 is GuildInvitationStateRecrutedMessage:
@@ -922,7 +915,7 @@
                 {
                     _loc_55 = param1 as GuildJoinedMessage;
                     this._hasGuild = true;
-                    this._guild = GuildWrapper.create(_loc_55.guildInfo.guildId, _loc_55.guildInfo.guildName, _loc_55.guildInfo.guildEmblem, _loc_55.memberRights);
+                    this._guild = GuildWrapper.create(_loc_55.guildInfo.guildId, _loc_55.guildInfo.guildName, _loc_55.guildInfo.guildEmblem, _loc_55.memberRights, _loc_55.enabled);
                     KernelEventsManager.getInstance().processCallback(SocialHookList.GuildJoined, _loc_55.guildInfo.guildEmblem, _loc_55.guildInfo.guildName, _loc_55.memberRights);
                     KernelEventsManager.getInstance().processCallback(SocialHookList.GuildMembershipUpdated, true);
                     _loc_56 = I18n.getUiText("ui.guild.JoinGuildMessage", [_loc_55.guildInfo.guildName]);
@@ -953,22 +946,22 @@
                     _loc_59 = param1 as GuildInformationsMemberUpdateMessage;
                     if (this._guildMembers != null)
                     {
-                        _loc_152 = this._guildMembers.length;
-                        _loc_153 = 0;
-                        while (_loc_153 < _loc_152)
+                        _loc_150 = this._guildMembers.length;
+                        _loc_151 = 0;
+                        while (_loc_151 < _loc_150)
                         {
                             
-                            _loc_60 = this._guildMembers[_loc_153];
+                            _loc_60 = this._guildMembers[_loc_151];
                             if (_loc_60.id == _loc_59.member.id)
                             {
-                                this._guildMembers[_loc_153] = _loc_59.member;
+                                this._guildMembers[_loc_151] = _loc_59.member;
                                 if (_loc_60.id == PlayedCharacterManager.getInstance().id)
                                 {
                                     this.guild.memberRightsNumber = _loc_59.member.rights;
                                 }
                                 break;
                             }
-                            _loc_153++;
+                            _loc_151++;
                         }
                     }
                     else
@@ -989,10 +982,10 @@
                 {
                     _loc_61 = param1 as GuildMemberLeavingMessage;
                     _loc_62 = 0;
-                    for each (_loc_154 in this._guildMembers)
+                    for each (_loc_152 in this._guildMembers)
                     {
                         
-                        if (_loc_61.memberId == _loc_154.id)
+                        if (_loc_61.memberId == _loc_152.id)
                         {
                             this._guildMembers.splice(_loc_62, 1);
                         }
@@ -1029,8 +1022,8 @@
                     _loc_65 = param1 as GuildFightPlayersHelpersLeaveMessage;
                     if (this._autoLeaveHelpers)
                     {
-                        _loc_155 = I18n.getUiText("ui.social.guild.autoFightLeave");
-                        KernelEventsManager.getInstance().processCallback(ChatHookList.TextInformation, _loc_155, ChatActivableChannelsEnum.PSEUDO_CHANNEL_INFO, TimeManager.getInstance().getTimestamp());
+                        _loc_153 = I18n.getUiText("ui.social.guild.autoFightLeave");
+                        KernelEventsManager.getInstance().processCallback(ChatHookList.TextInformation, _loc_153, ChatActivableChannelsEnum.PSEUDO_CHANNEL_INFO, TimeManager.getInstance().getTimestamp());
                     }
                     TaxCollectorsManager.getInstance().removeFighter(_loc_65.fightId, _loc_65.playerId, true);
                     return true;
@@ -1038,10 +1031,10 @@
                 case param1 is GuildFightPlayersEnemiesListMessage:
                 {
                     _loc_66 = param1 as GuildFightPlayersEnemiesListMessage;
-                    for each (_loc_156 in _loc_66.playerInfo)
+                    for each (_loc_154 in _loc_66.playerInfo)
                     {
                         
-                        TaxCollectorsManager.getInstance().addFighter(_loc_66.fightId, _loc_156, false, false);
+                        TaxCollectorsManager.getInstance().addFighter(_loc_66.fightId, _loc_154, false, false);
                     }
                     KernelEventsManager.getInstance().processCallback(SocialHookList.GuildFightEnnemiesListUpdate, _loc_66.fightId);
                     KernelEventsManager.getInstance().processCallback(SocialHookList.TaxCollectorUpdate, _loc_66.fightId);
@@ -1228,7 +1221,7 @@
                 case param1 is TaxCollectorDialogQuestionBasicMessage:
                 {
                     _loc_94 = param1 as TaxCollectorDialogQuestionBasicMessage;
-                    _loc_95 = GuildWrapper.create(0, _loc_94.guildInfo.guildName, null, 0);
+                    _loc_95 = GuildWrapper.create(0, _loc_94.guildInfo.guildName, null, 0, true);
                     KernelEventsManager.getInstance().processCallback(SocialHookList.TaxCollectorDialogQuestionBasic, _loc_95.guildName);
                     return true;
                 }
@@ -1272,15 +1265,16 @@
                     }
                     if (_loc_98)
                     {
-                        _loc_157 = new GuildGetInformationsMessage();
-                        _loc_157.initGuildGetInformationsMessage(_loc_97.infoType);
-                        ConnectionsHandler.getConnection().send(_loc_157);
+                        _loc_155 = new GuildGetInformationsMessage();
+                        _loc_155.initGuildGetInformationsMessage(_loc_97.infoType);
+                        ConnectionsHandler.getConnection().send(_loc_155);
                     }
                     return true;
                 }
                 case param1 is GuildInvitationAction:
                 {
                     _loc_99 = param1 as GuildInvitationAction;
+                    Kernel.getWorker().addFrame(this._guildDialogFrame);
                     _loc_100 = new GuildInvitationMessage();
                     _loc_100.initGuildInvitationMessage(_loc_99.targetId);
                     ConnectionsHandler.getConnection().send(_loc_100);
@@ -1365,20 +1359,20 @@
                     this._autoLeaveHelpers = false;
                     if (_loc_120.warning)
                     {
-                        for each (_loc_158 in TaxCollectorsManager.getInstance().taxCollectors)
+                        for each (_loc_156 in TaxCollectorsManager.getInstance().taxCollectors)
                         {
                             
-                            if (_loc_158.state == 1)
+                            if (_loc_156.state == 1)
                             {
-                                _loc_159 = TaxCollectorsManager.getInstance().taxCollectorsFighters[_loc_158.uniqueId];
-                                for each (_loc_160 in _loc_159.allyCharactersInformations)
+                                _loc_157 = TaxCollectorsManager.getInstance().taxCollectorsFighters[_loc_156.uniqueId];
+                                for each (_loc_158 in _loc_157.allyCharactersInformations)
                                 {
                                     
-                                    if (_loc_160.playerCharactersInformations.id == _loc_120.characterId)
+                                    if (_loc_158.playerCharactersInformations.id == _loc_120.characterId)
                                     {
                                         this._autoLeaveHelpers = true;
                                         _loc_121 = new GuildFightLeaveRequestMessage();
-                                        _loc_121.initGuildFightLeaveRequestMessage(_loc_158.uniqueId, _loc_120.characterId);
+                                        _loc_121.initGuildFightLeaveRequestMessage(_loc_156.uniqueId, _loc_120.characterId);
                                         ConnectionsHandler.getConnection().send(_loc_121);
                                     }
                                 }
@@ -1398,9 +1392,9 @@
                     _loc_122 = param1 as TaxCollectorHireRequestAction;
                     if (TaxCollectorsManager.getInstance().taxCollectorHireCost <= PlayedCharacterManager.getInstance().characteristics.kamas)
                     {
-                        _loc_161 = new TaxCollectorHireRequestMessage();
-                        _loc_161.initTaxCollectorHireRequestMessage();
-                        ConnectionsHandler.getConnection().send(_loc_161);
+                        _loc_159 = new TaxCollectorHireRequestMessage();
+                        _loc_159.initTaxCollectorHireRequestMessage();
+                        ConnectionsHandler.getConnection().send(_loc_159);
                     }
                     else
                     {
@@ -1408,35 +1402,27 @@
                     }
                     return true;
                 }
-                case param1 is TaxCollectorFireRequestAction:
-                {
-                    _loc_123 = param1 as TaxCollectorFireRequestAction;
-                    _loc_124 = new TaxCollectorFireRequestMessage();
-                    _loc_124.initTaxCollectorFireRequestMessage(_loc_123.taxCollectorId);
-                    ConnectionsHandler.getConnection().send(_loc_124);
-                    return true;
-                }
                 case param1 is GuildHouseUpdateInformationMessage:
                 {
                     if (this._guildHousesList)
                     {
-                        _loc_162 = param1 as GuildHouseUpdateInformationMessage;
-                        _loc_163 = false;
-                        for each (_loc_164 in this._guildHouses)
+                        _loc_160 = param1 as GuildHouseUpdateInformationMessage;
+                        _loc_161 = false;
+                        for each (_loc_162 in this._guildHouses)
                         {
                             
-                            if (_loc_164.houseId == _loc_162.housesInformations.houseId)
+                            if (_loc_162.houseId == _loc_160.housesInformations.houseId)
                             {
-                                _loc_164.update(_loc_162.housesInformations);
-                                _loc_163 = true;
+                                _loc_162.update(_loc_160.housesInformations);
+                                _loc_161 = true;
                             }
                             KernelEventsManager.getInstance().processCallback(SocialHookList.GuildHousesUpdate);
                         }
-                        if (!_loc_163)
+                        if (!_loc_161)
                         {
-                            _loc_165 = GuildHouseWrapper.create(_loc_162.housesInformations);
-                            this._guildHouses.push(_loc_165);
-                            KernelEventsManager.getInstance().processCallback(SocialHookList.GuildHouseAdd, _loc_165);
+                            _loc_163 = GuildHouseWrapper.create(_loc_160.housesInformations);
+                            this._guildHouses.push(_loc_163);
+                            KernelEventsManager.getInstance().processCallback(SocialHookList.GuildHouseAdd, _loc_163);
                         }
                         this._guildHousesListUpdate = true;
                     }
@@ -1446,40 +1432,40 @@
                 {
                     if (this._guildHousesList)
                     {
-                        _loc_166 = param1 as GuildHouseRemoveMessage;
-                        _loc_167 = false;
-                        _loc_168 = 0;
-                        while (_loc_168 < this._guildHouses.length)
+                        _loc_164 = param1 as GuildHouseRemoveMessage;
+                        _loc_165 = false;
+                        _loc_166 = 0;
+                        while (_loc_166 < this._guildHouses.length)
                         {
                             
-                            if (this._guildHouses[_loc_168].houseId == _loc_166.houseId)
+                            if (this._guildHouses[_loc_166].houseId == _loc_164.houseId)
                             {
-                                this._guildHouses.splice(_loc_168, 1);
+                                this._guildHouses.splice(_loc_166, 1);
                                 break;
                             }
-                            _loc_168++;
+                            _loc_166++;
                         }
                         this._guildHousesListUpdate = true;
-                        KernelEventsManager.getInstance().processCallback(SocialHookList.GuildHouseRemoved, _loc_166.houseId);
+                        KernelEventsManager.getInstance().processCallback(SocialHookList.GuildHouseRemoved, _loc_164.houseId);
                     }
                     return true;
                 }
                 case param1 is CharacterReportAction:
                 {
-                    _loc_125 = param1 as CharacterReportAction;
-                    _loc_126 = new CharacterReportMessage();
-                    _loc_126.initCharacterReportMessage(_loc_125.reportedId, _loc_125.reason);
-                    ConnectionsHandler.getConnection().send(_loc_126);
+                    _loc_123 = param1 as CharacterReportAction;
+                    _loc_124 = new CharacterReportMessage();
+                    _loc_124.initCharacterReportMessage(_loc_123.reportedId, _loc_123.reason);
+                    ConnectionsHandler.getConnection().send(_loc_124);
                     return true;
                 }
                 case param1 is ChatReportAction:
                 {
-                    _loc_127 = param1 as ChatReportAction;
-                    _loc_128 = new ChatMessageReportMessage();
-                    _loc_129 = Kernel.getWorker().getFrame(ChatFrame) as ChatFrame;
-                    _loc_130 = _loc_129.getTimestampServerByRealTimestamp(_loc_127.timestamp);
-                    _loc_128.initChatMessageReportMessage(_loc_127.name, _loc_127.message, _loc_130, _loc_127.channel, _loc_127.fingerprint, _loc_127.reason);
-                    ConnectionsHandler.getConnection().send(_loc_128);
+                    _loc_125 = param1 as ChatReportAction;
+                    _loc_126 = new ChatMessageReportMessage();
+                    _loc_127 = Kernel.getWorker().getFrame(ChatFrame) as ChatFrame;
+                    _loc_128 = _loc_127.getTimestampServerByRealTimestamp(_loc_125.timestamp);
+                    _loc_126.initChatMessageReportMessage(_loc_125.name, _loc_125.message, _loc_128, _loc_125.channel, _loc_125.fingerprint, _loc_125.reason);
+                    ConnectionsHandler.getConnection().send(_loc_126);
                     return true;
                 }
                 default:

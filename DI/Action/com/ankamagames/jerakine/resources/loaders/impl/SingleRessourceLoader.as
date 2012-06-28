@@ -38,6 +38,7 @@
             _filesTotal = 1;
             if (!checkCache(this._uri))
             {
+                trace(this._uri);
                 this._protocol = ProtocolFactory.getProtocol(this._uri);
                 this._protocol.load(this._uri, this, hasEventListener(ResourceProgressEvent.PROGRESS), _cache, param3, param4);
             }

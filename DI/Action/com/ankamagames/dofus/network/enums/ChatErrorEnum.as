@@ -11,6 +11,7 @@
         public static const CHAT_ERROR_ALIGN:uint = 5;
         public static const CHAT_ERROR_INVALID_MAP:uint = 6;
         public static const CHAT_ERROR_NO_PARTY_ARENA:uint = 7;
+        public static const CHAT_ERROR_NO_TEAM:uint = 8;
 
         public function ChatErrorEnum()
         {

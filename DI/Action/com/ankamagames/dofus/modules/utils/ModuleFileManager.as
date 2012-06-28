@@ -106,7 +106,7 @@
                 
                 if (_loc_5.isDirectory)
                 {
-                    _loc_3 = _loc_3 + this.updateFolderSize(_loc_5, param2);
+                    this.updateFolderSize(_loc_5, param2);
                     continue;
                 }
                 _loc_3 = _loc_3 + _loc_5.size;

@@ -15,7 +15,7 @@
 
         public static function getStealthBonesById(param1:int) : StealthBones
         {
-            return GameData.getObject(MODULE, param1) as StealthBones;
+            return GameData.getObject(MODULE, param1) as ;
         }// end function
 
     }

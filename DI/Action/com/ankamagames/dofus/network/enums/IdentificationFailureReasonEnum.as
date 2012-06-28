@@ -13,6 +13,7 @@
         public static const BAD_IPRANGE:uint = 8;
         public static const CREDENTIALS_RESET:uint = 9;
         public static const EMAIL_UNVALIDATED:uint = 10;
+        public static const SERVICE_UNAVAILABLE:uint = 53;
         public static const UNKNOWN_AUTH_ERROR:uint = 99;
         public static const SPARE:uint = 100;
 

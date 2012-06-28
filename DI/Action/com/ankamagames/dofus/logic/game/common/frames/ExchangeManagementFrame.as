@@ -143,31 +143,35 @@
             var _loc_18:ExchangeObjectTransfertAllToInvAction = null;
             var _loc_19:ExchangeObjectTransfertAllToInvMessage = null;
             var _loc_20:ExchangeObjectTransfertListToInvAction = null;
-            var _loc_21:ExchangeObjectTransfertAllFromInvAction = null;
-            var _loc_22:ExchangeObjectTransfertAllFromInvMessage = null;
-            var _loc_23:ExchangeObjectTransfertListFromInvAction = null;
-            var _loc_24:ExchangeStartOkNpcShopMessage = null;
-            var _loc_25:GameContextActorInformations = null;
-            var _loc_26:TiphonEntityLook = null;
-            var _loc_27:Array = null;
-            var _loc_28:String = null;
-            var _loc_29:String = null;
+            var _loc_21:ExchangeObjectTransfertExistingToInvAction = null;
+            var _loc_22:ExchangeObjectTransfertExistingToInvMessage = null;
+            var _loc_23:ExchangeObjectTransfertAllFromInvAction = null;
+            var _loc_24:ExchangeObjectTransfertAllFromInvMessage = null;
+            var _loc_25:ExchangeObjectTransfertListFromInvAction = null;
+            var _loc_26:ExchangeObjectTransfertExistingFromInvAction = null;
+            var _loc_27:ExchangeObjectTransfertExistingFromInvMessage = null;
+            var _loc_28:ExchangeStartOkNpcShopMessage = null;
+            var _loc_29:GameContextActorInformations = null;
             var _loc_30:TiphonEntityLook = null;
-            var _loc_31:TiphonEntityLook = null;
-            var _loc_32:ExchangeStartedWithPodsMessage = null;
-            var _loc_33:int = 0;
-            var _loc_34:int = 0;
-            var _loc_35:int = 0;
-            var _loc_36:int = 0;
+            var _loc_31:Array = null;
+            var _loc_32:String = null;
+            var _loc_33:String = null;
+            var _loc_34:TiphonEntityLook = null;
+            var _loc_35:TiphonEntityLook = null;
+            var _loc_36:ExchangeStartedWithPodsMessage = null;
             var _loc_37:int = 0;
-            var _loc_38:ObjectItem = null;
-            var _loc_39:ObjectItem = null;
-            var _loc_40:ItemWrapper = null;
-            var _loc_41:uint = 0;
-            var _loc_42:ExchangeObjectTransfertListToInvMessage = null;
-            var _loc_43:ExchangeObjectTransfertListFromInvMessage = null;
-            var _loc_44:ObjectItemToSellInNpcShop = null;
-            var _loc_45:ItemWrapper = null;
+            var _loc_38:int = 0;
+            var _loc_39:int = 0;
+            var _loc_40:int = 0;
+            var _loc_41:int = 0;
+            var _loc_42:ObjectItem = null;
+            var _loc_43:ObjectItem = null;
+            var _loc_44:ItemWrapper = null;
+            var _loc_45:uint = 0;
+            var _loc_46:ExchangeObjectTransfertListToInvMessage = null;
+            var _loc_47:ExchangeObjectTransfertListFromInvMessage = null;
+            var _loc_48:ObjectItemToSellInNpcShop = null;
+            var _loc_49:ItemWrapper = null;
             switch(true)
             {
                 case param1 is ExchangeStartedWithStorageMessage:
@@ -186,45 +190,45 @@
                     {
                         case ExchangeTypeEnum.PLAYER_TRADE:
                         {
-                            _loc_28 = this._sourceInformations.name;
-                            _loc_29 = this._targetInformations.name;
-                            _loc_30 = EntityLookAdapter.getRiderLook(this._sourceInformations.look);
-                            _loc_31 = EntityLookAdapter.getRiderLook(this._targetInformations.look);
+                            _loc_32 = this._sourceInformations.name;
+                            _loc_33 = this._targetInformations.name;
+                            _loc_34 = EntityLookAdapter.getRiderLook(this._sourceInformations.look);
+                            _loc_35 = EntityLookAdapter.getRiderLook(this._targetInformations.look);
                             if (_loc_6.getMessageId() == ExchangeStartedWithPodsMessage.protocolId)
                             {
-                                _loc_32 = param1 as ExchangeStartedWithPodsMessage;
+                                _loc_36 = param1 as ExchangeStartedWithPodsMessage;
                             }
-                            _loc_33 = -1;
-                            _loc_34 = -1;
-                            _loc_35 = -1;
-                            _loc_36 = -1;
-                            if (_loc_32 != null)
+                            _loc_37 = -1;
+                            _loc_38 = -1;
+                            _loc_39 = -1;
+                            _loc_40 = -1;
+                            if (_loc_36 != null)
                             {
-                                if (_loc_32.firstCharacterId == this._sourceInformations.contextualId)
+                                if (_loc_36.firstCharacterId == this._sourceInformations.contextualId)
                                 {
-                                    _loc_33 = _loc_32.firstCharacterCurrentWeight;
-                                    _loc_34 = _loc_32.secondCharacterCurrentWeight;
-                                    _loc_35 = _loc_32.firstCharacterMaxWeight;
-                                    _loc_36 = _loc_32.secondCharacterMaxWeight;
+                                    _loc_37 = _loc_36.firstCharacterCurrentWeight;
+                                    _loc_38 = _loc_36.secondCharacterCurrentWeight;
+                                    _loc_39 = _loc_36.firstCharacterMaxWeight;
+                                    _loc_40 = _loc_36.secondCharacterMaxWeight;
                                 }
                                 else
                                 {
-                                    _loc_34 = _loc_32.firstCharacterCurrentWeight;
-                                    _loc_33 = _loc_32.secondCharacterCurrentWeight;
-                                    _loc_36 = _loc_32.firstCharacterMaxWeight;
-                                    _loc_35 = _loc_32.secondCharacterMaxWeight;
+                                    _loc_38 = _loc_36.firstCharacterCurrentWeight;
+                                    _loc_37 = _loc_36.secondCharacterCurrentWeight;
+                                    _loc_40 = _loc_36.firstCharacterMaxWeight;
+                                    _loc_39 = _loc_36.secondCharacterMaxWeight;
                                 }
                             }
-                            if (PlayedCharacterManager.getInstance().id == _loc_32.firstCharacterId)
+                            if (PlayedCharacterManager.getInstance().id == _loc_36.firstCharacterId)
                             {
-                                _loc_37 = _loc_32.secondCharacterId;
+                                _loc_41 = _loc_36.secondCharacterId;
                             }
                             else
                             {
-                                _loc_37 = _loc_32.firstCharacterId;
+                                _loc_41 = _loc_36.firstCharacterId;
                             }
-                            _log.debug("look : " + _loc_30.toString() + "    " + _loc_31.toString());
-                            this._kernelEventsManager.processCallback(ExchangeHookList.ExchangeStarted, _loc_28, _loc_29, _loc_30, _loc_31, _loc_33, _loc_34, _loc_35, _loc_36, _loc_37);
+                            _log.debug("look : " + _loc_34.toString() + "    " + _loc_35.toString());
+                            this._kernelEventsManager.processCallback(ExchangeHookList.ExchangeStarted, _loc_32, _loc_33, _loc_34, _loc_35, _loc_37, _loc_38, _loc_39, _loc_40, _loc_41);
                             this._kernelEventsManager.processCallback(ExchangeHookList.ExchangeStartedType, _loc_6.exchangeType);
                             return true;
                         }
@@ -280,12 +284,12 @@
                 case param1 is StorageObjectsUpdateMessage:
                 {
                     _loc_13 = param1 as StorageObjectsUpdateMessage;
-                    for each (_loc_38 in _loc_13.objectList)
+                    for each (_loc_42 in _loc_13.objectList)
                     {
                         
-                        _loc_39 = _loc_38;
-                        _loc_40 = ItemWrapper.create(_loc_39.position, _loc_39.objectUID, _loc_39.objectGID, _loc_39.quantity, _loc_39.effects);
-                        InventoryManager.getInstance().bankInventory.modifyItem(_loc_40);
+                        _loc_43 = _loc_42;
+                        _loc_44 = ItemWrapper.create(_loc_43.position, _loc_43.objectUID, _loc_43.objectGID, _loc_43.quantity, _loc_43.effects);
+                        InventoryManager.getInstance().bankInventory.modifyItem(_loc_44);
                     }
                     InventoryManager.getInstance().bankInventory.releaseHooks();
                     return false;
@@ -293,10 +297,10 @@
                 case param1 is StorageObjectsRemoveMessage:
                 {
                     _loc_14 = param1 as StorageObjectsRemoveMessage;
-                    for each (_loc_41 in _loc_14.objectUIDList)
+                    for each (_loc_45 in _loc_14.objectUIDList)
                     {
                         
-                        InventoryManager.getInstance().bankInventory.removeItem(_loc_41);
+                        InventoryManager.getInstance().bankInventory.removeItem(_loc_45);
                     }
                     InventoryManager.getInstance().bankInventory.releaseHooks();
                     return false;
@@ -329,47 +333,62 @@
                     _loc_20 = param1 as ExchangeObjectTransfertListToInvAction;
                     if (_loc_20.ids.length != 0)
                     {
-                        _loc_42 = new ExchangeObjectTransfertListToInvMessage();
-                        _loc_42.initExchangeObjectTransfertListToInvMessage(_loc_20.ids);
-                        this._serverConnection.send(_loc_42);
+                        _loc_46 = new ExchangeObjectTransfertListToInvMessage();
+                        _loc_46.initExchangeObjectTransfertListToInvMessage(_loc_20.ids);
+                        this._serverConnection.send(_loc_46);
                     }
+                    return true;
+                }
+                case param1 is ExchangeObjectTransfertExistingToInvAction:
+                {
+                    _loc_21 = param1 as ExchangeObjectTransfertExistingToInvAction;
+                    _loc_22 = new ExchangeObjectTransfertExistingToInvMessage();
+                    _loc_22.initExchangeObjectTransfertExistingToInvMessage();
+                    this._serverConnection.send(_loc_22);
                     return true;
                 }
                 case param1 is ExchangeObjectTransfertAllFromInvAction:
                 {
-                    _loc_21 = param1 as ExchangeObjectTransfertAllFromInvAction;
-                    _loc_22 = new ExchangeObjectTransfertAllFromInvMessage();
-                    _loc_22.initExchangeObjectTransfertAllFromInvMessage();
-                    this._serverConnection.send(_loc_22);
+                    _loc_23 = param1 as ExchangeObjectTransfertAllFromInvAction;
+                    _loc_24 = new ExchangeObjectTransfertAllFromInvMessage();
+                    _loc_24.initExchangeObjectTransfertAllFromInvMessage();
+                    this._serverConnection.send(_loc_24);
                     return true;
                 }
                 case param1 is ExchangeObjectTransfertListFromInvAction:
                 {
-                    _loc_23 = param1 as ExchangeObjectTransfertListFromInvAction;
-                    _log.debug("ExchangeObjectTransfertListFromInvAction : " + _loc_23.ids.length);
-                    if (_loc_23.ids.length != 0)
+                    _loc_25 = param1 as ExchangeObjectTransfertListFromInvAction;
+                    if (_loc_25.ids.length != 0)
                     {
-                        _loc_43 = new ExchangeObjectTransfertListFromInvMessage();
-                        _loc_43.initExchangeObjectTransfertListFromInvMessage(_loc_23.ids.slice(0, 999));
-                        this._serverConnection.send(_loc_43);
+                        _loc_47 = new ExchangeObjectTransfertListFromInvMessage();
+                        _loc_47.initExchangeObjectTransfertListFromInvMessage(_loc_25.ids.slice(0, 1000));
+                        this._serverConnection.send(_loc_47);
                     }
+                    return true;
+                }
+                case param1 is ExchangeObjectTransfertExistingFromInvAction:
+                {
+                    _loc_26 = param1 as ExchangeObjectTransfertExistingFromInvAction;
+                    _loc_27 = new ExchangeObjectTransfertExistingFromInvMessage();
+                    _loc_27.initExchangeObjectTransfertExistingFromInvMessage();
+                    this._serverConnection.send(_loc_27);
                     return true;
                 }
                 case param1 is ExchangeStartOkNpcShopMessage:
                 {
-                    _loc_24 = param1 as ExchangeStartOkNpcShopMessage;
+                    _loc_28 = param1 as ExchangeStartOkNpcShopMessage;
                     PlayedCharacterManager.getInstance().isInExchange = true;
                     Kernel.getWorker().process(ChangeWorldInteractionAction.create(false, true));
-                    _loc_25 = this.roleplayContextFrame.entitiesFrame.getEntityInfos(_loc_24.npcSellerId);
-                    _loc_26 = EntityLookAdapter.fromNetwork(_loc_25.look);
-                    _loc_27 = new Array();
-                    for each (_loc_44 in _loc_24.objectsInfos)
+                    _loc_29 = this.roleplayContextFrame.entitiesFrame.getEntityInfos(_loc_28.npcSellerId);
+                    _loc_30 = EntityLookAdapter.fromNetwork(_loc_29.look);
+                    _loc_31 = new Array();
+                    for each (_loc_48 in _loc_28.objectsInfos)
                     {
                         
-                        _loc_45 = ItemWrapper.create(63, 0, _loc_44.objectGID, 0, _loc_44.effects, false);
-                        _loc_27.push({item:_loc_45, price:_loc_44.objectPrice, criterion:new GroupItemCriterion(_loc_44.buyCriterion)});
+                        _loc_49 = ItemWrapper.create(63, 0, _loc_48.objectGID, 0, _loc_48.effects, false);
+                        _loc_31.push({item:_loc_49, price:_loc_48.objectPrice, criterion:new GroupItemCriterion(_loc_48.buyCriterion)});
                     }
-                    this._kernelEventsManager.processCallback(ExchangeHookList.ExchangeStartOkNpcShop, _loc_24.npcSellerId, _loc_27, _loc_26, _loc_24.tokenId);
+                    this._kernelEventsManager.processCallback(ExchangeHookList.ExchangeStartOkNpcShop, _loc_28.npcSellerId, _loc_31, _loc_30, _loc_28.tokenId);
                     return true;
                 }
                 case param1 is LeaveDialogRequestAction:

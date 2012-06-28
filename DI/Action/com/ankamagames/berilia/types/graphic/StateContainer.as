@@ -2,7 +2,9 @@
 {
     import com.ankamagames.berilia.*;
     import com.ankamagames.berilia.enums.*;
+    import com.ankamagames.jerakine.logger.*;
     import com.ankamagames.jerakine.utils.misc.*;
+    import flash.utils.*;
 
     public class StateContainer extends GraphicContainer implements UIComponent
     {
@@ -12,6 +14,7 @@
         protected var _lockedProperties:Array;
         protected var _lockedPropertiesStr:String;
         private var _changingStateData:Array;
+        static const _log:Logger = Log.getLogger(getQualifiedClassName(StateContainer));
 
         public function StateContainer()
         {
@@ -142,6 +145,10 @@
                     }
                 }
             }
+            else
+            {
+                _log.warn(name + " : No data for state \'" + param1 + "\' (" + this.changingStateData.length + " states)");
+            }
             return;
         }// end function
 
@@ -228,8 +235,8 @@
                             {
                                 continue;
                             }
+                            _loc_2[_loc_5] = this._snapshot[param1][_loc_4][_loc_5];
                         }
-                        _loc_2[_loc_5] = this._snapshot[param1][_loc_4][_loc_5];
                     }
                 }
             }

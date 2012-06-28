@@ -55,7 +55,7 @@
         public static function getLoader(param1:String = null) : TimeoutHTMLLoader
         {
             var _loc_2:TimeoutHTMLLoader = null;
-            if (param1 && INSTANCE_CACHE[param1])
+            if (param1 != null && INSTANCE_CACHE[param1])
             {
                 _loc_2 = INSTANCE_CACHE[param1];
                 _loc_2._fromCache = true;

@@ -29,6 +29,10 @@
 
         public function get flashKey() : String
         {
+            if (!this._identity)
+            {
+                return this.getRandomFlashKey();
+            }
             return this._identity;
         }// end function
 

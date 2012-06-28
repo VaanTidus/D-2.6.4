@@ -41,5 +41,14 @@
             return _hasAir;
         }// end function
 
+        public static function isStreamingVersion() : Boolean
+        {
+            if (!_initialized)
+            {
+                initialize();
+            }
+            return !hasAir();
+        }// end function
+
     }
 }

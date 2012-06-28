@@ -179,7 +179,7 @@
                 
                 if (_loc_3.id == param1)
                 {
-                    _loc_4 = GuildWrapper.create(0, "", null, _loc_3.rights);
+                    _loc_4 = GuildWrapper.create(0, "", null, _loc_3.rights, true);
                     return _loc_4.hasRight(param2);
                 }
             }

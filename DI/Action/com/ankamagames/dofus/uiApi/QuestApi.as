@@ -18,7 +18,7 @@
 
         public function QuestApi()
         {
-            this._log = Log.getLogger(getQualifiedClassName(QuestApi));
+            this._log = Log.getLogger(getQualifiedClassName());
             return;
         }// end function
 
